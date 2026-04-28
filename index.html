@@ -3,53 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Flow Lab｜足跡圖與訂單流交易</title>
-  <meta name="description" content="用最白話的方式解釋 Order Flow、足跡圖、拍賣市場理論，作者 chillzon">
+  <title>OrderFlowLab｜微觀結構與拍賣市場理論</title>
+  <meta name="description" content="從市場微觀結構到拍賣市場理論，用白話和圖解解釋 Order Flow 交易。by chillzon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .series-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555577;
+      margin-bottom: 0.8rem;
+    }
+    .num-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #0d1a2a;
+      border: 1px solid #1e2e45;
+      color: #00c8ff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.6rem;
+      flex-shrink: 0;
+    }
+    .card h3 { display: flex; align-items: flex-start; gap: 0; }
+    .card-title-text { flex: 1; }
+  </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-logo">Order<span>Flow</span>Lab</div>
-  <div class="nav-links">
-    <a href="index.html">首頁</a>
-    <a href="about.html">關於</a>
-  </div>
+  <div class="nav-links"><a href="index.html">首頁</a><a href="about.html">關於</a></div>
 </nav>
 
 <section class="hero">
-  <div class="hero-badge">Order Flow · 足跡圖 · 拍賣理論</div>
-  <h1>看懂市場真正在說什麼</h1>
-  <p>不靠指標，用最白話的方式理解市場微觀結構。By <strong style="color:var(--accent)">chillzon</strong></p>
+  <div class="hero-badge">微觀結構 · AMT · Order Flow</div>
+  <h1>從最底層讀懂市場</h1>
+  <p>每一筆交易背後的邏輯、做市商的行為、拍賣理論、Volume Profile、足跡圖——系統性地建立你的市場觀。</p>
+  <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-dim)">by <strong style="color:var(--accent)">chillzon</strong></p>
 </section>
 
-<div class="section-divider"><h2>所有文章</h2></div>
+<div class="section-divider"><h2>系列文章</h2></div>
 
 <div class="posts-grid">
 
-  <div class="card featured" onclick="location.href='posts/amt-theory.html'">
+  <div class="card featured" onclick="location.href='posts/01-market-microstructure.html'">
     <div class="card-content">
       <div class="card-tags">
-        <span class="tag">拍賣理論</span>
-        <span class="tag">基礎必讀</span>
+        <span class="tag">微觀結構</span>
+        <span class="tag">基礎</span>
         <span class="featured-badge">⬆ 從這裡開始</span>
       </div>
-      <h3>拍賣市場理論（AMT）：市場的運作邏輯其實跟菜市場一樣</h3>
-      <p>為什麼價格會漲、會跌、會盤整？不是因為技術指標，而是因為買賣雙方對「公平價格」的看法不同。用菜市場和拍賣會的例子，從零理解 AMT。</p>
-      <div class="card-meta">
-        <span>chillzon · 2025 年 8 月</span>
-        <span class="read-more">閱讀全文 →</span>
-      </div>
+      <h3><span class="num-badge">01</span><span class="card-title-text">市場微觀結構：每一筆交易背後的運作邏輯</span></h3>
+      <p>限價單 vs 市價單、訂單簿、Bid-Ask 價差、價格如何移動。在學任何策略之前，先搞清楚一筆交易是怎麼發生的。</p>
+      <div class="card-meta"><span>chillzon · 2025</span><span class="read-more">閱讀全文 →</span></div>
     </div>
+  </div>
+
+  <div class="card" onclick="location.href='posts/02-market-makers.html'">
+    <div class="card-tags"><span class="tag">做市商</span><span class="tag">流動性</span></div>
+    <h3><span class="num-badge">02</span><span class="card-title-text">做市商：那個永遠站在你對面的人</span></h3>
+    <p>做市商如何獲利、如何管理庫存風險，以及他們為什麼要「獵殺止損」——理解他們，你就理解了假突破的本質。</p>
+    <div class="card-meta"><span>chillzon · 2025</span><span class="read-more">閱讀全文 →</span></div>
+  </div>
+
+  <div class="card" onclick="location.href='posts/03-amt.html'">
+    <div class="card-tags"><span class="tag">AMT</span><span class="tag">拍賣理論</span></div>
+    <h3><span class="num-badge">03</span><span class="card-title-text">拍賣市場理論（AMT）：市場其實一直在做同一件事</span></h3>
+    <p>所有的漲跌、盤整、趨勢，用一個框架就能解釋：市場在持續尋找公平價格的過程中，在平衡與不平衡之間循環。</p>
+    <div class="card-meta"><span>chillzon · 2025</span><span class="read-more">閱讀全文 →</span></div>
+  </div>
+
+  <div class="card" onclick="location.href='posts/04-volume-profile.html'">
+    <div class="card-tags"><span class="tag">Volume Profile</span><span class="tag">POC</span></div>
+    <h3><span class="num-badge">04</span><span class="card-title-text">Volume Profile：把 AMT 的概念視覺化</span></h3>
+    <p>POC、VAH、VAL、HVN、LVN——成交量在哪裡聚集，市場的重心就在哪裡。80% 法則讓你找到高勝率的交易位置。</p>
+    <div class="card-meta"><span>chillzon · 2025</span><span class="read-more">閱讀全文 →</span></div>
+  </div>
+
+  <div class="card" onclick="location.href='posts/05-tpo.html'">
+    <div class="card-tags"><span class="tag">TPO</span><span class="tag">Market Profile</span></div>
+    <h3><span class="num-badge">05</span><span class="card-title-text">TPO Market Profile：用「時間」衡量市場的接受程度</span></h3>
+    <p>市場在某個價格停留越久，代表越多人接受它。TPO 用時間維度補充 Volume Profile 的成交量視角。</p>
+    <div class="card-meta"><span>chillzon · 2025</span><span class="read-more">閱讀全文 →</span></div>
+  </div>
+
+  <div class="card" onclick="location.href='posts/06-vwap.html'">
+    <div class="card-tags"><span class="tag">VWAP</span><span class="tag">機構</span></div>
+    <h3><span class="num-badge">06</span><span class="card-title-text">VWAP：機構的成本線，也是散戶的參考基準</span></h3>
+    <p>機構不看 MA，他們看 VWAP。因為那是他們真實的平均成本。理解 VWAP 背後的邏輯，才能正確使用它。</p>
+    <div class="card-meta"><span>chillzon · 2025</span><span class="read-more">閱讀全文 →</span></div>
+  </div>
+
+  <div class="card" onclick="location.href='posts/07-footprint-trading.html'">
+    <div class="card-tags"><span class="tag">足跡圖</span><span class="tag">被套交易</span></div>
+    <h3><span class="num-badge">07</span><span class="card-title-text">足跡圖交易：辨識被套部位，站在對的那一側</span></h3>
+    <p>吸收、衰竭、不平衡——被套者遲早要逃跑，他們逃跑的行為會推動市場。足跡圖讓你看見他們被困在哪裡。</p>
+    <div class="card-meta"><span>chillzon · 2025</span><span class="read-more">閱讀全文 →</span></div>
   </div>
 
 </div>
 
-<footer>
-  <p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon &nbsp;·&nbsp; 以交易為志業，以邏輯為基礎</p>
-</footer>
-
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon &nbsp;·&nbsp; 以交易為志業，以邏輯為基礎</p></footer>
 </body>
 </html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05 TPO Market Profile｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">TPO · 第 05 篇</span>
+    <h1>TPO Market Profile：用「時間」衡量市場的接受程度</h1>
+    <p class="subtitle">市場在某個價格停留越久，代表越多人接受它。TPO 把這件事視覺化。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>TPO 和 VP 的關係</h2>
+    <p>上一篇的 Volume Profile 用「成交量」衡量每個價格的重要性。TPO（Time Price Opportunity）用的是「時間」——市場在某個價格停留了多久。</p>
+    <p>比喻：你想知道一家餐廳哪個時段最受歡迎。VP 是看每個時段點了多少道菜（成交量）；TPO 是看每個時段有多少桌子被坐著（停留時間）。兩種方法問的問題相同，衡量的角度不同。</p>
+
+    <h2>TPO 的運作方式</h2>
+    <p>TPO 把一個交易日切成很多個 30 分鐘時段，每個時段用一個英文字母代表（A、B、C……）。在每個時段裡，價格去過哪個節點，就在那個節點旁邊標上對應字母。</p>
+    <p>一整天下來，字母出現最多的那個價格，就是今天停留最久的地方——也就是 <strong>POC</strong>（公平價格）。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" font-family="'Fira Code','Consolas',monospace">
+        <rect width="640" height="360" fill="#09090f"/>
+        <text x="320" y="28" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold" font-family="'Noto Sans TC','Inter',sans-serif">TPO 圖的長相</text>
+        <text x="320" y="48" text-anchor="middle" fill="#7a7a9a" font-size="11" font-family="'Noto Sans TC','Inter',sans-serif">每個字母代表一個30分鐘時段，字母越多 = 停留越久</text>
+
+        <!-- Price axis -->
+        <line x1="78" y1="62" x2="78" y2="330" stroke="#2a2a4a" stroke-width="1.5"/>
+
+        <!-- VAH -->
+        <line x1="78" y1="102" x2="580" y2="102" stroke="#ffa500" stroke-width="1" stroke-dasharray="4,3" opacity="0.45"/>
+        <text x="586" y="106" fill="#ffa500" font-size="10">VAH</text>
+        <!-- VAL -->
+        <line x1="78" y1="282" x2="580" y2="282" stroke="#ffa500" stroke-width="1" stroke-dasharray="4,3" opacity="0.45"/>
+        <text x="586" y="286" fill="#ffa500" font-size="10">VAL</text>
+
+        <!-- TPO rows: price on left, letters on right -->
+        <!-- 行高 24px, 從 y=64 開始 -->
+        <!-- y=64:  高價 -->
+        <text x="72" y="79" text-anchor="end" fill="#666688" font-size="11">高價</text>
+        <text x="85"  y="79" fill="#444466" font-size="13">D</text>
+
+        <!-- y=88 -->
+        <text x="72" y="103" text-anchor="end" fill="#888899" font-size="11">  </text>
+        <text x="85"  y="103" fill="#555577" font-size="13">C</text>
+        <text x="101" y="103" fill="#555577" font-size="13">D</text>
+
+        <!-- y=112  VAH -->
+        <text x="85"  y="127" fill="#6688aa" font-size="13">B</text>
+        <text x="101" y="127" fill="#6688aa" font-size="13">C</text>
+        <text x="117" y="127" fill="#6688aa" font-size="13">D</text>
+        <text x="133" y="127" fill="#6688aa" font-size="13">E</text>
+
+        <!-- y=136 -->
+        <text x="85"  y="151" fill="#7799bb" font-size="13">B</text>
+        <text x="101" y="151" fill="#7799bb" font-size="13">C</text>
+        <text x="117" y="151" fill="#7799bb" font-size="13">D</text>
+        <text x="133" y="151" fill="#7799bb" font-size="13">E</text>
+        <text x="149" y="151" fill="#7799bb" font-size="13">F</text>
+
+        <!-- y=160 -->
+        <text x="85"  y="175" fill="#88aacc" font-size="13">A</text>
+        <text x="101" y="175" fill="#88aacc" font-size="13">B</text>
+        <text x="117" y="175" fill="#88aacc" font-size="13">C</text>
+        <text x="133" y="175" fill="#88aacc" font-size="13">D</text>
+        <text x="149" y="175" fill="#88aacc" font-size="13">E</text>
+        <text x="165" y="175" fill="#88aacc" font-size="13">F</text>
+        <text x="181" y="175" fill="#88aacc" font-size="13">G</text>
+
+        <!-- POC row (最多字母) -->
+        <rect x="80" y="181" width="210" height="22" fill="#00c8ff" opacity="0.08" rx="3"/>
+        <text x="72" y="196" text-anchor="end" fill="#ffffff" font-size="11" font-weight="bold" font-family="'Noto Sans TC','Inter',sans-serif">POC</text>
+        <text x="85"  y="196" fill="#00c8ff" font-size="13">A</text>
+        <text x="101" y="196" fill="#00c8ff" font-size="13">B</text>
+        <text x="117" y="196" fill="#00c8ff" font-size="13">C</text>
+        <text x="133" y="196" fill="#00c8ff" font-size="13">D</text>
+        <text x="149" y="196" fill="#00c8ff" font-size="13">E</text>
+        <text x="165" y="196" fill="#00c8ff" font-size="13">F</text>
+        <text x="181" y="196" fill="#00c8ff" font-size="13">G</text>
+        <text x="197" y="196" fill="#00c8ff" font-size="13">H</text>
+        <text x="304" y="196" fill="#00c8ff" font-size="10" font-weight="bold" font-family="'Noto Sans TC','Inter',sans-serif">← 字母最多 = POC（停留最久）</text>
+
+        <!-- y=204 -->
+        <text x="85"  y="220" fill="#88aacc" font-size="13">A</text>
+        <text x="101" y="220" fill="#88aacc" font-size="13">B</text>
+        <text x="117" y="220" fill="#88aacc" font-size="13">C</text>
+        <text x="133" y="220" fill="#88aacc" font-size="13">D</text>
+        <text x="149" y="220" fill="#88aacc" font-size="13">E</text>
+        <text x="165" y="220" fill="#88aacc" font-size="13">F</text>
+        <text x="181" y="220" fill="#88aacc" font-size="13">G</text>
+
+        <!-- y=228 -->
+        <text x="85"  y="244" fill="#7799bb" font-size="13">A</text>
+        <text x="101" y="244" fill="#7799bb" font-size="13">B</text>
+        <text x="117" y="244" fill="#7799bb" font-size="13">C</text>
+        <text x="133" y="244" fill="#7799bb" font-size="13">D</text>
+        <text x="149" y="244" fill="#7799bb" font-size="13">E</text>
+
+        <!-- y=252 -->
+        <text x="85"  y="268" fill="#6688aa" font-size="13">A</text>
+        <text x="101" y="268" fill="#6688aa" font-size="13">B</text>
+        <text x="117" y="268" fill="#6688aa" font-size="13">C</text>
+        <text x="133" y="268" fill="#6688aa" font-size="13">D</text>
+
+        <!-- VAL row -->
+        <text x="85"  y="292" fill="#5577aa" font-size="13">A</text>
+        <text x="101" y="292" fill="#5577aa" font-size="13">B</text>
+        <text x="117" y="292" fill="#5577aa" font-size="13">C</text>
+
+        <!-- y=304 -->
+        <text x="85"  y="316" fill="#444466" font-size="13">A</text>
+        <text x="101" y="316" fill="#444466" font-size="13">B</text>
+
+        <!-- 低價 -->
+        <text x="72" y="334" text-anchor="end" fill="#666688" font-size="11">低價</text>
+        <text x="85"  y="334" fill="#333355" font-size="13">A</text>
+
+        <!-- 時段說明 -->
+        <text x="420" y="150" fill="#555577" font-size="10" font-family="'Noto Sans TC','Inter',sans-serif">每個字母 = 1個30分鐘時段</text>
+        <text x="420" y="164" fill="#555577" font-size="10" font-family="'Noto Sans TC','Inter',sans-serif">A = 第一個30分鐘</text>
+        <text x="420" y="178" fill="#555577" font-size="10" font-family="'Noto Sans TC','Inter',sans-serif">B = 第二個30分鐘</text>
+        <text x="420" y="192" fill="#555577" font-size="10" font-family="'Noto Sans TC','Inter',sans-serif">H = 第八個30分鐘</text>
+        <text x="420" y="215" fill="#7a7a9a" font-size="10" font-family="'Noto Sans TC','Inter',sans-serif">字母越多的價格</text>
+        <text x="420" y="229" fill="#7a7a9a" font-size="10" font-family="'Noto Sans TC','Inter',sans-serif">= 停留時間越長</text>
+        <text x="420" y="243" fill="#7a7a9a" font-size="10" font-family="'Noto Sans TC','Inter',sans-serif">= 市場越接受這個價格</text>
+      </svg>
+      <div class="diagram-caption">TPO圖中，每個字母代表一個30分鐘時段。字母最多的那行 = POC（市場停留最久的公平價格）</div>
+    </div>
+
+    <h2>TPO vs Volume Profile：該用哪個？</h2>
+    <table>
+      <tr><th></th><th>TPO（Market Profile）</th><th>Volume Profile</th></tr>
+      <tr><td>衡量的</td><td>停留時間</td><td>實際成交量</td></tr>
+      <tr><td>優點</td><td>能看出市場「接受」了多久</td><td>能看出真實的機構交易量</td></tr>
+      <tr><td>適合</td><td>判斷市場結構、形態分析</td><td>找關鍵支撐阻力、機構足跡</td></tr>
+      <tr><td>比喻</td><td>座位被坐了幾小時</td><td>座位被坐了幾人次</td></tr>
+    </table>
+    <div class="callout">
+      <strong>一個有趣的情況：</strong>某個價格 TPO 多（停留久）但 VP 小（成交量少），代表市場在那裡「待著」但沒什麼人真正交易。反之，VP 大但 TPO 少，代表有人在短時間內快速大量成交——機構行為的痕跡。
+    </div>
+
+    <h2>TPO 的三種市場形狀</h2>
+    <h3>D 形（正態分布）= 平衡市場</h3>
+    <p>中間寬、兩頭窄。市場對公平價格有明確共識，雙向交易均衡。適合用均值回歸策略，打 POC 和兩側 VA 邊界。</p>
+    <h3>P 形（底部厚）= 上漲後的整合</h3>
+    <p>底部成交量多，頂部少。代表上漲後空頭回補，買方在低點聚集。通常是繼續上漲或底部確認的訊號。</p>
+    <h3>b 形（頂部厚）= 下跌後的整合</h3>
+    <p>頂部成交量多，底部少。代表下跌後多頭出貨，賣方在高點聚集。通常是繼續下跌或頭部確認的訊號。</p>
+
+    <h2>小結</h2>
+    <p>TPO 是把「時間」作為衡量標準的 Market Profile。字母越多的地方，市場越接受；字母少的地方（Single Print），市場快速路過——那是潛在的回測目標。</p>
+    <p>下一篇，我們看 VWAP——這是機構最常用的成本基準，也是讓你理解「大資金在哪個價格入場」的關鍵工具。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>

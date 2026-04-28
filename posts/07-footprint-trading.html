@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07 足跡圖交易｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">足跡圖 · 第 07 篇</span>
+    <h1>足跡圖交易：辨識被套部位，站在對的那一側</h1>
+    <p class="subtitle">被套的人遲早要逃跑。足跡圖讓你看見他們被困在哪裡，然後等著他們推動市場。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>什麼是「被套交易」</h2>
+    <p>先想一個生活場景：你搭電梯，進去之後才發現搭錯方向了。電梯往上，你卻要去地下室。你能做的只有一件事——等電梯到頂樓，再趕快跑出去換另一部。</p>
+    <p>市場裡的「被套者」也一樣。他們在錯誤的方向開了倉，現在方向和他們預期的相反，帳面虧損越來越大。遲早，他們必須認輸——平倉、認賠、跑出去。</p>
+    <p>而<strong>他們平倉的行為，會產生市價單，推動價格繼續朝對他們不利的方向移動</strong>。</p>
+    <p>足跡圖讓你看見這些被套者在哪裡——他們的進場價在哪裡，他們的止損聚集在哪裡。</p>
+
+    <h2>足跡圖複習：Bid × Ask</h2>
+    <p>每個價格節點顯示兩個數字：</p>
+    <table>
+      <tr><th>數字</th><th>代表</th><th>意思</th></tr>
+      <tr><td><strong>Bid（左）</strong></td><td>市價賣出量</td><td>積極賣方，打到限價買單</td></tr>
+      <tr><td><strong>Ask（右）</strong></td><td>市價買入量</td><td>積極買方，打到限價賣單</td></tr>
+      <tr><td><strong>Delta</strong></td><td>Ask - Bid</td><td>正值=買方更積極，負值=賣方更積極</td></tr>
+    </table>
+
+    <h2>被套多頭（Trapped Longs）</h2>
+    <p>某群人在高點看好行情，買進了。結果市場往下走，他們被套了。</p>
+    <p>足跡圖上，你會在某個高點看到大量 <strong>Ask 量（市價買入）</strong>——那就是他們進場的地方。</p>
+    <p>當價格再次上漲到那個位置，他們會鬆一口氣準備解套平倉（市價賣出）。這些解套的賣單，會成為上漲的阻力，甚至讓市場在那裡再次反轉向下。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 348" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="348" fill="#09090f"/>
+        <text x="320" y="28" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">被套多頭（Trapped Longs）的生命週期</text>
+
+        <!-- Y axis -->
+        <line x1="50" y1="50" x2="50" y2="318" stroke="#1e1e35" stroke-width="1.5"/>
+
+        <!-- 高點（進場位） -->
+        <rect x="50" y="52" width="566" height="26" fill="#ff4d6d" opacity="0.06" rx="3"/>
+        <line x1="52" y1="65" x2="614" y2="65" stroke="#ff4d6d" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.55"/>
+        <text x="580" y="61" fill="#ff7070" font-size="9.5" font-weight="bold">多頭大量進場（Ask爆量）</text>
+        <text x="580" y="74" fill="#7a7a9a" font-size="9">足跡圖：Ask >> Bid</text>
+
+        <!-- 價格路徑 -->
+        <!-- 上漲到高點 -->
+        <polyline points="62,280 92,258 120,238 148,215 176,192 202,172 228,148 252,120 276,95 295,68"
+          fill="none" stroke="#00c896" stroke-width="2.2" stroke-linejoin="round"/>
+        <text x="118" y="190" fill="#00c896" font-size="10">① 價格上漲</text>
+        <text x="118" y="203" fill="#00c896" font-size="10">多頭進場</text>
+
+        <!-- 高點被套 -->
+        <circle cx="295" cy="68" r="7" fill="#ff4d6d" opacity="0.85"/>
+        <text x="308" y="65" fill="#ff9999" font-size="10" font-weight="bold">② 多頭大量買入</text>
+        <text x="308" y="78" fill="#7a7a9a" font-size="9">（覺得還會繼續漲）</text>
+
+        <!-- 反轉下跌 -->
+        <polyline points="295,68 322,92 348,118 372,145 395,170 418,196 440,220 462,244 480,265 495,282"
+          fill="none" stroke="#ff4d6d" stroke-width="2.2" stroke-linejoin="round"/>
+        <text x="400" y="165" fill="#ff7070" font-size="10">③ 市場反轉下跌</text>
+        <text x="400" y="178" fill="#ff7070" font-size="10">多頭被套、虧損擴大</text>
+
+        <!-- 止損被掃 -->
+        <rect x="50" y="270" width="566" height="26" fill="#ff4d6d" opacity="0.06" rx="3"/>
+        <line x1="52" y1="283" x2="614" y2="283" stroke="#ff4d6d" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.4"/>
+        <text x="510" y="278" fill="#ff9999" font-size="9.5">止損線（多頭設的止損）</text>
+
+        <circle cx="495" cy="282" r="6" fill="#ffa500" opacity="0.9"/>
+        <text x="508" y="290" fill="#ffa500" font-size="10" font-weight="bold">④ 止損被觸發！</text>
+        <text x="508" y="303" fill="#7a7a9a" font-size="9">大量市價賣出 → Bid爆量</text>
+        <text x="508" y="316" fill="#7a7a9a" font-size="9">價格加速下跌</text>
+
+        <text x="175" y="332" text-anchor="middle" fill="#555577" font-size="10">① 進場 → ② 被套 → ③ 痛苦等待 → ④ 止損爆出 → 推動市場加速</text>
+      </svg>
+      <div class="diagram-caption">被套多頭的止損是市價賣出單，一旦觸發就成為推動下跌的燃料</div>
+    </div>
+
+    <h2>被套空頭（Trapped Shorts）</h2>
+    <p>相反的情況：某群人在低點做空，結果市場往上走，他們被套了。他們的止損是市價買入單——一旦觸發，就成為推動上漲的燃料。</p>
+    <p>足跡圖上，你會在某個低點看到大量 <strong>Bid 量（市價賣出）</strong>——那是他們做空進場的地方。當價格再次跌回那裡，注意他們是否開始認輸（市價買入回補）。</p>
+
+    <h2>三種關鍵的足跡圖型態</h2>
+
+    <h3>型態一：吸收（Absorption）</h3>
+    <p>大量的市價單湧入（買或賣），但價格沒有移動。代表有大型限價單在默默承接——這是主力在悄悄建倉。</p>
+    <pre>下跌中的吸收（底部訊號）：
+  某個價格節點：Bid量爆增，但價格不跌
+  → 大量賣單被限價買單吸收
+  → 底部，考慮做多</pre>
+
+    <h3>型態二：衰竭（Exhaustion）</h3>
+    <p>推動價格的力道越來越小。每根 K 棒的 Delta 在縮小，最高/低點的成交量在萎縮。就像一個人衝刺，到終點前越跑越慢。</p>
+    <pre>上漲衰竭（頂部訊號）：
+  連續幾根K棒的 Ask 量：3500 → 2200 → 800
+  最高點的 Bid 和 Ask 都是微小量（微單）
+  → 買方動能耗盡，拍賣終止</pre>
+
+    <h3>型態三：不平衡（Imbalance）</h3>
+    <p>足跡圖上某個節點，其中一側的量遠大於另一側（通常超過 3:1），而且成交量很大。這代表市場對這個價格有強烈的方向性共識。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="340" fill="#09090f"/>
+        <text x="320" y="28" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">足跡圖三種核心型態比較</text>
+
+        <!-- 左：吸收 -->
+        <text x="107" y="52" text-anchor="middle" fill="#00c8ff" font-size="12" font-weight="bold">吸收</text>
+        <text x="107" y="66" text-anchor="middle" fill="#7a7a9a" font-size="10">大量市價賣，但不跌</text>
+
+        <!-- Footprint cells: bid x ask -->
+        <rect x="30" y="72" width="155" height="22" fill="#11111c" rx="2" stroke="#1e1e35" stroke-width="1"/>
+        <text x="38" y="88" fill="#ff9999" font-size="11">1,280</text>
+        <text x="98" y="88" fill="#555577" font-size="11">×</text>
+        <text x="112" y="88" fill="#4ecca3" font-size="11">48</text>
+        <text x="192" y="88" fill="#7a7a9a" font-size="10">← Bid爆量，Ask少</text>
+
+        <rect x="30" y="98" width="155" height="22" fill="#0d1520" rx="2" stroke="#00c8ff" stroke-width="1" opacity="0.6"/>
+        <text x="38" y="114" fill="#ff9999" font-size="11">2,640</text>
+        <text x="98" y="114" fill="#555577" font-size="11">×</text>
+        <text x="112" y="114" fill="#4ecca3" font-size="11">52</text>
+        <text x="192" y="114" fill="#00c8ff" font-size="10" font-weight="bold">← 最大吸收</text>
+
+        <rect x="30" y="124" width="155" height="22" fill="#11111c" rx="2" stroke="#1e1e35" stroke-width="1"/>
+        <text x="38" y="140" fill="#ff9999" font-size="11">980</text>
+        <text x="98" y="140" fill="#555577" font-size="11">×</text>
+        <text x="112" y="140" fill="#4ecca3" font-size="11">35</text>
+
+        <!-- 價格沒跌 -->
+        <text x="107" y="168" text-anchor="middle" fill="#00c896" font-size="10">價格未繼續下跌 ✓</text>
+        <text x="107" y="182" text-anchor="middle" fill="#7a7a9a" font-size="9">→ 底部訊號，考慮做多</text>
+
+        <!-- 中：衰竭 -->
+        <text x="320" y="52" text-anchor="middle" fill="#ffa500" font-size="12" font-weight="bold">衰竭</text>
+        <text x="320" y="66" text-anchor="middle" fill="#7a7a9a" font-size="10">推力越來越小</text>
+
+        <rect x="243" y="72" width="155" height="22" fill="#11111c" rx="2" stroke="#1e1e35" stroke-width="1"/>
+        <text x="251" y="88" fill="#ff9999" font-size="11">38</text>
+        <text x="311" y="88" fill="#555577" font-size="11">×</text>
+        <text x="325" y="88" fill="#4ecca3" font-size="11">3,500</text>
+        <text x="404" y="88" fill="#7a7a9a" font-size="9">強勢買入</text>
+
+        <rect x="243" y="98" width="155" height="22" fill="#11111c" rx="2" stroke="#1e1e35" stroke-width="1"/>
+        <text x="251" y="114" fill="#ff9999" font-size="11">55</text>
+        <text x="311" y="114" fill="#555577" font-size="11">×</text>
+        <text x="325" y="114" fill="#4ecca3" font-size="11">2,200</text>
+        <text x="404" y="114" fill="#ffa500" font-size="9">開始衰竭</text>
+
+        <rect x="243" y="124" width="155" height="22" fill="#0d1520" rx="2" stroke="#ffa500" stroke-width="1" opacity="0.5"/>
+        <text x="251" y="140" fill="#ff9999" font-size="11">20</text>
+        <text x="311" y="140" fill="#555577" font-size="11">×</text>
+        <text x="325" y="140" fill="#4ecca3" font-size="11">680</text>
+        <text x="404" y="140" fill="#ffa500" font-size="9" font-weight="bold">嚴重衰竭 ↑</text>
+
+        <rect x="243" y="150" width="155" height="22" fill="#11111c" rx="2" stroke="#ffa500" stroke-width="1.2" opacity="0.7"/>
+        <text x="251" y="166" fill="#ff9999" font-size="11">12</text>
+        <text x="311" y="166" fill="#555577" font-size="11">×</text>
+        <text x="325" y="166" fill="#4ecca3" font-size="11">85</text>
+        <text x="404" y="166" fill="#ff9999" font-size="9" font-weight="bold">微單！頂部</text>
+
+        <text x="320" y="192" text-anchor="middle" fill="#ffa500" font-size="10">Ask量：3500→2200→680→85</text>
+        <text x="320" y="206" text-anchor="middle" fill="#7a7a9a" font-size="9">→ 買方動能耗盡，考慮反手</text>
+
+        <!-- 右：不平衡 -->
+        <text x="533" y="52" text-anchor="middle" fill="#ff7070" font-size="12" font-weight="bold">不平衡</text>
+        <text x="533" y="66" text-anchor="middle" fill="#7a7a9a" font-size="10">一側量遠大於另一側</text>
+
+        <rect x="456" y="72" width="155" height="22" fill="#0d1520" rx="2" stroke="#ff4d6d" stroke-width="1.2" opacity="0.7"/>
+        <text x="464" y="88" fill="#ff4444" font-size="12" font-weight="bold">4,200</text>
+        <text x="524" y="88" fill="#555577" font-size="11">×</text>
+        <text x="538" y="88" fill="#4ecca3" font-size="11">85</text>
+        <text x="470" y="105" fill="#ff7070" font-size="9">Bid:Ask = 49:1</text>
+
+        <rect x="456" y="114" width="155" height="22" fill="#0d1520" rx="2" stroke="#ff4d6d" stroke-width="1.2" opacity="0.7"/>
+        <text x="464" y="130" fill="#ff4444" font-size="12" font-weight="bold">3,850</text>
+        <text x="524" y="130" fill="#555577" font-size="11">×</text>
+        <text x="538" y="130" fill="#4ecca3" font-size="11">92</text>
+        <text x="470" y="148" fill="#ff7070" font-size="9">強烈賣方主導</text>
+
+        <text x="533" y="182" text-anchor="middle" fill="#ff7070" font-size="10">賣方壓倒性積極</text>
+        <text x="533" y="196" text-anchor="middle" fill="#7a7a9a" font-size="9">→ 強烈看空訊號</text>
+
+        <!-- Dividers -->
+        <line x1="214" y1="45" x2="214" y2="220" stroke="#1e1e35" stroke-width="1"/>
+        <line x1="427" y1="45" x2="427" y2="220" stroke="#1e1e35" stroke-width="1"/>
+
+        <!-- 整合說明 -->
+        <rect x="30" y="232" width="580" height="92" fill="#11111c" rx="8" stroke="#1e1e35" stroke-width="1"/>
+        <text x="320" y="252" text-anchor="middle" fill="#d8d8e8" font-size="12" font-weight="bold">實戰整合流程</text>
+        <text x="50" y="272" fill="#7a7a9a" font-size="10">Step 1：用 VP 找關鍵節點（POC / HVN / VAH / VAL）</text>
+        <text x="50" y="288" fill="#7a7a9a" font-size="10">Step 2：用 VWAP 確認當天偏向（上方偏多 / 下方偏空）</text>
+        <text x="50" y="304" fill="#7a7a9a" font-size="10">Step 3：價格到達節點時，用足跡圖確認型態（吸收 / 衰竭 / 不平衡）</text>
+        <text x="50" y="320" fill="#00c8ff" font-size="10" font-weight="bold">Step 4：三者同向確認 → 入場，止損設在節點另一側，目標下一個 HVN/POC</text>
+      </svg>
+      <div class="diagram-caption">吸收 = 有大量對手盤，主力建倉｜衰竭 = 推力耗盡，即將反轉｜不平衡 = 方向明確，趨勢確認</div>
+    </div>
+
+    <h2>完整交易 SOP</h2>
+
+    <h3>盤前準備</h3>
+    <pre>1. 標記前日 POC / VAH / VAL
+2. 標記所有 Naked POC（近5-10日）
+3. 記錄前日 VWAP 位置
+4. 確認今日開盤在 Value Area 內還是外</pre>
+
+    <h3>盤中執行</h3>
+    <pre>開盤15分鐘：觀察，不急著下單
+
+看 VWAP 上下：決定今天偏多還是偏空
+
+等待價格到達關鍵節點：
+  → 到達節點後，看足跡圖型態
+  → 吸收：等吸收完成後的反向K棒
+  → 衰竭：最高/低點微單出現，確認後入場
+  → 不平衡：順勢，目標下一個 HVN
+
+止損設定：節點另一側 2-5 ticks
+目標：下一個 HVN 或 POC</pre>
+
+    <h3>出場規則</h3>
+    <pre>到達目標 HVN：先出50%，剩餘看能否突破
+出現反向吸收或衰竭：全部出場
+接近 VWAP 或 POC：減碼，等確認突破
+時間接近收盤而未達目標：平倉</pre>
+
+    <div class="callout">
+      <strong>最重要的一件事</strong>：足跡圖不是讓你「找訊號」的工具，它是讓你理解「為什麼這個節點有效」的工具。先用 VP 和 AMT 找到有意義的位置，再用足跡圖確認微觀結構——兩者缺一不可。
+    </div>
+
+    <h2>系列結語</h2>
+    <p>從市場微觀結構，到做市商的行為邏輯，到 AMT 的框架，再到 VP、TPO、VWAP，最後到足跡圖的實際交易——這七篇文章構成了一套完整的思維體系。</p>
+    <p>技術工具只是呈現資訊的方式，真正重要的是背後的邏輯：<strong>市場是一個持續的拍賣，被套的人必然逃跑，主力的行為在訂單流裡留下痕跡</strong>。看懂這些，你就比大多數人多了一個維度的資訊。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>

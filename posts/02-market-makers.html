@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02 做市商｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">微觀結構 · 第 02 篇</span>
+    <h1>做市商：那個永遠站在你對面的人</h1>
+    <p class="subtitle">市場不是自動運作的。有一群人永遠在兩側掛單，讓你隨時都能成交——他們叫做做市商。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>沒有做市商，市場會變成什麼樣子</h2>
+    <p>想像一個沒有做市商的市場：你想買比特幣，但你必須等到有人剛好想賣，才能成交。你想賣，也要等到有人剛好想買。</p>
+    <p>就像去二手市場，你帶了一件舊手機想賣掉，但當天沒有任何人想買手機。你只能帶回家，等下次再來。</p>
+    <p>這就是<strong>沒有流動性的市場</strong>——交易很難發生，價格會大幅跳動，效率極低。</p>
+    <p>做市商解決了這個問題。</p>
+
+    <h2>做市商是誰</h2>
+    <p>做市商（Market Maker）通常是大型金融機構、銀行，或專業的做市公司。他們的職責是：<strong>永遠在市場的兩側同時掛單</strong>，讓任何人隨時都能買進或賣出。</p>
+    <p>這就像機場的外幣兌換亭：</p>
+    <p>你去換錢，告示板上寫著「美元買入：30.5，賣出：31.5」。你要買美元，他 31.5 賣給你；你要賣美元，他 30.5 收購。不管你什麼時候來，他都在，兩側都有報價。</p>
+    <p>他不需要預測匯率會漲還是跌。他賺的是中間那 1 元的價差——每筆交易都賺，風險分散，薄利多銷。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="300" fill="#09090f"/>
+        <text x="320" y="30" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">做市商的運作模式</text>
+        <text x="320" y="50" text-anchor="middle" fill="#7a7a9a" font-size="11">永遠同時掛出買價和賣價，從中賺取價差</text>
+
+        <!-- 左：散戶賣出 -->
+        <rect x="30" y="90" width="140" height="120" fill="#11111c" rx="10" stroke="#1e1e35" stroke-width="1"/>
+        <text x="100" y="118" text-anchor="middle" fill="#d8d8e8" font-size="12" font-weight="bold">散戶 / 機構</text>
+        <text x="100" y="138" text-anchor="middle" fill="#7a7a9a" font-size="10">「我要賣出」</text>
+        <text x="100" y="158" text-anchor="middle" fill="#ff7070" font-size="13" font-weight="bold">市價賣出</text>
+        <text x="100" y="178" text-anchor="middle" fill="#ff9999" font-size="10">成交在 Bid</text>
+        <text x="100" y="195" text-anchor="middle" fill="#ff9999" font-size="12">52,100</text>
+
+        <!-- 中：做市商 -->
+        <rect x="230" y="70" width="180" height="160" fill="#0d1a2a" rx="10" stroke="#00c8ff" stroke-width="1.2" opacity="0.7"/>
+        <text x="320" y="100" text-anchor="middle" fill="#00c8ff" font-size="13" font-weight="bold">做市商</text>
+        <text x="320" y="120" text-anchor="middle" fill="#7a7a9a" font-size="10">永遠同時掛兩側</text>
+
+        <!-- Bid -->
+        <rect x="248" y="130" width="144" height="28" fill="#00c896" opacity="0.18" rx="5"/>
+        <text x="320" y="149" text-anchor="middle" fill="#00c896" font-size="12" font-weight="bold">Bid 52,100（買入）</text>
+
+        <!-- 價差 highlight -->
+        <text x="320" y="175" text-anchor="middle" fill="#ffa500" font-size="10">← 價差 100點 →</text>
+
+        <!-- Ask -->
+        <rect x="248" y="183" width="144" height="28" fill="#ff4d6d" opacity="0.18" rx="5"/>
+        <text x="320" y="202" text-anchor="middle" fill="#ff7070" font-size="12" font-weight="bold">Ask 52,200（賣出）</text>
+
+        <!-- 右：散戶買入 -->
+        <rect x="470" y="90" width="140" height="120" fill="#11111c" rx="10" stroke="#1e1e35" stroke-width="1"/>
+        <text x="540" y="118" text-anchor="middle" fill="#d8d8e8" font-size="12" font-weight="bold">散戶 / 機構</text>
+        <text x="540" y="138" text-anchor="middle" fill="#7a7a9a" font-size="10">「我要買入」</text>
+        <text x="540" y="158" text-anchor="middle" fill="#00c896" font-size="13" font-weight="bold">市價買入</text>
+        <text x="540" y="178" text-anchor="middle" fill="#4ecca3" font-size="10">成交在 Ask</text>
+        <text x="540" y="195" text-anchor="middle" fill="#4ecca3" font-size="12">52,200</text>
+
+        <!-- 箭頭 左→做市商 -->
+        <defs>
+          <marker id="a1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#555577"/></marker>
+          <marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#555577"/></marker>
+        </defs>
+        <line x1="172" y1="150" x2="228" y2="150" stroke="#555577" stroke-width="1.5" marker-end="url(#a1)"/>
+        <line x1="412" y1="195" x2="468" y2="195" stroke="#555577" stroke-width="1.5" marker-end="url(#a2)"/>
+
+        <!-- 做市商獲利說明 -->
+        <text x="320" y="255" text-anchor="middle" fill="#ffa500" font-size="11" font-weight="bold">每完成一組：收52,100 + 出52,200 = 獲利100點</text>
+        <text x="320" y="275" text-anchor="middle" fill="#7a7a9a" font-size="10">做市商不預測方向，只賺價差，但交易量極大</text>
+      </svg>
+      <div class="diagram-caption">做市商同時掛買價（Bid）和賣價（Ask），從Bid-Ask價差中穩定獲利</div>
+    </div>
+
+    <h2>做市商的風險：庫存管理</h2>
+    <p>聽起來做市商穩賺不賠？不完全是。他們面臨一個問題：<strong>庫存風險</strong>。</p>
+    <p>繼續用外幣兌換亭比喻。假設今天大量的人都來賣美元，你作為兌換亭老闆，你的美元庫存越來越多，台幣越來越少。萬一美元突然貶值，你手上一大堆美元就虧損了。</p>
+    <p>做市商也一樣。如果持續有人賣出，做市商就累積了大量多單庫存，一旦行情下跌就會虧損。所以做市商需要不斷管理庫存，讓自己盡量保持「中性」，不偏向任何一方。</p>
+    <p>當做市商的庫存偏向多方時，他們會調低報價來吸引買方；當庫存偏向空方時，他們調高報價來吸引賣方。這就是為什麼你有時候會看到<strong>Bid-Ask Spread 突然擴大</strong>——做市商在保護自己的庫存風險。</p>
+
+    <h2>做市商看得見你的止損</h2>
+    <p>這是很多散戶不知道的事：做市商不只是被動地掛單等候，他們還有一個巨大的優勢——<strong>他們可以看到大量的掛單資訊</strong>，包括很多止損單聚集的位置。</p>
+    <p>大多數散戶把止損設在「顯而易見的地方」——前高上方、前低下方、整數關口。</p>
+    <p>這些位置對做市商來說，就像一張藏寶圖：他知道如果把價格推到那裡，就會觸發大量的止損市價單，讓他能夠在那個位置以好的價格成交大量訂單。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="320" fill="#09090f"/>
+        <text x="320" y="28" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">流動性獵殺（Liquidity Hunt）</text>
+        <text x="320" y="48" text-anchor="middle" fill="#7a7a9a" font-size="11">做市商把價格推到止損密集處，掃走止損後反轉</text>
+
+        <!-- Y 軸 -->
+        <line x1="55" y1="60" x2="55" y2="285" stroke="#1e1e35" stroke-width="1.5"/>
+        <text x="48" y="78" text-anchor="end" fill="#555577" font-size="10">高</text>
+        <text x="48" y="175" text-anchor="end" fill="#555577" font-size="10">中</text>
+        <text x="48" y="275" text-anchor="end" fill="#555577" font-size="10">低</text>
+
+        <!-- 止損區（上方，做空止損） -->
+        <rect x="56" y="62" width="560" height="26" fill="#ff4d6d" opacity="0.07" rx="3"/>
+        <line x1="58" y1="75" x2="614" y2="75" stroke="#ff4d6d" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.55"/>
+        <text x="458" y="71" fill="#ff7070" font-size="10" font-weight="bold">做空止損密集區</text>
+        <text x="458" y="85" fill="#7a7a9a" font-size="9">大量「止損買單」在這裡等著</text>
+
+        <!-- 主要價格區間（盤整） -->
+        <rect x="56" y="148" width="560" height="54" fill="#1e1e35" opacity="0.5" rx="3"/>
+        <text x="340" y="170" text-anchor="middle" fill="#7a7a9a" font-size="10">盤整區（正常交易範圍）</text>
+        <text x="340" y="185" text-anchor="middle" fill="#555577" font-size="9">大多數散戶在這裡操作</text>
+
+        <!-- 止損區（下方，做多止損） -->
+        <rect x="56" y="236" width="560" height="26" fill="#00c896" opacity="0.07" rx="3"/>
+        <line x1="58" y1="249" x2="614" y2="249" stroke="#00c896" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.45"/>
+        <text x="458" y="244" fill="#4ecca3" font-size="10" font-weight="bold">做多止損密集區</text>
+        <text x="458" y="258" fill="#7a7a9a" font-size="9">大量「止損賣單」在這裡等著</text>
+
+        <!-- 價格路徑：盤整 → 衝上去掃止損 → 反轉下跌 -->
+        <!-- 盤整段 -->
+        <polyline points="68,175 105,168 140,180 175,165 210,178" fill="none" stroke="#aaaacc" stroke-width="2" stroke-linejoin="round"/>
+        <!-- 衝上去（掃止損） -->
+        <polyline points="210,178 240,155 268,120 292,82" fill="none" stroke="#ffa500" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- 箭頭標記 -->
+        <text x="248" y="120" fill="#ffa500" font-size="10" font-weight="bold">← 做市商推價</text>
+        <text x="248" y="133" fill="#ffa500" font-size="10">掃做空止損</text>
+        <!-- 止損觸發 -->
+        <circle cx="292" cy="82" r="6" fill="#ff4d6d" opacity="0.9"/>
+        <text x="305" y="80" fill="#ff9999" font-size="10">止損被掃！</text>
+        <text x="305" y="93" fill="#7a7a9a" font-size="9">大量市價買單湧入</text>
+        <text x="305" y="106" fill="#7a7a9a" font-size="9">做市商用來賣出建空倉</text>
+        <!-- 反轉下跌 -->
+        <polyline points="292,82 318,105 345,138 375,165 408,192 438,218 462,248" fill="none" stroke="#ff4d6d" stroke-width="2.5" stroke-linejoin="round"/>
+        <text x="380" y="200" fill="#ff7070" font-size="10" font-weight="bold">← 反轉下跌</text>
+        <!-- 掃下方止損 -->
+        <polyline points="462,248 484,252 500,258" fill="none" stroke="#ffa500" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="500" cy="258" r="5" fill="#00c896" opacity="0.8"/>
+        <text x="512" y="256" fill="#4ecca3" font-size="10">做多止損也被掃</text>
+
+        <text x="320" y="296" text-anchor="middle" fill="#555577" font-size="10">掃完止損後，做市商完成了大量建倉，行情才真正開始</text>
+      </svg>
+      <div class="diagram-caption">流動性獵殺不是陰謀，而是做市商管理庫存的自然行為——止損密集處有大量流動性，正好讓他們高效建倉</div>
+    </div>
+
+    <h2>對散戶的啟示</h2>
+    <p>了解做市商之後，有幾個直接的交易啟示：</p>
+
+    <h3>1. 不要把止損設在「顯而易見」的地方</h3>
+    <p>前高上方整數、前低下方整數、K 棒的極值——這些是所有人都會設止損的地方，也是最容易被掃的地方。把止損稍微錯開，設在「不那麼明顯」的位置。</p>
+
+    <h3>2. 假突破往往是獵殺的訊號</h3>
+    <p>當你看到價格突破前高，然後很快回落——這不是「支撐轉阻力」，很可能是做市商掃完止損後反轉。觀察突破那一刻的成交量和足跡圖，能讓你判斷是真突破還是獵殺。</p>
+
+    <h3>3. 價差擴大時要小心</h3>
+    <p>Bid-Ask Spread 突然擴大，代表做市商正在保護自己的庫存，市場流動性變差，滑價風險增加。</p>
+
+    <h2>小結</h2>
+    <div class="callout">
+      做市商 = 永遠在兩側掛單，提供流動性<br>
+      獲利來源 = Bid-Ask 價差<br>
+      面臨的風險 = 庫存風險（持倉偏向一側）<br>
+      獵殺流動性 = 把價格推到止損密集處，利用止損單來建倉<br><br>
+      理解做市商的行為邏輯，你就能開始理解「為什麼這裡假突破」「為什麼那裡反轉」。
+    </div>
+    <p>下一篇，我們來到更宏觀的框架——<strong>拍賣市場理論（AMT）</strong>，把整個市場的運作邏輯用一套完整的思維框架來理解。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06 VWAP｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">VWAP · 第 06 篇</span>
+    <h1>VWAP：機構的成本線，也是散戶的參考基準</h1>
+    <p class="subtitle">機構不看 MA，他們看 VWAP。因為那是他們真實的平均成本。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>VWAP 是什麼</h2>
+    <p>VWAP（Volume-Weighted Average Price，成交量加權平均價格）就是把今天每筆交易的價格，按照成交量加權計算出來的平均成本。</p>
+    <p>普通的移動平均線（MA）把所有價格等權重平均；VWAP 不一樣，成交量大的價格權重更高。</p>
+    <p>生活化比喻：你今天買了三次咖啡。第一次買 1 杯 50 元，第二次買 10 杯 55 元，第三次買 1 杯 60 元。你的「平均成本」不是 (50+55+60)/3=55 元，而是要按照買了幾杯加權計算：(1×50 + 10×55 + 1×60) ÷ 12 = 54.2 元。這才是真正的平均成本。</p>
+    <p>VWAP 就是這樣計算的——把每個時間點的成交量當作「權重」，計算出今天真正的平均交易成本。</p>
+
+    <h2>為什麼機構在乎 VWAP</h2>
+    <p>大型機構（基金、保險公司）每天需要執行大量買賣。他們的績效評估指標之一，就是「成交價格是否接近 VWAP」。</p>
+    <p>如果基金今天要買 10 萬張，要求是「平均成本不能高於當天 VWAP」，那麼他的交易員會把訂單拆分，在價格低於 VWAP 時多買，高於 VWAP 時少買甚至暫停——這樣整體平均成本才能壓在 VWAP 以下。</p>
+    <div class="callout">
+      <strong>這就是為什麼 VWAP 有支撐和阻力的效果</strong>：機構的交易行為會讓價格反覆回測 VWAP，因為他們在 VWAP 附近執行大量訂單。
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="320" fill="#09090f"/>
+        <text x="320" y="28" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">VWAP 與標準差帶</text>
+        <text x="320" y="48" text-anchor="middle" fill="#7a7a9a" font-size="11">VWAP = 機構的平均成本｜SD帶 = 統計上的偏離程度</text>
+
+        <!-- Y axis -->
+        <line x1="50" y1="60" x2="50" y2="290" stroke="#1e1e35" stroke-width="1.5"/>
+        <text x="44" y="72" text-anchor="end" fill="#555577" font-size="10">高</text>
+        <text x="44" y="178" text-anchor="end" fill="#555577" font-size="10">中</text>
+        <text x="44" y="282" text-anchor="end" fill="#555577" font-size="10">低</text>
+
+        <!-- +2 SD band -->
+        <rect x="50" y="62" width="566" height="38" fill="#ff4d6d" opacity="0.05" rx="2"/>
+        <line x1="52" y1="68" x2="614" y2="68" stroke="#ff4d6d" stroke-width="1" stroke-dasharray="4,4" opacity="0.45"/>
+        <text x="618" y="72" fill="#ff7070" font-size="9">+2SD</text>
+        <line x1="52" y1="100" x2="614" y2="100" stroke="#ff4d6d" stroke-width="1" stroke-dasharray="4,4" opacity="0.35"/>
+        <text x="618" y="104" fill="#ff9999" font-size="9">+1SD</text>
+
+        <!-- VWAP line -->
+        <line x1="52" y1="175" x2="614" y2="175" stroke="#00c8ff" stroke-width="2" opacity="0.8"/>
+        <text x="618" y="179" fill="#00c8ff" font-size="10" font-weight="bold">VWAP</text>
+
+        <!-- -1 SD, -2 SD -->
+        <line x1="52" y1="250" x2="614" y2="250" stroke="#00c896" stroke-width="1" stroke-dasharray="4,4" opacity="0.35"/>
+        <text x="618" y="254" fill="#4ecca3" font-size="9">-1SD</text>
+        <line x1="52" y1="283" x2="614" y2="283" stroke="#00c896" stroke-width="1" stroke-dasharray="4,4" opacity="0.45"/>
+        <text x="618" y="287" fill="#4ecca3" font-size="9">-2SD</text>
+
+        <!-- Price action: winding around VWAP -->
+        <polyline points="62,195 85,210 108,228 128,248 148,242 165,260 182,248 202,238 222,252 238,268 256,258 272,278 290,270 305,260 322,248 338,230 354,215 368,200 382,185 396,175 410,162 424,148 440,130 456,108 468,92 482,78 495,95 510,112 524,132 538,148 552,162 566,172 580,175 595,172"
+              fill="none" stroke="#d8d8e8" stroke-width="1.8" stroke-linejoin="round" opacity="0.8"/>
+
+        <!-- Labels for key zones -->
+        <text x="158" y="293" text-anchor="middle" fill="#4ecca3" font-size="10">-2SD 以下：超賣區</text>
+        <text x="158" y="306" text-anchor="middle" fill="#4ecca3" font-size="9">機構傾向買入</text>
+        <text x="490" y="63" text-anchor="middle" fill="#ff7070" font-size="10">+2SD 以上：超買區</text>
+        <text x="490" y="76" text-anchor="middle" fill="#ff9999" font-size="9">機構傾向賣出</text>
+        <text x="320" y="165" text-anchor="middle" fill="#00c8ff" font-size="9" opacity="0.6">VWAP 附近：機構執行大量訂單，多次來回</text>
+      </svg>
+      <div class="diagram-caption">VWAP = 今天的成交量加權平均成本｜+1/-1 SD = 正常波動範圍｜±2SD = 統計上偏離過大，容易回歸</div>
+    </div>
+
+    <h2>VWAP 的四個使用方式</h2>
+
+    <h3>1. VWAP 作為方向偏向</h3>
+    <p>價格在 VWAP 上方整理 → 今天偏多，做多機率較高。<br>
+    價格在 VWAP 下方整理 → 今天偏空，做空機率較高。</p>
+
+    <h3>2. VWAP 回測入場</h3>
+    <p>趨勢行情中，價格往往會來回測試 VWAP。當價格從上方回測 VWAP 並獲得支撐，是做多的參考點；從下方回測 VWAP 遇到阻力，是做空的參考點。</p>
+
+    <h3>3. SD 帶的反轉參考</h3>
+    <p>價格碰到 +2SD 或 -2SD，統計上有較高機率回歸 VWAP。但在強趨勢市場，價格可以在 +1SD 至 +2SD 之間長期遊走——不要只因為到了 2SD 就盲目反手。</p>
+
+    <h3>4. 多天期 VWAP（Anchored VWAP）</h3>
+    <p>把 VWAP 的計算起點「錨定」在某個重要事件（例如：重要低點、重大消息發布當天）。錨定 VWAP 代表從那個事件開始，所有參與者的平均成本在哪裡——一旦價格跌破錨定 VWAP，代表自那個事件以來的所有買方都開始虧損。</p>
+
+    <h2>VWAP 和 VP / TPO 的協同使用</h2>
+    <table>
+      <tr><th>工具</th><th>告訴你什麼</th></tr>
+      <tr><td>VWAP</td><td>今天的機構平均成本，動態更新</td></tr>
+      <tr><td>Volume Profile POC</td><td>今天成交量最大的靜態價格</td></tr>
+      <tr><td>TPO POC</td><td>今天停留時間最長的靜態價格</td></tr>
+    </table>
+    <p>三者通常很接近，但不完全一致。當它們重疊在同一個價格附近，那個價格的意義就更加重要——市場從時間、成交量、成本三個維度都認可它是公平價格。</p>
+
+    <div class="callout">
+      VWAP 不是神奇指標，它的作用來自於機構的行為——大量機構用 VWAP 作為執行基準，所以它自然成為價格的重力中心。理解背後的邏輯，才能正確使用它。
+    </div>
+
+    <h2>小結</h2>
+    <p>VWAP 是機構的成本基準，也是市場動態公平價格的代理指標。配合 Volume Profile 和 TPO，三個工具共同定義了「市場認為公平的地方」。</p>
+    <p>最後一篇，我們把所有東西整合起來——用足跡圖進行實際交易，特別是「被套交易」的辨識和操作。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>
