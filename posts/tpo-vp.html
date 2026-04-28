@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TPO 與 Volume Profile｜Order Flow Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links">
+    <a href="../index.html">首頁</a>
+    <a href="../about.html">關於</a>
+  </div>
+</nav>
+
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+
+  <div class="article-header">
+    <span class="tag">TPO · Volume Profile</span>
+    <h1>TPO 與 Volume Profile：用「人流」看懂市場共識在哪</h1>
+    <p class="subtitle">同樣是問「市場在哪個價格最活躍」，TPO 用時間回答，VP 用成交量回答。</p>
+    <div class="article-meta">
+      <span>chillzon</span>
+      <span>2025 年 8 月</span>
+      <span>TPO · Volume Profile · Market Profile</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+    <h2>從一個咖啡廳說起</h2>
+
+    <p>
+      假設你是一家咖啡廳的老闆，想知道「哪個時段的座位最受歡迎」。
+    </p>
+    <p>
+      你有兩種方法：
+    </p>
+    <p>
+      <strong>方法 A</strong>：每 30 分鐘拍一張照片，記錄哪些座位有人坐。
+      拍了一整天之後，你把所有照片疊在一起——出現次數最多的座位，就是最受歡迎的位置。
+    </p>
+    <p>
+      <strong>方法 B</strong>：在每個座位下面裝感應器，記錄今天一共有多少人坐過這個位置。
+      坐過最多人次的座位，就是最受歡迎的位置。
+    </p>
+    <p>
+      這兩種方法問的是同一個問題，但衡量的方式不同。
+    </p>
+
+    <div class="callout">
+      <strong>方法 A = TPO（Time Price Opportunity）</strong>，用「停留時間」衡量<br>
+      <strong>方法 B = Volume Profile</strong>，用「實際成交量」衡量
+    </div>
+
+    <h2>TPO 是什麼</h2>
+
+    <p>
+      TPO 把一天的交易時間切成很多個 30 分鐘區間，每個區間用一個英文字母代表（A、B、C……）。
+      在每個區間裡，價格去過哪些地方，就在那個價格旁邊標上這個字母。
+    </p>
+
+    <p>一整天下來，圖上會長這樣：</p>
+    <pre>價格 52,500 │ D E
+價格 52,400 │ C D E F
+價格 52,300 │ B C D E F G   ← 很多字母 = 停留很久
+價格 52,200 │ B C D E F G H
+價格 52,100 │ A B C D E F G H  ← 最多字母 = POC
+價格 52,000 │ A B C D E F G
+價格 51,900 │ A B C D
+價格 51,800 │ A B</pre>
+
+    <p>
+      字母最多的那個價格，代表今天在這個價格停留的時間最長——這就是 <strong>POC（Point of Control，控制點）</strong>，也就是今天的「公平價格」。
+    </p>
+
+    <h3>Value Area（價值區間）</h3>
+    <p>
+      把字母出現次數加總，取涵蓋 <strong>70% 交易時間</strong> 的價格區間，就是 Value Area。
+      這個區間代表「今天大多數時間大家都覺得合理的價格帶」。
+    </p>
+
+    <table>
+      <tr><th>術語</th><th>縮寫</th><th>白話意思</th></tr>
+      <tr><td>Point of Control</td><td>POC</td><td>今天停留最久的價格，公認的公平價格</td></tr>
+      <tr><td>Value Area High</td><td>VAH</td><td>價值區間的上緣</td></tr>
+      <tr><td>Value Area Low</td><td>VAL</td><td>價值區間的下緣</td></tr>
+    </table>
+
+    <h2>Volume Profile 是什麼</h2>
+
+    <p>
+      Volume Profile 做的事情跟 TPO 很像，但它不管時間，只看<strong>成交量</strong>。
+    </p>
+    <p>
+      想像超商的銷售報表：不是看每個商品「擺在架上幾個小時」，而是看「今天一共賣出幾件」。
+      賣出最多的那個商品，是最受歡迎的——對應到市場，就是成交量最大的價格。
+    </p>
+
+    <pre>價格 52,500 │ ██ 200張
+價格 52,400 │ ████ 450張
+價格 52,300 │ ███████ 820張
+價格 52,200 │ ██████████ 1,200張
+價格 52,100 │ ████████████ 1,580張  ← POC（成交量最大）
+價格 52,000 │ ██████████ 1,100張
+價格 51,900 │ ██████ 650張
+價格 51,800 │ ███ 280張</pre>
+
+    <h2>TPO 和 VP 的差別，以及什麼時候用哪個</h2>
+
+    <table>
+      <tr><th></th><th>TPO</th><th>Volume Profile</th></tr>
+      <tr><td>衡量的是</td><td>停留時間</td><td>實際成交量</td></tr>
+      <tr><td>優點</td><td>能看出市場「接受」了多久</td><td>能看出機構真正交易在哪裡</td></tr>
+      <tr><td>適合用在</td><td>判斷市場平衡區間、形態分析</td><td>找關鍵支撐阻力、機構行為</td></tr>
+      <tr><td>比喻</td><td>咖啡廳座位使用記錄（時數）</td><td>咖啡廳座位使用記錄（人次）</td></tr>
+    </table>
+
+    <div class="callout">
+      一個價格如果停留時間長（TPO 多）但成交量小（VP 小），
+      代表市場在那裡「待著」但沒什麼人真正交易。
+      反之，成交量大但時間短，代表有人在那裡快速大量成交——機構行為的痕跡。
+    </div>
+
+    <h2>HVN 和 LVN：地圖上的山峰與峽谷</h2>
+
+    <p>
+      在 Volume Profile 上，你會看到成交量的高峰和低谷：
+    </p>
+
+    <h3>HVN（High Volume Node）高成交量節點</h3>
+    <p>
+      就像城市的市中心——大量的人在這裡活動，所以這裡很「重」，價格很難輕易穿過。
+      當價格來到 HVN，通常會放慢速度，因為這裡有很多掛單在等著。
+      它可以是支撐，也可以是阻力，取決於你在它的上方還是下方。
+    </p>
+
+    <h3>LVN（Low Volume Node）低成交量節點</h3>
+    <p>
+      就像沒什麼人的荒野——因為歷史上幾乎沒什麼成交，這裡沒有掛單支撐，
+      價格一旦進入就會快速滑過，像走在沒有阻力的真空中。
+    </p>
+
+    <pre>實際應用：
+  LVN 上方突破 HVN
+  → 進入 LVN 區域後，直接用市價追
+  → 不要掛限價單（根本不會成交）
+  → 目標：下一個 HVN</pre>
+
+    <h2>80% 法則：最簡單好用的 VP 策略</h2>
+
+    <p>
+      這是 VP 裡最有名的統計規律：
+    </p>
+    <div class="callout">
+      當價格從 Value Area 外面打回 Value Area 裡面，有約 80% 的機率會走到對面的 VA 邊界。
+    </div>
+
+    <p>舉個例子：</p>
+    <pre>昨天的 Value Area：51,800（VAL）～ 52,500（VAH）
+POC：52,100
+
+今天開盤：52,700（跳空到 VA 外面）
+第一根 K 棒收回 52,480（回到 VA 裡面）
+
+→ 80% 法則啟動
+→ 目標：往下走到 VAL = 51,800</pre>
+
+    <p>
+      為什麼？因為跳空到 VA 外面代表市場暫時失衡，
+      但如果很快就縮回 VA 裡面，代表那個失衡沒有獲得支持，
+      市場會回到它原本認定的公平範圍——也就是整個 Value Area。
+    </p>
+
+    <h2>看圖時的思考順序</h2>
+
+    <pre>Step 1：這根 K 棒（或這個時段）是平衡還是不平衡？
+         → 看 VP 形狀：鐘形 = 平衡，細長形 = 不平衡
+
+Step 2：公平價格（POC）在哪裡？
+         → 這是市場的重力中心，價格常常被吸引回來
+
+Step 3：現在價格在 Value Area 內還是外？
+         → 在內：等打 POC；在外：等看 80% 法則還是趨勢延伸
+
+Step 4：HVN 和 LVN 分別在哪？
+         → HVN = 煞車點；LVN = 加速帶</pre>
+
+    <h2>小結</h2>
+    <p>
+      TPO 和 VP 是讓你「看見市場共識」的工具。
+      它們不告訴你未來會漲還是跌，它們告訴你<strong>市場認為公平的位置在哪裡</strong>，
+      以及價格偏離公平位置時，統計上最可能發生什麼。
+    </p>
+    <p>
+      下一篇，我們把鏡頭拉近，進入每一根 K 棒的內部，看看足跡圖。
+    </p>
+
+  </div>
+</div>
+
+<footer>
+  <p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon &nbsp;·&nbsp; 以交易為志業，以邏輯為基礎</p>
+</footer>
+
+</body>
+</html>

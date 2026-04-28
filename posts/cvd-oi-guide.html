@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVD 背離 × OI｜Order Flow Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links">
+    <a href="../index.html">首頁</a>
+    <a href="../about.html">關於</a>
+  </div>
+</nav>
+
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+
+  <div class="article-header">
+    <span class="tag">CVD · OI · 反轉</span>
+    <h1>CVD 背離 × OI：辨識真實的頭部與底部</h1>
+    <p class="subtitle">CVD 衰竭 vs 吸收，搭配 OI 方向，告訴你反轉的「驅動力是誰」。</p>
+    <div class="article-meta">
+      <span>2025 年 8 月</span>
+      <span>CVD · Open Interest · 衍生品</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+    <h2>一、基礎定義</h2>
+    <table>
+      <tr><th>指標</th><th>上升代表</th><th>下降代表</th></tr>
+      <tr><td>CVD（累積成交量差值）</td><td>市價買單 > 市價賣單（買方積極）</td><td>市價賣單 > 市價買單（賣方積極）</td></tr>
+      <tr><td>OI（未平倉合約）</td><td>新倉位開立，新資金進場</td><td>舊倉位平倉，資金離場</td></tr>
+    </table>
+
+    <h2>二、CVD 衰竭背離 + OI 下降</h2>
+    <p>
+      價格創新高，但 CVD 沒有跟著創新高，同時 OI 下降。
+    </p>
+    <pre>盤口微觀結構：
+
+Ask 側：限價賣單（微單）掛在高點
+進來的是：
+  ├── 一般市價買單（積極多方，數量在縮減）
+  └── 做空止損觸發（市價買單）被掃光
+
+→ CVD 理論上應上衝，但實際衰竭
+→ 代表止損買單被上方微型限價賣單吸收
+→ OI 下降確認：空頭止損平倉，不是新多頭進場</pre>
+
+    <h3>這個組合的本質</h3>
+    <p>
+      這是「吸收式頭部」——被吸收的不是賣壓，而是最後一波強迫買盤（止損單）。
+      止損用完即空，沒有新資金撐場，價格自然下墜。
+    </p>
+    <div class="callout">
+      <strong>反轉特徵：</strong>通常是「緩跌」，因為沒有新空頭積極打壓，
+      只是多頭缺席。若資金費率同步轉負，才代表主動空頭開始介入。
+    </div>
+
+    <h2>三、CVD 吸收背離 + OI 上升</h2>
+    <p>
+      大量市價賣單湧入（CVD 大幅下降），但價格沒有跟著下跌，同時 OI 上升。
+    </p>
+    <pre>盤口微觀結構：
+
+Bid 側：大量市價賣單打進來（CVD 暴跌）
+但：
+  └── 有人用大量限價買單默默承接
+  └── 價格紋絲不動 → 吸收確認
+  └── OI 上升 → 新多頭正在建倉，不是舊空頭回補</pre>
+
+    <h3>這個組合的本質</h3>
+    <p>
+      這是最強的底部信號之一：主動資金正在有計畫地建倉。
+      吸收背離顯示「有人在接」，OI 上升確認「是新錢進來接，不是舊人回補」。
+    </p>
+    <div class="callout">
+      <strong>反轉特徵：</strong>通常較快且乾脆，因為有新的主動力量驅動。
+      需配合資金費率往正走確認多方主導。
+    </div>
+
+    <h2>四、兩種組合的核心差異</h2>
+    <table>
+      <tr><th></th><th>CVD 衰竭 + OI 下降</th><th>CVD 吸收背離 + OI 上升</th></tr>
+      <tr><td>驅動力</td><td>舊倉位離場（止損 / 獲利了結）</td><td>新倉位進場（主動建倉）</td></tr>
+      <tr><td>信號強度</td><td>中等</td><td>強</td></tr>
+      <tr><td>反轉方式</td><td>緩慢衰竭</td><td>快速乾脆</td></tr>
+      <tr><td>資金費率方向</td><td>從正轉平或轉負</td><td>從負轉平或轉正</td></tr>
+    </table>
+
+    <h2>五、常見陷阱</h2>
+    <h3>陷阱 1：OI 下降 ≠ 一定是主動平倉</h3>
+    <pre>OI 下降可能是爆倉（強制平倉），不是主動選擇
+→ 爆倉後若主力方向不變，行情繼續，不是反轉
+→ 確認方式：看清算熱力圖，爆倉量大 → 小心假訊號</pre>
+
+    <h3>陷阱 2：OI 上升 ≠ 一定是多頭進場</h3>
+    <pre>OI 上升也可能是空頭加碼
+→ 用資金費率方向區分：
+   費率往正 = 多頭主導
+   費率往負 = 空頭主導</pre>
+
+    <h2>六、完整確認流程</h2>
+    <pre>Step 1：CVD 出現背離（衰竭或吸收）
+Step 2：確認 OI 方向（升 or 降）
+Step 3：資金費率方向確認主導方
+Step 4：足跡圖確認微觀結構（Bid/Ask 分布）
+Step 5：K 棒型態入場（吞噬、釘頭錘等）
+Step 6：對照 Volume Profile 節點位置
+
+→ 條件對越多，勝率越高</pre>
+
+  </div>
+</div>
+
+<footer>
+  <p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; 以交易為志業，以邏輯為基礎</p>
+</footer>
+
+</body>
+</html>

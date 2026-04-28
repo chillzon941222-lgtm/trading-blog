@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拍賣市場理論 AMT｜Order Flow Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links">
+    <a href="../index.html">首頁</a>
+    <a href="../about.html">關於</a>
+  </div>
+</nav>
+
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+
+  <div class="article-header">
+    <span class="tag">拍賣理論 · 基礎必讀</span>
+    <h1>拍賣市場理論（AMT）：市場的運作邏輯其實跟菜市場一樣</h1>
+    <p class="subtitle">為什麼價格會漲、會跌、會盤整？答案不在指標，在人的行為。</p>
+    <div class="article-meta">
+      <span>chillzon</span>
+      <span>2025 年 8 月</span>
+      <span>拍賣理論 · AMT · 基礎概念</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+    <h2>先從一個你熟悉的場景開始</h2>
+
+    <p>
+      想像你去傳統菜市場買魚。
+    </p>
+    <p>
+      攤販今天開價一斤 <strong>200 元</strong>。結果沒什麼人買，大家覺得太貴，走掉了。
+      攤販看了看，把價格調到 <strong>150 元</strong>。這時候開始有人停下來問。
+      再降到 <strong>120 元</strong>，人潮開始聚集，買賣熱絡起來。
+    </p>
+    <p>
+      那個「120 元」——就是當天這條魚的<strong>公平價格</strong>。不是攤販決定的，是市場上所有人的行為決定的。
+    </p>
+
+    <div class="callout">
+      這就是拍賣市場理論（Auction Market Theory，AMT）的核心：<br>
+      <strong>價格不是被決定的，是被「發現」的。</strong>
+      市場透過不斷的出價與反饋，找到買賣雙方都能接受的價格。
+    </div>
+
+    <h2>市場的兩個目標</h2>
+
+    <p>根據 AMT，市場同時在做兩件事：</p>
+
+    <h3>1. 促成交易</h3>
+    <p>
+      市場存在的第一個目的，是讓買方和賣方能夠成交。
+      就像菜市場存在的目的是讓農夫賣掉東西、讓消費者買到東西。
+      如果價格讓雙方都不滿意，交易就不會發生，市場就會調整。
+    </p>
+
+    <h3>2. 發現公平價值</h3>
+    <p>
+      市場的第二個目的，是透過不斷交易，找出「目前大家都覺得合理的價格」。
+      這個價格不是固定的，它會隨著供需改變而移動。
+    </p>
+
+    <h2>市場的兩種狀態</h2>
+
+    <h3>狀態一：平衡（Balance）</h3>
+    <p>
+      回到菜市場的例子：魚在 120 元這個價格買賣熱絡，大家都覺得合理，
+      價格就在這附近小幅波動。這叫做<strong>平衡狀態</strong>。
+    </p>
+    <p>
+      在圖表上，這就是「盤整」——價格在一個區間內來回，不往上也不往下。
+      此時市場在說：「我們對目前的價格有共識。」
+    </p>
+
+    <h3>狀態二：不平衡（Imbalance）</h3>
+    <p>
+      突然間，颱風來了，漁船無法出海，市場上的魚變少了。
+      需求沒變、供給減少，原本覺得 120 元合理的人現在願意出更高的價格搶魚。
+      這時候平衡被打破，市場進入<strong>不平衡狀態</strong>，價格開始往上移動——趨勢出現了。
+    </p>
+    <p>
+      市場會一直往上走，直到找到新的價格讓大家重新覺得「合理」，然後再次平衡。
+    </p>
+
+    <div class="callout">
+      <strong>平衡 → 不平衡 → 新的平衡</strong><br>
+      這個循環就是市場的基本節奏。趨勢是不平衡的過程，盤整是重新找平衡的過程。
+    </div>
+
+    <h2>拍賣的方向：往上找賣家，往下找買家</h2>
+
+    <p>
+      理解 AMT 有一個關鍵概念：
+    </p>
+    <p>
+      <strong>上漲 = 市場在往高處尋找願意賣出的人。</strong><br>
+      <strong>下跌 = 市場在往低處尋找願意買進的人。</strong>
+    </p>
+    <p>
+      當市場往上漲，它是在「測試」：這個高度有沒有人願意賣？
+      如果有足夠的賣家在某個價格出現，上漲的拍賣就結束了，市場開始回落。
+      如果沒有人賣，市場繼續往上找，直到有人願意賣為止。
+    </p>
+    <p>
+      這就像競標名牌包：出價從 10 萬開始往上喊，喊到某個價格時有人覺得值得賣出，
+      拍賣在那個價格成交，停止往上。
+    </p>
+
+    <h2>三個決定市場的要素：價格、時間、成交量</h2>
+
+    <table>
+      <tr><th>要素</th><th>角色</th><th>白話解釋</th></tr>
+      <tr>
+        <td><strong>價格</strong></td>
+        <td>廣告機制</td>
+        <td>「這裡有機會！」吸引買方或賣方注意</td>
+      </tr>
+      <tr>
+        <td><strong>時間</strong></td>
+        <td>驗證機制</td>
+        <td>市場在一個價格停留越久，代表越多人接受這個價格</td>
+      </tr>
+      <tr>
+        <td><strong>成交量</strong></td>
+        <td>衡量機制</td>
+        <td>這個價格有多少人真正參與交易，代表這裡有多「重要」</td>
+      </tr>
+    </table>
+
+    <p>
+      舉例來說：某個價格只停留了 5 分鐘就飛走，代表市場<strong>拒絕</strong>了這個價格——沒有足夠的人接受它。
+      但如果一個價格停留了 3 個小時，成交量很大，代表市場<strong>接受</strong>了這個價格。
+    </p>
+
+    <h2>用 AMT 看圖的思維轉換</h2>
+
+    <p>大多數人看圖的問題是：「這裡會漲還是跌？」</p>
+    <p>用 AMT 思維看圖的問題是：</p>
+
+    <pre>「現在市場是平衡還是不平衡？」
+「如果是平衡，公平價格在哪裡？」
+「如果是不平衡，拍賣往哪個方向找？」
+「這個拍賣結束了嗎？」</pre>
+
+    <div class="callout">
+      AMT 不是一個策略，而是一個理解市場的框架。
+      當你用這個框架看圖，你看到的不再是一根根 K 棒，
+      而是買賣雙方持續協商的過程。
+    </div>
+
+    <h2>小結</h2>
+    <p>
+      記住這三件事：
+    </p>
+    <p>
+      <strong>第一</strong>，市場的任務是促成交易和發現公平價格，不是讓你賺錢。<br>
+      <strong>第二</strong>，上漲是往高處找賣家，下跌是往低處找買家，盤整是雙方達成共識。<br>
+      <strong>第三</strong>，平衡與不平衡會不斷交替，趨勢是暫時的，新的平衡遲早出現。
+    </p>
+    <p>
+      下一篇，我們來看 TPO 和 Volume Profile——這兩個工具就是用來<strong>視覺化</strong>市場在哪裡平衡、公平價格在哪裡的。
+    </p>
+
+  </div>
+</div>
+
+<footer>
+  <p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon &nbsp;·&nbsp; 以交易為志業，以邏輯為基礎</p>
+</footer>
+
+</body>
+</html>

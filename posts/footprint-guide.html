@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>足跡圖完全指南｜Order Flow Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links">
+    <a href="../index.html">首頁</a>
+    <a href="../about.html">關於</a>
+  </div>
+</nav>
+
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+
+  <div class="article-header">
+    <span class="tag">足跡圖 · Order Flow</span>
+    <h1>足跡圖：裝在每根 K 棒裡的監視器</h1>
+    <p class="subtitle">普通 K 棒告訴你「今天來了多少人」，足跡圖告訴你「誰在哪個位置買、誰在哪個位置賣」。</p>
+    <div class="article-meta">
+      <span>chillzon</span>
+      <span>2025 年 8 月</span>
+      <span>足跡圖 · Footprint · Delta · 拍賣</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+    <h2>普通 K 棒的盲點</h2>
+
+    <p>
+      假設今天你的便利商店來了 500 個客人，營業額 10 萬元。
+      這是「K 棒」給你的資訊——總結性的數字。
+    </p>
+    <p>
+      但你不知道的是：這 500 個客人裡，有 400 個人是來退貨的。
+      實際上「真正買東西」的只有 100 人。
+    </p>
+    <p>
+      普通 K 棒就是這樣——它告訴你收盤價、最高最低、成交量，但不告訴你<strong>這段時間裡誰在積極買、誰在積極賣、哪裡有人在大量成交</strong>。
+    </p>
+    <p>
+      足跡圖就是幫你裝了監視器，讓你看到每個價格節點裡發生的細節。
+    </p>
+
+    <h2>足跡圖的基本結構</h2>
+
+    <p>
+      足跡圖把每根 K 棒拆開，在每個價格節點顯示兩個數字：
+    </p>
+
+    <pre>格式：Bid 量  ×  Ask 量
+
+例子：
+價格 52,300：  245  ×  18
+價格 52,200：  890  ×  312
+價格 52,100：  1205 ×  3044   ← 這個價格成交最多
+價格 52,000：  422  ×  1890</pre>
+
+    <table>
+      <tr><th>數字</th><th>代表什麼</th><th>生活比喻</th></tr>
+      <tr>
+        <td><strong>Bid 量</strong>（左邊）</td>
+        <td>市價賣出單，打到限價買單的成交量</td>
+        <td>主動去便利商店退貨的人（積極的賣方）</td>
+      </tr>
+      <tr>
+        <td><strong>Ask 量</strong>（右邊）</td>
+        <td>市價買入單，打到限價賣單的成交量</td>
+        <td>主動去便利商店買東西的人（積極的買方）</td>
+      </tr>
+      <tr>
+        <td><strong>Delta</strong></td>
+        <td>Ask 量 − Bid 量</td>
+        <td>今天買的人比退貨的人多多少（買方優勢）</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      <strong>Ask 量大</strong> = 有很多人主動買進，積極的是買方<br>
+      <strong>Bid 量大</strong> = 有很多人主動賣出，積極的是賣方<br>
+      <strong>Delta 正</strong> = 買方更積極；<strong>Delta 負</strong> = 賣方更積極
+    </div>
+
+    <h2>拍賣結束的訊號一：Bid 微單</h2>
+
+    <p>
+      還記得上一篇說的「上漲拍賣」嗎？市場往上走，是在尋找願意賣出的人。
+      那麼當市場走到了一個新高，然後發現……沒什麼人想在這裡交易，怎麼辦？
+    </p>
+    <p>
+      這就是「<strong>Bid 微單</strong>」的場景。
+    </p>
+    <p>
+      想像球場在拍賣球星球衣。出價從 1 萬喊到 5 萬，一路上都有人舉牌。
+      喊到 8 萬的時候……底下沉默了。沒人舉牌，連想要賣掉手中球衣的人也沒出現。
+      拍賣結束，主持人喊：「無人出價，拍賣終止。」
+    </p>
+
+    <pre>足跡圖上的樣子（新高那個價格節點）：
+
+價格 53,000（新高）：  8  ×  12    ← 雙側都是微單
+價格 52,900：         145 ×  320
+價格 52,800：         380 ×  890
+
+代表：
+  市場漲到這裡，買方（ask）和賣方（bid）都幾乎缺席
+  連對手盤都不想來了
+  拍賣在真空中終止，價格必須退回</pre>
+
+    <div class="callout">
+      Bid 微單不是說賣方在阻擋，而是說<strong>雙方都不在場</strong>。
+      這個高點是「虛」的，市場找不到參與者，必須退回去重新找。
+    </div>
+
+    <h2>拍賣結束的訊號二：吸收（Absorption）</h2>
+
+    <p>
+      吸收跟 Bid 微單完全相反——是有大量對手盤主動出現，承接所有的賣壓或買壓。
+    </p>
+    <p>
+      比喻：你在超商清倉特賣，本來擔心東西賣不掉。
+      但一開門，突然衝進來一個大盤商，把你所有的存貨全部買光了。
+      這叫做「吸收」——有一個大型的買家把所有賣單都接走了。
+    </p>
+
+    <pre>足跡圖上的吸收（下跌趨勢中的某個低點）：
+
+價格 51,000：  3,200  ×  45    ← Bid 量暴增，Ask 量極小
+價格 51,100：  2,800  ×  89
+價格 51,200：  1,100  ×  320
+
+同時，價格沒有繼續下跌。
+
+代表：
+  大量市價賣單湧入（bid 量大）
+  但有人用大量限價買單默默承接所有賣壓
+  賣的人賣得很積極，但價格就是跌不下去
+  → 底部吸收訊號，有主力在這裡建倉</pre>
+
+    <h2>止損單的隱藏痕跡</h2>
+
+    <p>
+      這個很多人沒注意到：<strong>止損單會在足跡圖上留下痕跡。</strong>
+    </p>
+    <p>
+      止損單（Stop Order）是一種「到了某個價格就自動執行的市價單」。
+      當市場創新高，那些做空的人的止損單被觸發，變成<strong>市價買入單</strong>，打到 Ask 側。
+    </p>
+
+    <pre>做空止損被掃到：
+  └── 自動變成市價買入單
+  └── 打到 Ask 側 → Ask 量上升 → Delta 上升
+
+做多止損被掃到：
+  └── 自動變成市價賣出單
+  └── 打到 Bid 側 → Bid 量上升 → Delta 下降</pre>
+
+    <p>
+      所以當你看到價格創新高、Ask 量暴增，不要以為是真的有大量新多頭進場——
+      很可能只是做空的人被迫認賠，觸發了止損買單。
+      怎麼確認？看 <strong>OI（未平倉合約）</strong>：如果 OI 下降，代表倉位消失了（止損平倉），而不是新倉位開立。
+    </p>
+
+    <h2>CVD：把整根 K 棒的 Delta 累加起來</h2>
+
+    <p>
+      CVD（Cumulative Volume Delta，累積成交量差值）就是把每個時間點的 Delta 加在一起，畫成一條線。
+    </p>
+    <p>
+      它的用途是看「買方和賣方誰更積極」的長期趨勢。
+    </p>
+
+    <table>
+      <tr><th>CVD 型態</th><th>意義</th></tr>
+      <tr><td>CVD 上升，價格也上升</td><td>正常的買方推動上漲，健康</td></tr>
+      <tr><td>CVD 下降，價格也下降</td><td>正常的賣方推動下跌，健康</td></tr>
+      <tr><td>CVD 衰竭，但價格創新高</td><td>推動上漲的力道在減少，警訊</td></tr>
+      <tr><td>CVD 大跌，但價格沒跌</td><td>大量賣單被吸收，底部訊號</td></tr>
+    </table>
+
+    <h2>怎麼把足跡圖用在實際交易上</h2>
+
+    <pre>Step 1：先用 VP 找到關鍵節點（HVN / POC / VAH / VAL）
+
+Step 2：當價格接近節點，開始看足跡圖
+  ├── 如果是往上走 → 看最高點的 Bid 量和 Ask 量
+  │     Bid 微單 + Ask 也微 → 買方拍賣終止，考慮做空
+  │     Bid 大量 + 價格不跌 → 有吸收，考慮做多
+  │
+  └── 如果是往下走 → 看最低點的 Bid 量和 Ask 量
+        Ask 微單 + Bid 也微 → 賣方拍賣終止，考慮做多
+        Ask 大量 + 價格不漲 → 有吸收，考慮做空
+
+Step 3：CVD + OI 確認
+  CVD 衰竭 + OI 下降 → 舊部位離場，反轉較緩
+  CVD 吸收背離 + OI 上升 → 新部位進場，反轉較快
+
+Step 4：K 棒型態確認，入場</pre>
+
+    <div class="callout">
+      足跡圖不是「訊號產生器」，它是讓你理解「為什麼這裡會反轉」的工具。
+      搭配 VP 找位置，再用足跡圖確認微觀結構，兩者缺一不可。
+    </div>
+
+    <h2>小結</h2>
+    <p>
+      足跡圖讓你從「看結果」進化到「看過程」。
+      下一篇，我們繼續深入微觀結構——從掛單和吃單的角度，理解每一筆交易背後的邏輯。
+    </p>
+
+  </div>
+</div>
+
+<footer>
+  <p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon &nbsp;·&nbsp; 以交易為志業，以邏輯為基礎</p>
+</footer>
+
+</body>
+</html>
