@@ -154,24 +154,82 @@
       <div class="diagram-caption">流動性獵殺不是陰謀，而是做市商管理庫存的自然行為——止損密集處有大量流動性，正好讓他們高效建倉</div>
     </div>
 
-    <h2>Delta：衡量主動買賣力道的工具</h2>
-    <p>理解做市商之後，有一個重要的衍生概念需要介紹：<strong>Delta（成交量差）</strong>。</p>
-    <p>每筆成交都可以分兩類：</p>
+    <h2>Delta 中性（Delta Neutral）：做市商的核心風險管理</h2>
+    <p>前面說到做市商最大的風險是「庫存風險」——持續接單之後，手上累積了大量單方向的部位，一旦行情反向就會虧損。</p>
+    <p>專業做市商解決這個問題的核心方法，叫做 <strong>Delta 中性（Delta Neutral）</strong>。</p>
+
+    <h3>Delta 是什麼？</h3>
+    <p>在金融衍生品（特別是選擇權）裡，<strong>Delta</strong> 衡量的是：<strong>當標的資產（如 BTC）的價格變動 $1，你的整體部位會損益幾美元</strong>。</p>
+    <p>舉例：</p>
     <table>
-      <tr><th>類型</th><th>誰主動？</th><th>成交在哪？</th></tr>
-      <tr><td><strong>Ask 成交</strong>（買方主動）</td><td>買方用市價單打到賣方掛單</td><td>成交在 Ask 價</td></tr>
-      <tr><td><strong>Bid 成交</strong>（賣方主動）</td><td>賣方用市價單打到買方掛單</td><td>成交在 Bid 價</td></tr>
+      <tr><th>部位</th><th>Delta 值</th><th>意思</th></tr>
+      <tr><td>買入 1 顆現貨 BTC</td><td>+1</td><td>BTC 漲 $1，賺 $1；跌 $1，虧 $1</td></tr>
+      <tr><td>做空 1 顆 BTC 期貨</td><td>-1</td><td>BTC 漲 $1，虧 $1；跌 $1，賺 $1</td></tr>
+      <tr><td>買入某個看漲選擇權</td><td>+0.5（示意）</td><td>BTC 漲 $1，大約賺 $0.5</td></tr>
     </table>
-    <p>Delta = Ask 成交量 - Bid 成交量</p>
-    <p>Delta 為正，代表這段時間買方比賣方更積極（主動進攻）；Delta 為負，代表賣方更積極。</p>
-    <p>為什麼這很重要？因為<strong>價格的移動方向取決於誰更積極</strong>——主動買方越多，價格越容易上漲；主動賣方越多，價格越容易下跌。Delta 讓你看到這個力量對比，而不只是看到「價格漲了還是跌了」。</p>
-    <div class="callout">
-      <strong>正 Delta + 價格上漲</strong>：健康的上漲，買方有力<br>
-      <strong>正 Delta + 價格不漲</strong>：有大量限價賣單在承接（做市商在賣），上漲受阻<br>
-      <strong>負 Delta + 價格下跌</strong>：健康的下跌，賣方有力<br>
-      <strong>負 Delta + 價格不跌</strong>：有大量限價買單在承接（做市商在買），下跌受阻
+
+    <h3>Delta 中性的邏輯</h3>
+    <p>做市商的目標不是押注方向，而是賺取買賣價差（Bid-Ask Spread）。為了不讓方向性的市場波動影響他們的獲利，他們把整體部位的 Delta 維持在接近 0——這就是「Delta 中性」。</p>
+    <p>比喻：你是一家金店，每天買黃金、賣黃金，賺的是買賣差價。你不希望因為今天金價漲跌影響你的生意，所以每次買入多少金，你就在期貨市場上賣空等量的金——這樣不管金價怎麼變，你的庫存損益都被對沖掉了。你賺的，只剩買賣差價。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="280" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">Delta 中性的運作方式</text>
+
+        <!-- Step 1 -->
+        <rect x="30" y="48" width="175" height="90" fill="#0d1a2a" rx="6" stroke="#00c8ff" stroke-width="1" opacity="0.8"/>
+        <text x="117" y="70" text-anchor="middle" fill="#00c8ff" font-size="11" font-weight="bold">Step 1</text>
+        <text x="117" y="88" text-anchor="middle" fill="#d8d8e8" font-size="10">客戶賣出 1 BTC</text>
+        <text x="117" y="104" text-anchor="middle" fill="#7a7a9a" font-size="9">做市商以 Bid 價買入</text>
+        <text x="117" y="120" text-anchor="middle" fill="#4ecca3" font-size="9">現貨庫存 Delta = +1</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="205" y1="93" x2="235" y2="93" stroke="#555577" stroke-width="1.5"/>
+        <polygon points="235,89 243,93 235,97" fill="#555577" opacity="0.8"/>
+
+        <!-- Step 2 -->
+        <rect x="243" y="48" width="175" height="90" fill="#1a0d1a" rx="6" stroke="#ff7070" stroke-width="1" opacity="0.8"/>
+        <text x="330" y="70" text-anchor="middle" fill="#ff9999" font-size="11" font-weight="bold">Step 2</text>
+        <text x="330" y="88" text-anchor="middle" fill="#d8d8e8" font-size="10">立刻在期貨市場做空 1 BTC</text>
+        <text x="330" y="104" text-anchor="middle" fill="#7a7a9a" font-size="9">對沖現貨的方向風險</text>
+        <text x="330" y="120" text-anchor="middle" fill="#ff9999" font-size="9">期貨 Delta = -1</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="418" y1="93" x2="448" y2="93" stroke="#555577" stroke-width="1.5"/>
+        <polygon points="448,89 456,93 448,97" fill="#555577" opacity="0.8"/>
+
+        <!-- Step 3 -->
+        <rect x="456" y="48" width="155" height="90" fill="#0d1a0d" rx="6" stroke="#4ecca3" stroke-width="1" opacity="0.8"/>
+        <text x="533" y="70" text-anchor="middle" fill="#4ecca3" font-size="11" font-weight="bold">結果</text>
+        <text x="533" y="88" text-anchor="middle" fill="#d8d8e8" font-size="10">整體 Delta = 0</text>
+        <text x="533" y="104" text-anchor="middle" fill="#7a7a9a" font-size="9">方向風險被消除</text>
+        <text x="533" y="120" text-anchor="middle" fill="#4ecca3" font-size="9">只剩 Spread 利潤</text>
+
+        <!-- Delta calculation box -->
+        <rect x="30" y="158" width="580" height="50" fill="#111122" rx="6"/>
+        <text x="320" y="178" text-anchor="middle" fill="#d8d8e8" font-size="11">現貨 Delta（+1）+ 期貨 Delta（-1）= 整體 Delta（<tspan fill="#4ecca3" font-weight="bold">0</tspan>）</text>
+        <text x="320" y="198" text-anchor="middle" fill="#7a7a9a" font-size="10">不管 BTC 漲還是跌，兩邊的損益相互抵銷 → 做市商的獲利不受方向影響</text>
+
+        <!-- Key insight -->
+        <text x="320" y="238" text-anchor="middle" fill="#555577" font-size="10">做市商不賭方向，他賺的是每次成交的 Bid-Ask Spread，對沖掉所有方向風險</text>
+        <text x="320" y="255" text-anchor="middle" fill="#555577" font-size="10">這就是「Delta 中性」：整體 Delta 接近 0，不偏向漲也不偏向跌</text>
+      </svg>
+      <div class="diagram-caption">做市商每接一筆現貨訂單，立刻用期貨/選擇權對沖，讓整體 Delta 歸零</div>
     </div>
-    <p>第七篇的足跡圖，就是把每個價格節點的 Delta 完整呈現出來的工具。</p>
+
+    <h3>動態對沖（Dynamic Hedging）</h3>
+    <p>維持 Delta 中性不是做一次就沒事了——市場在不斷變動，Delta 也在不斷變化。做市商需要<strong>持續調整對沖部位</strong>，讓整體 Delta 隨時保持接近 0。這個過程叫做<strong>動態對沖（Dynamic Hedging）</strong>。</p>
+    <p>這也是為什麼大型做市商需要非常快速的自動化系統——他們每秒鐘都在計算整體 Delta，一旦偏離就立刻調整。這種操作頻率是人工完全無法實現的，必須靠演算法。</p>
+
+    <div class="callout">
+      <strong>Delta 中性的核心邏輯：</strong><br>
+      做市商賺的是「提供流動性的報酬」（Bid-Ask Spread），不是方向預測的報酬<br>
+      所有的方向性風險都被對沖掉，剩下的才是真正的「做市利潤」<br><br>
+      <strong>對散戶的啟示：</strong><br>
+      大型做市商不在乎今天漲還是跌——他們只在乎能不能繼續維持兩側掛單、收取價差<br>
+      他們「推動價格獵殺止損」的行為，本質上也是在為自己建立可以對沖的庫存位置
+    </div>
 
     <h2>對散戶的啟示</h2>
     <p>了解做市商之後，有幾個直接的交易啟示：</p>
@@ -190,7 +248,8 @@
       做市商 = 永遠在兩側掛單，提供流動性<br>
       獲利來源 = Bid-Ask 價差<br>
       面臨的風險 = 庫存風險（持倉偏向一側）<br>
-      獵殺流動性 = 把價格推到止損密集處，利用止損單來建倉<br><br>
+      解決方法 = Delta 中性：用期貨/衍生品對沖現貨庫存，讓整體 Delta 歸零<br>
+      獵殺流動性 = 把價格推到止損密集處，利用止損單來建立可對沖的庫存位置<br><br>
       理解做市商的行為邏輯，你就能開始理解「為什麼這裡假突破」「為什麼那裡反轉」。
     </div>
     <p>下一篇，我們來到更宏觀的框架——<strong>拍賣市場理論（AMT）</strong>，把整個市場的運作邏輯用一套完整的思維框架來理解。</p>
