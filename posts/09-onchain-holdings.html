@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 鏈上持倉指標｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">鏈上分析 · 第 09 篇</span>
+    <h1>鏈上持倉指標：讀懂市場上每個人的成本與心態</h1>
+    <p class="subtitle">SOPR、NUPL、HODL Waves——三個指標，讓你看清楚現在市場裡的人是在賺還是在賠，以及他們打算怎麼做。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>為什麼加密貨幣可以有這些指標？</h2>
+    <p>傳統技術分析只告訴你價格「發生了什麼」。但加密貨幣有一個其他市場沒有的優勢：<strong>所有的交易紀錄都在區塊鏈上公開可查</strong>。</p>
+    <p>你可以看到每一枚幣是什麼時候被移動的、從哪裡移到哪裡、上次移動時的價格是多少。這讓一批叫做「鏈上指標」的分析工具得以存在。</p>
+    <p>這篇文章介紹三個跟「持倉」最相關的指標：SOPR、NUPL、HODL Waves。</p>
+
+    <h2>SOPR：今天鏈上的人，整體在賺還是在賠？</h2>
+    <p>SOPR（Spent Output Profit Ratio，已花費輸出獲利比率）聽起來很學術，但概念很簡單：</p>
+    <p>每當有人移動比特幣，我們可以知道他上次收到這枚幣時的價格，和他現在移動（賣出）時的價格。把所有今天發生的鏈上移動全部加總：「<strong>賣出時的市值 ÷ 當初取得時的成本</strong>」，就是 SOPR。</p>
+
+    <div class="callout">
+      <strong>SOPR &gt; 1</strong>：今天鏈上移動的幣，整體在獲利狀態下賣出<br>
+      <strong>SOPR = 1</strong>：整體打平<br>
+      <strong>SOPR &lt; 1</strong>：今天鏈上移動的幣，整體在虧損狀態下賣出
+    </div>
+
+    <h3>為什麼 SOPR &lt; 1 且反彈是底部訊號？</h3>
+    <p>想像一下：你買了一顆幣，現在虧了 40%。你願意現在賣嗎？大多數人不願意——除非他們被迫賣、或者已經完全絕望了。</p>
+    <p>當大量的人選擇在虧損的情況下賣出，代表市場情緒達到了某種極度悲觀的狀態——這種「認賠殺出」的集中爆發，歷史上往往出現在接近底部的地方。</p>
+    <p>一旦 SOPR 從負值開始回升站回 1，代表認賠的力道在消退，多空態勢開始轉變。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 290" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="290" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">SOPR 與市場週期的對應</text>
+
+        <!-- SOPR = 1 baseline -->
+        <line x1="50" y1="155" x2="590" y2="155" stroke="#555577" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="600" y="159" fill="#555577" font-size="10">SOPR=1</text>
+
+        <!-- SOPR curve -->
+        <path d="M 50,225 C 90,220 115,195 145,160 C 165,140 185,118 220,98 C 252,82 270,76 300,74 C 330,72 350,88 378,115 C 408,144 428,168 458,188 C 490,208 515,220 560,235"
+              stroke="#00c8ff" stroke-width="2.2" fill="none"/>
+
+        <!-- Bottom zone shading (below 1) -->
+        <path d="M 50,225 C 90,220 115,195 145,160 L 145,155 L 50,155 Z" fill="#4ecca3" opacity="0.14"/>
+        <!-- Top zone shading (above 1) -->
+        <path d="M 145,155 L 145,160 C 165,140 185,118 220,98 C 252,82 270,76 300,74 C 330,72 350,88 378,115 C 408,144 428,155 435,155 Z" fill="#ff4d6d" opacity="0.1"/>
+        <!-- Bear zone shading (below 1 again) -->
+        <path d="M 435,155 C 440,165 458,188 490,208 C 515,220 535,228 560,235 L 560,155 Z" fill="#4ecca3" opacity="0.14"/>
+
+        <!-- Annotation: bottom left -->
+        <line x1="80" y1="215" x2="80" y2="200" stroke="#4ecca3" stroke-width="1" opacity="0.6"/>
+        <text x="80" y="244" text-anchor="middle" fill="#4ecca3" font-size="10">認賠殺出</text>
+        <text x="80" y="256" text-anchor="middle" fill="#4ecca3" font-size="10">接近底部</text>
+
+        <!-- Annotation: top peak -->
+        <text x="300" y="62" text-anchor="middle" fill="#ff9999" font-size="10">大量獲利出場</text>
+        <text x="300" y="74" text-anchor="middle" fill="#ff9999" font-size="10" opacity="0">placeholder</text>
+
+        <!-- Annotation: bottom right -->
+        <text x="520" y="248" text-anchor="middle" fill="#4ecca3" font-size="10">再次認賠</text>
+        <text x="520" y="260" text-anchor="middle" fill="#4ecca3" font-size="10">新底部形成</text>
+
+        <!-- Price line (dashed) -->
+        <path d="M 50,255 C 100,252 130,235 165,210 C 200,185 230,162 268,142 C 300,126 325,118 355,122 C 385,128 415,152 455,190 C 490,222 525,245 560,258"
+              stroke="#7a7a9a" stroke-width="1.5" fill="none" stroke-dasharray="3,3" opacity="0.45"/>
+
+        <text x="320" y="278" text-anchor="middle" fill="#555577" font-size="10">實線 = SOPR　虛線 = 價格走勢（參考）</text>
+      </svg>
+      <div class="diagram-caption">SOPR 持續低於 1 後反彈回升 = 底部訊號；長期偏高後轉跌 = 頂部警示</div>
+    </div>
+
+    <h2>NUPL：整個市場的浮盈浮虧，現在到哪了？</h2>
+    <p>NUPL（Net Unrealized Profit/Loss，網路未實現損益）是更大視角的指標——它衡量的是<strong>整個市場所有持有人</strong>目前的浮盈浮虧狀態。</p>
+    <p>簡單說：把所有還沒動的幣，計算「如果現在賣掉，整個市場是賺還是虧、賺多少虧多少」，得到一個介於 -1 到 1 之間的數字。</p>
+    <p>這個數字反映的是<strong>市場情緒的溫度</strong>：越高，人們感覺越賺，情緒越亢奮；越低，人們感覺越虧，情緒越絕望。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 275" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="275" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">NUPL 情緒分層</text>
+
+        <!-- Band: Euphoria 0.75-1.0 -->
+        <rect x="55" y="38" width="510" height="30" fill="#ff3333" opacity="0.15" rx="2"/>
+        <text x="572" y="57" fill="#ff5555" font-size="10">狂喜 · 頂部危險區</text>
+        <text x="50" y="57" text-anchor="end" fill="#555577" font-size="10">0.75</text>
+
+        <!-- Band: Greed 0.5-0.75 -->
+        <rect x="55" y="70" width="510" height="30" fill="#ff8833" opacity="0.15" rx="2"/>
+        <text x="572" y="89" fill="#ffaa44" font-size="10">貪婪 · 謹慎持倉</text>
+        <text x="50" y="89" text-anchor="end" fill="#555577" font-size="10">0.50</text>
+
+        <!-- Band: Optimism 0.25-0.5 -->
+        <rect x="55" y="102" width="510" height="30" fill="#ddcc00" opacity="0.12" rx="2"/>
+        <text x="572" y="121" fill="#ccbb00" font-size="10">樂觀 · 穩健布局</text>
+        <text x="50" y="121" text-anchor="end" fill="#555577" font-size="10">0.25</text>
+
+        <!-- Band: Hope 0-0.25 -->
+        <rect x="55" y="134" width="510" height="30" fill="#4ecca3" opacity="0.1" rx="2"/>
+        <text x="572" y="153" fill="#4ecca3" font-size="10">希望 · 接近打平</text>
+        <text x="50" y="153" text-anchor="end" fill="#555577" font-size="10">0.00</text>
+
+        <!-- Band: Anxiety -0.25-0 -->
+        <rect x="55" y="166" width="510" height="30" fill="#5577cc" opacity="0.12" rx="2"/>
+        <text x="572" y="185" fill="#7799dd" font-size="10">焦慮 · 浮虧震盪</text>
+        <text x="50" y="185" text-anchor="end" fill="#555577" font-size="10">-0.25</text>
+
+        <!-- Band: Capitulation < -0.25 -->
+        <rect x="55" y="198" width="510" height="38" fill="#3344aa" opacity="0.18" rx="2"/>
+        <text x="572" y="221" fill="#8899ff" font-size="10">投降 · 底部機會區</text>
+        <text x="50" y="221" text-anchor="end" fill="#555577" font-size="10">-0.50+</text>
+
+        <text x="320" y="255" text-anchor="middle" fill="#555577" font-size="10">越往上越危險（人人都在賺，但風險也越高）</text>
+        <text x="320" y="267" text-anchor="middle" fill="#555577" font-size="10">越往下越接近底部（人人都在虧，但長期布局機會越大）</text>
+      </svg>
+      <div class="diagram-caption">NUPL 進入頂層時要警戒，進入底層時反而是低風險的長期買點</div>
+    </div>
+
+    <p>NUPL 的使用方式不是「到了某個數字就立刻賣」，而是用來感知<strong>你現在站在週期的哪個位置</strong>。在狂喜區域加倉和在投降區域加倉，承擔的風險完全不一樣。</p>
+
+    <h2>HODL Waves：老手在囤幣，還是把幣賣給新人？</h2>
+    <p>HODL Waves 把所有比特幣依照「<strong>上次被移動距今多久</strong>」分層顯示：</p>
+    <p>一枚幣如果在 2 年前被移到某個地址後就沒動過，它就屬於「2 年以上」的層。剛剛才被移動的幣，就在「1 週以內」的層。</p>
+    <p>這個工具讓你看見：<strong>長期持有者在增加還是減少？短期投機者的比例有沒有在飆升？</strong></p>
+
+    <div class="callout">
+      <strong>長期持有層（1 年以上）越厚</strong>：老手在囤幣不賣，市場上流通的供應減少 → 正面訊號<br><br>
+      <strong>短期持有層（1-3 個月）突然暴增</strong>：大量的幣從長期持有者手中流向短期投機者 → 牛市頂部附近老手在向新進者出貨的訊號
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 268" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="268" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">HODL Waves：吸籌期 vs 頂部出貨期</text>
+
+        <!-- Left: accumulation phase -->
+        <text x="165" y="48" text-anchor="middle" fill="#7a7a9a" font-size="11">熊市底部 / 吸籌期</text>
+
+        <!-- Bars left (stacked, total height ~160px) -->
+        <rect x="55" y="56" width="220" height="20" fill="#00c8ff" opacity="0.75" rx="2"/>
+        <text x="165" y="70" text-anchor="middle" fill="#07090f" font-size="9" font-weight="bold">5 年以上：15%</text>
+
+        <rect x="55" y="78" width="220" height="24" fill="#0099cc" opacity="0.75" rx="2"/>
+        <text x="165" y="94" text-anchor="middle" fill="#07090f" font-size="9" font-weight="bold">2–5 年：20%</text>
+
+        <rect x="55" y="104" width="220" height="40" fill="#0077aa" opacity="0.75" rx="2"/>
+        <text x="165" y="128" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">1–2 年：35%</text>
+
+        <rect x="55" y="146" width="220" height="22" fill="#4ecca3" opacity="0.65" rx="2"/>
+        <text x="165" y="161" text-anchor="middle" fill="#07090f" font-size="9" font-weight="bold">6 個月–1 年：20%</text>
+
+        <rect x="55" y="170" width="220" height="12" fill="#ddcc22" opacity="0.55" rx="2"/>
+        <text x="165" y="180" text-anchor="middle" fill="#222" font-size="8" font-weight="bold">1–6 個月：7%</text>
+
+        <rect x="55" y="184" width="220" height="8" fill="#ff9944" opacity="0.7" rx="2"/>
+        <text x="165" y="192" text-anchor="middle" fill="#07090f" font-size="8" font-weight="bold">1 個月以內：3%</text>
+
+        <text x="165" y="212" text-anchor="middle" fill="#4ecca3" font-size="9.5">長期層厚 → 幣鎖在老手手裡</text>
+        <text x="165" y="224" text-anchor="middle" fill="#4ecca3" font-size="9.5">供應緊縮 → 正面訊號</text>
+
+        <!-- Right: top/distribution phase -->
+        <text x="475" y="48" text-anchor="middle" fill="#7a7a9a" font-size="11">牛市頂部 / 出貨期</text>
+
+        <rect x="365" y="56" width="220" height="20" fill="#00c8ff" opacity="0.75" rx="2"/>
+        <text x="475" y="70" text-anchor="middle" fill="#07090f" font-size="9" font-weight="bold">5 年以上：15%</text>
+
+        <rect x="365" y="78" width="220" height="16" fill="#0099cc" opacity="0.65" rx="2"/>
+        <text x="475" y="90" text-anchor="middle" fill="#07090f" font-size="9" font-weight="bold">2–5 年：13%  ↓</text>
+
+        <rect x="365" y="96" width="220" height="20" fill="#0077aa" opacity="0.65" rx="2"/>
+        <text x="475" y="110" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">1–2 年：17%  ↓</text>
+
+        <rect x="365" y="118" width="220" height="14" fill="#4ecca3" opacity="0.55" rx="2"/>
+        <text x="475" y="129" text-anchor="middle" fill="#07090f" font-size="9" font-weight="bold">6 個月–1 年：12%  ↓</text>
+
+        <!-- Short term surging -->
+        <rect x="365" y="134" width="220" height="30" fill="#ffcc22" opacity="0.65" rx="2"/>
+        <text x="475" y="153" text-anchor="middle" fill="#222" font-size="9" font-weight="bold">1–6 個月：26%  ↑↑ 暴增</text>
+
+        <rect x="365" y="166" width="220" height="26" fill="#ff4444" opacity="0.75" rx="2"/>
+        <text x="475" y="183" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">1 個月以內：17%  ↑↑ 暴增</text>
+
+        <text x="475" y="212" text-anchor="middle" fill="#ff9999" font-size="9.5">短期層暴增 → 老手把幣賣給新人</text>
+        <text x="475" y="224" text-anchor="middle" fill="#ff9999" font-size="9.5">出貨訊號 → 頂部警示</text>
+
+        <text x="320" y="252" text-anchor="middle" fill="#555577" font-size="10">短期持有層（橘/紅）突然增厚，是老手向新進投機者出貨的特徵</text>
+      </svg>
+      <div class="diagram-caption">左圖：健康的吸籌狀態（長期層厚）｜右圖：頂部出貨訊號（短期層暴增）</div>
+    </div>
+
+    <h2>三個指標合起來看</h2>
+    <p>這三個指標不是用來「預測下週價格」的，而是幫你判斷<strong>現在市場處於週期的哪個位置</strong>，讓你做出符合風險的決策。</p>
+
+    <div class="callout">
+      <strong>偏向底部的組合：</strong><br>
+      SOPR 持續低於 1 後開始回升 + NUPL 在負值（投降）區域 + HODL Waves 長期層持續增厚<br><br>
+      <strong>偏向頂部的組合：</strong><br>
+      SOPR 長期偏高後轉跌 + NUPL 進入狂喜區域 + HODL Waves 短期層突然暴增
+    </div>
+
+    <p>這三個指標的時間框架通常是週線或月線級別，適合做<strong>宏觀週期定位</strong>，不是短線進出的工具。</p>
+
+    <h2>小結</h2>
+    <div class="callout">
+      <strong>SOPR</strong>：今天鏈上整體在獲利賣還是虧損賣？低於 1 後反彈 = 底部訊號<br>
+      <strong>NUPL</strong>：整個市場的浮盈浮虧，反映情緒週期位置<br>
+      <strong>HODL Waves</strong>：幣齡分布，老手囤幣 vs 出貨給新進者，短期層暴增 = 頂部警示
+    </div>
+    <p>下一篇，我們來看資金流動面：幣在往交易所流進還是流出、穩定幣的火藥量有多少、礦工是不是在賣——這些是另一個維度的市場判斷工具。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>

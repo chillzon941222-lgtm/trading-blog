@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09 鏈上資金流動｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">鏈上分析 · 第 09 篇</span>
+    <h1>鏈上資金流動：錢往哪裡去，就往哪裡跟</h1>
+    <p class="subtitle">Exchange Netflow、Stablecoin Supply Ratio、Miner Outflow——幣在流向哪裡？場內有多少火藥？礦工在賣了嗎？</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>資金流動，比價格更早說話</h2>
+    <p>上一篇我們看的是「持倉」——現在市場上的人賺還是賠。這篇我們往前一步：<strong>資金在移動的方向</strong>。</p>
+    <p>價格的漲跌，本質上是由資金的進出決定的。在加密市場，我們可以直接從鏈上看到這些資金在哪裡、往哪裡去。這是傳統市場做不到的事情。</p>
+    <p>這篇介紹三個最實用的資金流動指標：Exchange Netflow（交易所淨流量）、SSR（穩定幣供應比率）、Miner Outflow（礦工流出）。</p>
+
+    <h2>Exchange Netflow：幣往交易所流，還是離開交易所？</h2>
+    <p>交易所是買賣發生的地方。一般來說：</p>
+    <p>你想<strong>賣掉比特幣</strong>，你會先把幣<strong>轉進交易所</strong>，然後掛單賣出。<br>
+    你想<strong>長期持有比特幣</strong>，你會把幣<strong>從交易所提出來</strong>，放到自己的冷錢包裡。</p>
+    <p>所以，「幣往交易所流入」和「幣從交易所流出」，分別代表完全不同的市場心態。</p>
+
+    <div class="callout">
+      <strong>交易所流入增加（Positive Netflow）</strong>：持有者把幣送進交易所 → 準備賣出 → 賣壓增加<br><br>
+      <strong>交易所流出增加（Negative Netflow）</strong>：持有者把幣從交易所提走 → 長期囤幣 → 流通供應減少 → 正面訊號
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 310" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="310" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">Exchange Netflow：流入 vs 流出的意義</text>
+
+        <!-- Left: flow in (negative signal) -->
+        <rect x="55" y="48" width="230" height="170" fill="#1a0a0a" rx="6"/>
+        <text x="170" y="70" text-anchor="middle" fill="#ff5555" font-size="12" font-weight="bold">幣流入交易所</text>
+        <text x="170" y="86" text-anchor="middle" fill="#7a7a9a" font-size="10">Positive Netflow</text>
+
+        <!-- Arrow: wallet to exchange -->
+        <rect x="75" y="100" width="60" height="36" fill="#1e2e45" rx="4"/>
+        <text x="105" y="121" text-anchor="middle" fill="#aaaacc" font-size="9">持有人</text>
+        <text x="105" y="132" text-anchor="middle" fill="#aaaacc" font-size="9">冷錢包</text>
+
+        <defs>
+          <marker id="arrR" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <polygon points="0,0 8,4 0,8" fill="#ff5555" opacity="0.9"/>
+          </marker>
+          <marker id="arrL" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <polygon points="0,0 8,4 0,8" fill="#4ecca3" opacity="0.9"/>
+          </marker>
+        </defs>
+        <line x1="138" y1="118" x2="178" y2="118" stroke="#ff5555" stroke-width="2" marker-end="url(#arrR)"/>
+
+        <rect x="180" y="100" width="60" height="36" fill="#2a1010" rx="4" stroke="#ff5555" stroke-width="1" opacity="0.6"/>
+        <text x="210" y="121" text-anchor="middle" fill="#ff9999" font-size="9">交易所</text>
+        <text x="210" y="132" text-anchor="middle" fill="#ff9999" font-size="9">熱錢包</text>
+
+        <text x="170" y="160" text-anchor="middle" fill="#ff9999" font-size="9">→ 掛單賣出</text>
+        <text x="170" y="175" text-anchor="middle" fill="#7a7a9a" font-size="9">供應增加</text>
+        <text x="170" y="188" text-anchor="middle" fill="#ff5555" font-size="10" font-weight="bold">賣壓上升 ↑</text>
+
+        <rect x="65" y="200" width="210" height="10" fill="#ff4444" opacity="0.25" rx="2"/>
+        <text x="170" y="209" text-anchor="middle" fill="#ff7777" font-size="8">大量流入時，往往預示短期賣壓</text>
+
+        <!-- Right: flow out (positive signal) -->
+        <rect x="360" y="48" width="230" height="170" fill="#0a1a0f" rx="6"/>
+        <text x="475" y="70" text-anchor="middle" fill="#4ecca3" font-size="12" font-weight="bold">幣流出交易所</text>
+        <text x="475" y="86" text-anchor="middle" fill="#7a7a9a" font-size="10">Negative Netflow</text>
+
+        <rect x="380" y="100" width="60" height="36" fill="#1e2e45" rx="4"/>
+        <text x="410" y="121" text-anchor="middle" fill="#aaaacc" font-size="9">交易所</text>
+        <text x="410" y="132" text-anchor="middle" fill="#aaaacc" font-size="9">熱錢包</text>
+
+        <line x1="443" y1="118" x2="483" y2="118" stroke="#4ecca3" stroke-width="2" marker-end="url(#arrL)"/>
+
+        <rect x="485" y="100" width="60" height="36" fill="#0a2a15" rx="4" stroke="#4ecca3" stroke-width="1" opacity="0.6"/>
+        <text x="515" y="121" text-anchor="middle" fill="#4ecca3" font-size="9">持有人</text>
+        <text x="515" y="132" text-anchor="middle" fill="#4ecca3" font-size="9">冷錢包</text>
+
+        <text x="475" y="160" text-anchor="middle" fill="#4ecca3" font-size="9">→ 提走自己保管</text>
+        <text x="475" y="175" text-anchor="middle" fill="#7a7a9a" font-size="9">流通供應減少</text>
+        <text x="475" y="188" text-anchor="middle" fill="#4ecca3" font-size="10" font-weight="bold">買壓訊號 ↑</text>
+
+        <rect x="370" y="200" width="210" height="10" fill="#4ecca3" opacity="0.2" rx="2"/>
+        <text x="475" y="209" text-anchor="middle" fill="#4ecca3" font-size="8">持續流出代表市場在吸籌，供應緊縮</text>
+
+        <text x="320" y="244" text-anchor="middle" fill="#555577" font-size="10">關鍵：不是看單日的流量，而是看<tspan fill="#d8d8e8">趨勢</tspan>——持續流入還是持續流出</text>
+        <text x="320" y="260" text-anchor="middle" fill="#555577" font-size="10">價格劇烈波動前，往往先出現大量的交易所流入（持有者在準備出場）</text>
+
+        <text x="320" y="290" text-anchor="middle" fill="#555577" font-size="9">工具推薦：CryptoQuant、Glassnode 可以查看各大交易所的 Netflow 數據</text>
+      </svg>
+      <div class="diagram-caption">持續流入 = 市場在準備賣出｜持續流出 = 市場在囤幣，供應緊縮</div>
+    </div>
+
+    <h3>實戰上怎麼用？</h3>
+    <p>不要只看單日的數字，要看<strong>趨勢</strong>。幾天內持續大量流入，才有意義。單日一次性的大額流入有可能只是鯨魚在轉移錢包，不代表一定要賣。</p>
+    <p>搭配比對：大量流入但價格沒跌，代表有買盤在承接；大量流入加上價格下跌，代表賣壓正在主導市場。</p>
+
+    <h2>SSR：場內有多少火藥等著進場？</h2>
+    <p>SSR（Stablecoin Supply Ratio，穩定幣供應比率）衡量的是：<strong>相對於比特幣的市值，市場上有多少穩定幣的「火藥」等著進場？</strong></p>
+    <p>計算方式：比特幣市值 ÷ 穩定幣總市值 = SSR</p>
+    <p>想像一下：如果市場上有很多人手上拿著 USDT、USDC，但還沒買入比特幣，這些錢就是「等著進場的火藥」。</p>
+
+    <div class="callout">
+      <strong>SSR 低</strong>：相對比特幣市值，穩定幣很多 → 場內火藥充足 → 潛在買力強<br><br>
+      <strong>SSR 高</strong>：相對比特幣市值，穩定幣很少 → 資金大多已入場 → 潛在買力薄弱
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 270" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="270" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">SSR 的直覺理解</text>
+
+        <!-- Low SSR scenario -->
+        <rect x="40" y="44" width="255" height="175" fill="#0a1218" rx="6"/>
+        <text x="167" y="64" text-anchor="middle" fill="#4ecca3" font-size="12" font-weight="bold">SSR 低</text>
+        <text x="167" y="78" text-anchor="middle" fill="#7a7a9a" font-size="10">穩定幣多，比特幣市值相對小</text>
+
+        <!-- Stablecoin tank: big -->
+        <rect x="65" y="90" width="90" height="100" fill="#1a3a2a" rx="4" stroke="#4ecca3" stroke-width="1.5" opacity="0.8"/>
+        <rect x="65" y="130" width="90" height="60" fill="#4ecca3" opacity="0.35" rx="2"/>
+        <text x="110" y="118" text-anchor="middle" fill="#4ecca3" font-size="9">USDT</text>
+        <text x="110" y="131" text-anchor="middle" fill="#4ecca3" font-size="9">USDC</text>
+        <text x="110" y="155" text-anchor="middle" fill="#4ecca3" font-size="18" font-weight="bold">多</text>
+        <text x="110" y="200" text-anchor="middle" fill="#4ecca3" font-size="9">穩定幣</text>
+
+        <!-- BTC market small -->
+        <rect x="185" y="120" width="70" height="70" fill="#0d2a3a" rx="4" stroke="#00c8ff" stroke-width="1" opacity="0.6"/>
+        <text x="220" y="155" text-anchor="middle" fill="#00c8ff" font-size="9">BTC</text>
+        <text x="220" y="168" text-anchor="middle" fill="#00c8ff" font-size="9">市值</text>
+        <text x="220" y="200" text-anchor="middle" fill="#7a7a9a" font-size="9">相對較小</text>
+
+        <text x="167" y="228" text-anchor="middle" fill="#4ecca3" font-size="10" font-weight="bold">大量火藥在場外等著 → 買力強</text>
+
+        <!-- High SSR scenario -->
+        <rect x="345" y="44" width="255" height="175" fill="#1a0a0a" rx="6"/>
+        <text x="472" y="64" text-anchor="middle" fill="#ff9944" font-size="12" font-weight="bold">SSR 高</text>
+        <text x="472" y="78" text-anchor="middle" fill="#7a7a9a" font-size="10">穩定幣少，比特幣市值相對大</text>
+
+        <!-- Stablecoin tank: small -->
+        <rect x="370" y="120" width="70" height="70" fill="#2a1a0a" rx="4" stroke="#ffaa44" stroke-width="1.5" opacity="0.7"/>
+        <rect x="370" y="160" width="70" height="30" fill="#ff8822" opacity="0.25" rx="2"/>
+        <text x="405" y="145" text-anchor="middle" fill="#ffaa44" font-size="9">USDT</text>
+        <text x="405" y="175" text-anchor="middle" fill="#ffaa44" font-size="14" font-weight="bold">少</text>
+        <text x="405" y="200" text-anchor="middle" fill="#ffaa44" font-size="9">穩定幣</text>
+
+        <!-- BTC market big -->
+        <rect x="460" y="90" width="100" height="100" fill="#0d1a2a" rx="4" stroke="#00c8ff" stroke-width="1.5" opacity="0.8"/>
+        <rect x="460" y="90" width="100" height="100" fill="#00c8ff" opacity="0.12" rx="4"/>
+        <text x="510" y="140" text-anchor="middle" fill="#00c8ff" font-size="9">BTC</text>
+        <text x="510" y="153" text-anchor="middle" fill="#00c8ff" font-size="9">市值</text>
+        <text x="510" y="200" text-anchor="middle" fill="#7a7a9a" font-size="9">相對很大</text>
+
+        <text x="472" y="228" text-anchor="middle" fill="#ff9944" font-size="10" font-weight="bold">資金大多已入場 → 買力薄弱</text>
+
+        <text x="320" y="256" text-anchor="middle" fill="#555577" font-size="10">SSR 下降（穩定幣增加）= 潛在買力積累中；SSR 上升 = 資金已充分入場，上漲動能可能減弱</text>
+      </svg>
+      <div class="diagram-caption">SSR 低 = 場外火藥多，市場有潛在買力；SSR 高 = 資金已入場，新進買力不足</div>
+    </div>
+
+    <p>SSR 是一個「未來買力」的衡量工具，不是即時訊號。它告訴你的是<strong>潛力</strong>，而非時機——場外火藥多，只代表有買入的條件，不代表明天就會漲。</p>
+
+    <h2>Miner Outflow：礦工是沉默的長期賣壓</h2>
+    <p>礦工每天挖出新的比特幣，這些幣就是市場的<strong>原生供應</strong>。礦工需要支付電費、機器折舊等成本，所以他們長期都是賣出方之一。</p>
+    <p>當礦工把幣轉移到交易所的速度加快，代表他們在賣出；當他們持有不動，代表他們對市場有信心，不急著賣。</p>
+
+    <div class="callout">
+      <strong>Miner Outflow 增加</strong>：礦工把幣往交易所送 → 拋售壓力上升 → 短期利空<br><br>
+      <strong>Miner Outflow 減少 / 礦工在囤幣</strong>：礦工對未來有信心，不急著賣 → 供應壓力降低 → 正面訊號<br><br>
+      <strong>礦工投降（Miner Capitulation）</strong>：礦工大量虧損拋售，通常出現在熊市低點，是重要的底部訊號
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="280" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">礦工行為與市場週期</text>
+
+        <!-- Timeline x-axis -->
+        <line x1="55" y1="200" x2="585" y2="200" stroke="#333355" stroke-width="1.5"/>
+
+        <!-- Miner outflow bars (varying height) -->
+        <!-- Bull market: low outflow -->
+        <text x="120" y="50" text-anchor="middle" fill="#7a7a9a" font-size="10">牛市中段</text>
+        <rect x="70" y="140" width="35" height="60" fill="#4ecca3" opacity="0.55" rx="2"/>
+        <rect x="110" y="155" width="35" height="45" fill="#4ecca3" opacity="0.5" rx="2"/>
+        <text x="105" y="218" text-anchor="middle" fill="#4ecca3" font-size="9">礦工囤幣</text>
+        <text x="105" y="230" text-anchor="middle" fill="#4ecca3" font-size="9">低拋售壓力</text>
+
+        <!-- Late bull: outflow starts increasing -->
+        <text x="245" y="50" text-anchor="middle" fill="#7a7a9a" font-size="10">牛市末段</text>
+        <rect x="165" y="110" width="35" height="90" fill="#ffaa33" opacity="0.55" rx="2"/>
+        <rect x="205" y="95" width="35" height="105" fill="#ff8833" opacity="0.6" rx="2"/>
+        <rect x="245" y="80" width="35" height="120" fill="#ff6633" opacity="0.65" rx="2"/>
+        <text x="240" y="218" text-anchor="middle" fill="#ffaa44" font-size="9">礦工開始賣出</text>
+        <text x="240" y="230" text-anchor="middle" fill="#ffaa44" font-size="9">拋售壓力上升</text>
+
+        <!-- Bear market: high outflow (capitulation) -->
+        <text x="390" y="50" text-anchor="middle" fill="#7a7a9a" font-size="10">熊市底部（礦工投降）</text>
+        <rect x="330" y="55" width="35" height="145" fill="#ff4444" opacity="0.7" rx="2"/>
+        <rect x="370" y="45" width="35" height="155" fill="#ff3333" opacity="0.75" rx="2"/>
+        <text x="362" y="218" text-anchor="middle" fill="#ff5555" font-size="9">礦工大量虧損拋售</text>
+        <text x="362" y="230" text-anchor="middle" fill="#ff5555" font-size="9">底部投降訊號</text>
+
+        <!-- Post bottom: outflow shrinks -->
+        <text x="510" y="50" text-anchor="middle" fill="#7a7a9a" font-size="10">底部回穩</text>
+        <rect x="440" y="155" width="35" height="45" fill="#00c8ff" opacity="0.5" rx="2"/>
+        <rect x="480" y="165" width="35" height="35" fill="#00c8ff" opacity="0.55" rx="2"/>
+        <rect x="520" y="170" width="35" height="30" fill="#4ecca3" opacity="0.55" rx="2"/>
+        <text x="505" y="218" text-anchor="middle" fill="#00c8ff" font-size="9">拋售消退</text>
+        <text x="505" y="230" text-anchor="middle" fill="#00c8ff" font-size="9">市場趨於穩定</text>
+
+        <!-- Arrow pointing to capitulation as buying opportunity -->
+        <line x1="362" y1="240" x2="362" y2="252" stroke="#4ecca3" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="362" y="265" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">← 歷史上的底部買入機會</text>
+
+        <text x="320" y="278" text-anchor="middle" fill="#555577" font-size="9">礦工投降（Miner Capitulation）= 熊市最痛苦的賣壓，但也往往是最接近底部的時刻</text>
+      </svg>
+      <div class="diagram-caption">礦工流出量在熊市底部達到高峰後消退，是歷史上重要的底部訊號之一</div>
+    </div>
+
+    <h3>礦工投降是什麼？</h3>
+    <p>當比特幣價格跌到礦工的挖礦成本以下，礦工開始虧損。為了支付電費，他們被迫把手中的幣全部賣掉，甚至關機停挖——這就是「礦工投降」。</p>
+    <p>這個過程非常痛苦，但它同時也在做一件事：把市場上最後一批被迫賣出的人清洗掉。歷史上，礦工投降後市場往往迎來較長期的底部確認。</p>
+
+    <h2>三個指標合起來看</h2>
+    <p>這三個指標分別回答了三個不同的問題：</p>
+
+    <div class="callout">
+      <strong>Exchange Netflow</strong>：持有者現在打算賣，還是囤？（行為方向）<br>
+      <strong>SSR</strong>：場外還有多少資金準備進場？（潛在買力）<br>
+      <strong>Miner Outflow</strong>：原生供應方在賣嗎？賣到什麼程度？（供應壓力）
+    </div>
+
+    <p>搭配上一篇的持倉指標（SOPR、NUPL、HODL Waves），你就有了一個完整的鏈上分析框架：</p>
+
+    <div class="callout">
+      <strong>底部訊號的典型組合：</strong><br>
+      SOPR 回升 + NUPL 在投降區 + HODL Waves 長期層增厚<br>
+      + Exchange Netflow 轉為流出 + SSR 開始下降 + 礦工投降後趨於穩定<br><br>
+      <strong>頂部訊號的典型組合：</strong><br>
+      SOPR 高位轉跌 + NUPL 進狂喜區 + HODL Waves 短期層暴增<br>
+      + Exchange Netflow 持續大量流入 + SSR 偏高 + 礦工開始大量拋售
+    </div>
+
+    <h2>小結</h2>
+    <div class="callout">
+      <strong>Exchange Netflow</strong>：流入 = 準備賣，流出 = 囤幣，看趨勢而非單日<br>
+      <strong>SSR</strong>：低 = 場外火藥多，買力潛在充足；高 = 資金已入場，動能可能減弱<br>
+      <strong>Miner Outflow</strong>：礦工投降是熊市底部的典型訊號，投降後消退代表最後的拋壓出清
+    </div>
+    <p>鏈上數據不能讓你每次都抄到最低點，但它能讓你<strong>在正確的週期位置做出更理性的決策</strong>——在別人恐慌的時候，你有數據支撐你的判斷。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>
