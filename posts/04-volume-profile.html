@@ -163,6 +163,35 @@
       <tr><td>前日 POC 被有效突破</td><td>順勢追進，POC 轉換角色</td></tr>
     </table>
 
+    <h2>如何選擇 VP 的計算範圍</h2>
+    <p>Volume Profile 不是只有一種。計算範圍不同，代表的意義完全不同。你需要同時看多個範圍，才能獲得完整的市場圖像。</p>
+    <table>
+      <tr><th>範圍</th><th>名稱</th><th>適合用來看什麼</th></tr>
+      <tr><td>當天</td><td>Session VP / Daily VP</td><td>今天的公平價格、當日支撐阻力</td></tr>
+      <tr><td>前一天</td><td>Prior Day VP</td><td>昨天的 POC/VAH/VAL，今天的參考關鍵位</td></tr>
+      <tr><td>整週</td><td>Weekly VP</td><td>本週的整體市場重心</td></tr>
+      <tr><td>自訂時間段</td><td>Composite VP（複合 VP）</td><td>涵蓋多日或多週，看大範圍的 HVN/LVN</td></tr>
+    </table>
+
+    <h2>Developing VP vs Final VP</h2>
+    <p><strong>Final VP（最終 VP）</strong>是一天結束後，根據完整的交易數據畫出來的。這是你在隔天看到的靜態圖。</p>
+    <p><strong>Developing VP（動態 VP）</strong>是盤中即時更新的。POC 會隨著新成交不斷移動，Value Area 的邊界也在調整。</p>
+    <p>Developing POC 的移動方向非常有意義：</p>
+    <div class="callout">
+      <strong>POC 持續往上遷移</strong>：市場的重心在向上移動，成交量在高價區聚集 → 多頭訊號<br><br>
+      <strong>POC 持續往下遷移</strong>：市場的重心在向下移動，成交量在低價區聚集 → 空頭訊號<br><br>
+      <strong>POC 不動</strong>：市場在原地找到共識，盤整中
+    </div>
+
+    <h2>Composite Volume Profile（複合 VP）</h2>
+    <p>把多天的 VP 疊加在一起，就是 Composite VP。它讓你看到的不是「今天的公平價格」，而是「過去 X 天整體的成交量分布」——可以找到跨越多天的重要 HVN 和 LVN。</p>
+    <p>特別有用的場合：</p>
+    <ul style="color:var(--text-secondary);line-height:2;padding-left:1.5rem;">
+      <li>判斷長期的支撐/阻力區域（HVN = 長期支撐，LVN = 長期真空）</li>
+      <li>在盤整結束後判斷突破的力道（突破長期 HVN 才是真正有意義的突破）</li>
+      <li>找到「市場認可的長期公平價格」——那個 POC 是整個範圍內成交最集中的地方</li>
+    </ul>
+
     <h2>Naked POC：未完成的業務</h2>
     <p>Naked POC = 過去某天的 POC，之後價格從未再回去測試過的 POC。市場有一個習慣：它遲早會回去「完成」那些未結束的拍賣。</p>
     <div class="callout">

@@ -152,6 +152,26 @@
       <strong>一個有趣的情況：</strong>某個價格 TPO 多（停留久）但 VP 小（成交量少），代表市場在那裡「待著」但沒什麼人真正交易。反之，VP 大但 TPO 少，代表有人在短時間內快速大量成交——機構行為的痕跡。
     </div>
 
+    <h2>Initial Balance（IB）：開盤的第一小時</h2>
+    <p>TPO 有一個非常重要的概念叫做 <strong>Initial Balance（IB，初始平衡）</strong>，指的是<strong>開盤後前兩個 30 分鐘時段（A 和 B 時段）所形成的價格範圍</strong>。</p>
+    <p>為什麼重要？開盤時，歐美機構、退休基金、對沖基金都在做當天的交易決策。前一小時的價格區間，反映了市場對當天「合理範圍」的初始共識。</p>
+
+    <div class="callout">
+      <strong>IB 範圍窄</strong>（兩端之間的距離小）：市場不確定，往往之後會有大幅突破；或是趨勢日的前兆<br><br>
+      <strong>IB 範圍寬</strong>（兩端之間的距離大）：市場已經充分探索，之後可能在 IB 範圍內震盪整理<br><br>
+      <strong>Range Extension（範圍延伸）</strong>：當日後來的價格突破了 IB 的上下邊界，叫做範圍延伸——代表市場決定要去更遠的地方拍賣
+    </div>
+
+    <p>IB 的使用方式：把 IB 的上緣（IB High）和下緣（IB Low）畫出來。在震盪日，這兩條線往往是整天的支撐和阻力。在趨勢日，當 IB 被突破，就是趨勢開始的訊號。</p>
+
+    <h2>Single Print：市場快速路過的地方</h2>
+    <p>在 TPO 圖中，如果某個價格只有一個字母（只被一個 30 分鐘時段碰到），這叫做 <strong>Single Print（單一印記）</strong>。</p>
+    <p>Single Print 代表市場在那個價格幾乎沒有停留——它快速路過，沒有形成任何交易共識。這就像一條高速公路：車輛全速通過，沒有人停下來。</p>
+    <p>Single Print 的重要性：市場有一個習慣——它遲早會回去「填滿」那些快速路過的地方，就像路面的坑洞遲早要補起來。<strong>Single Print 是未來的回測目標</strong>。</p>
+    <div class="callout">
+      在圖表上標出 Single Print 的位置，當價格下次靠近時，這是潛在的反轉點——市場回來「確認」那個區域是否有交易價值。如果確認了，Single Print 就被填滿，支撐/阻力不再有效；如果被快速反彈，代表市場再次拒絕那個區域。
+    </div>
+
     <h2>TPO 的三種市場形狀</h2>
     <h3>D 形（正態分布）= 平衡市場</h3>
     <p>中間寬、兩頭窄。市場對公平價格有明確共識，雙向交易均衡。適合用均值回歸策略，打 POC 和兩側 VA 邊界。</p>
@@ -160,8 +180,26 @@
     <h3>b 形（頂部厚）= 下跌後的整合</h3>
     <p>頂部成交量多，底部少。代表下跌後多頭出貨，賣方在高點聚集。通常是繼續下跌或頭部確認的訊號。</p>
 
+    <h2>四種主要日型態</h2>
+    <p>根據 TPO 的分布形狀和 IB 範圍，可以把大多數的交易日分成四種類型。提前判斷今天是哪種日型態，能讓你選擇對應的交易策略。</p>
+    <table>
+      <tr><th>日型態</th><th>特徵</th><th>對應策略</th></tr>
+      <tr><td><strong>趨勢日（Trend Day）</strong></td><td>IB 窄，全天朝一個方向移動，TPO 細長</td><td>順勢進場，目標遠，止損緊，不逆勢</td></tr>
+      <tr><td><strong>正常日（Normal Day）</strong></td><td>IB 中等，有一定的 Range Extension，D 形偏移</td><td>在 VA 邊界找反轉，目標 POC</td></tr>
+      <tr><td><strong>中性日（Neutral Day）</strong></td><td>上下都有 Range Extension，最後收在 IB 附近</td><td>IB 邊界做反轉，注意雙向獵殺</td></tr>
+      <tr><td><strong>非趨勢日（Non-Trend Day）</strong></td><td>IB 很寬，全天在 IB 內震盪，無方向</td><td>在 IB 邊界做短線反轉，目標小，不追趨勢</td></tr>
+    </table>
+    <p>判斷技巧：看開盤後前 30-60 分鐘（A/B 時段）的範圍大小和成交量。範圍很小 + 成交量大 → 趨勢日機率高；範圍很大 + 成交量分散 → 非趨勢日或中性日。</p>
+
     <h2>小結</h2>
-    <p>TPO 是把「時間」作為衡量標準的 Market Profile。字母越多的地方，市場越接受；字母少的地方（Single Print），市場快速路過——那是潛在的回測目標。</p>
+    <div class="callout">
+      <strong>TPO</strong>：用時間衡量市場接受程度，字母越多 = 越重要的價格<br>
+      <strong>POC</strong>：停留最久的價格，市場的時間重心<br>
+      <strong>Initial Balance</strong>：前一小時定義當天的起始範圍，是全天的參考基準<br>
+      <strong>Single Print</strong>：快速路過，未來回測目標<br>
+      <strong>Range Extension</strong>：突破 IB，趨勢啟動的訊號<br>
+      <strong>日型態</strong>：判斷今天是趨勢日還是震盪日，對應不同策略
+    </div>
     <p>下一篇，我們看 VWAP——這是機構最常用的成本基準，也是讓你理解「大資金在哪個價格入場」的關鍵工具。</p>
   </div>
 </div>
