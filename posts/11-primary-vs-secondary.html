@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11 一級市場 vs 二級市場｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">加密貨幣 · 市場結構 · 第 11 篇</span>
+    <h1>一級市場 vs 二級市場：你的錢到底流向了誰？</h1>
+    <p class="subtitle">同樣是「買幣」，有時候你是在幫專案方募資，有時候你是在和其他投資人交易。這兩件事的風險、邏輯、和機會完全不一樣。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>用一個比喻開始</h2>
+    <p>想像一棟新建案。</p>
+    <p>你在大樓還沒蓋好的時候，去建商那邊「預購」一間房，這叫<strong>一級市場</strong>。你的錢直接進了建商的口袋，你拿到的是一份「未來交屋的權利」，建商用你的錢去蓋房子。</p>
+    <p>大樓蓋好了，有人買了之後又想轉手賣掉——這就是<strong>二級市場</strong>。你的錢進了上一個屋主的口袋，建商和這筆交易沒有任何關係。</p>
+    <p>加密貨幣的一級市場和二級市場，運作邏輯完全一樣。</p>
+
+    <div class="callout">
+      <strong>一級市場</strong>：代幣從專案方直接發行給投資者，資金流向專案開發<br>
+      <strong>二級市場</strong>：代幣在投資者之間轉手交易，資金流向賣出方，和專案無關
+    </div>
+
+    <h2>一級市場的幾種形式</h2>
+    <p>在加密貨幣世界，一級市場不是只有一種形式。依照對象和平台的不同，分成以下幾類：</p>
+
+    <h3>私募輪（Private Sale）：VC 和大戶的遊戲</h3>
+    <p>專案還在早期，甚至還沒有產品，只有白皮書和團隊介紹。這時候，專案方去找<strong>風險投資機構（Venture Capital，VC）</strong>、天使投資人、或大型做市商募資。</p>
+    <p>私募輪的代幣價格極低——因為風險極高，沒有人知道這個專案最終能不能成功。作為補償，VC 拿到的是最便宜的代幣，但通常有很長的<strong>鎖倉期（Vesting Period）</strong>，不能立刻賣出。</p>
+    <table>
+      <tr><th>輪次</th><th>典型估值</th><th>誰能參與</th><th>鎖倉期</th></tr>
+      <tr><td><strong>種子輪（Seed Round）</strong></td><td>最低，往往是後來上市價的 5-20 倍折扣</td><td>少數頂級 VC、天使投資人</td><td>12-24 個月</td></tr>
+      <tr><td><strong>策略輪（Strategic Round）</strong></td><td>比種子輪高</td><td>有戰略價值的機構（交易所、生態基金）</td><td>6-18 個月</td></tr>
+      <tr><td><strong>KOL 輪</strong></td><td>介於私募和公募之間</td><td>有影響力的加密社群意見領袖</td><td>通常較短，3-6 個月</td></tr>
+    </table>
+
+    <h3>ICO：最早期的群眾募資模式</h3>
+    <p><strong>ICO（Initial Coin Offering，首次代幣發行）</strong>是 2017 年大流行的模式。專案方直接向公眾賣代幣，任何人都能參與，幾乎沒有審查。</p>
+    <p>結果：大量詐騙（Scam）和空氣幣，投資人損失慘重。ICO 熱潮在 2018 年隨著熊市崩潰，各國監管機構也開始介入。目前 ICO 已不常見，被更嚴格的形式取代。</p>
+
+    <h3>IEO：交易所背書的公開發行</h3>
+    <p><strong>IEO（Initial Exchange Offering，首次交易所發行）</strong>是由大型交易所（Binance Launchpad、Bybit Launchpad 等）主辦的代幣發行。</p>
+    <p>與 ICO 的差別：交易所先做初步審查，確認專案的基本合法性，再讓用戶在交易所平台上直接購買。代幣發行後通常立刻在該交易所上市。</p>
+    <div class="callout">
+      IEO 的優點：有交易所背書，詐騙機率較低；流動性立即建立（上所即可交易）<br>
+      IEO 的缺點：交易所抽成，專案方需要讓利；用戶需要持有交易所平台幣才能參與（例如 Binance 的 BNB）
+    </div>
+
+    <h3>IDO：去中心化的公開發行</h3>
+    <p><strong>IDO（Initial DEX Offering，首次去中心化交易所發行）</strong>在去中心化交易所（DEX，如 Uniswap、Raydium）上進行。</p>
+    <p>專案方在 DEX 上提供初始流動性，讓用戶直接用穩定幣或 ETH 購買新代幣。不需要中心化機構審查，任何人都可以發行。</p>
+    <p>代幣發行平台（Launchpad）如 Polkastarter、Fjord Foundry 等，也是 IDO 的一種形式，會做一定程度的專案審核。</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 310" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="310" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">一級市場的資金流向</text>
+        <text x="320" y="44" text-anchor="middle" fill="#7a7a9a" font-size="11">不管哪種形式，你的錢都直接流向專案方</text>
+
+        <!-- Project team box -->
+        <rect x="240" y="60" width="160" height="60" fill="#0d1a2a" rx="8" stroke="#00c8ff" stroke-width="1.5" opacity="0.9"/>
+        <text x="320" y="87" text-anchor="middle" fill="#00c8ff" font-size="12" font-weight="bold">專案方</text>
+        <text x="320" y="103" text-anchor="middle" fill="#7a7a9a" font-size="10">用你的錢開發產品</text>
+
+        <!-- Arrows down from project -->
+        <defs>
+          <marker id="arrD" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <polygon points="0,0 8,4 0,8" fill="#555577" opacity="0.8"/>
+          </marker>
+          <marker id="arrU" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <polygon points="0,0 8,4 0,8" fill="#4ecca3" opacity="0.8"/>
+          </marker>
+          <marker id="arrU2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <polygon points="0,0 8,4 0,8" fill="#ffaa44" opacity="0.8"/>
+          </marker>
+          <marker id="arrU3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <polygon points="0,0 8,4 0,8" fill="#ff5555" opacity="0.8"/>
+          </marker>
+        </defs>
+
+        <!-- VC -->
+        <rect x="30" y="175" width="130" height="55" fill="#0a1a1a" rx="6" stroke="#4ecca3" stroke-width="1" opacity="0.8"/>
+        <text x="95" y="198" text-anchor="middle" fill="#4ecca3" font-size="11" font-weight="bold">VC / 私募</text>
+        <text x="95" y="215" text-anchor="middle" fill="#7a7a9a" font-size="9">種子輪 / 策略輪</text>
+        <text x="95" y="227" text-anchor="middle" fill="#4ecca3" font-size="9">折扣最多，鎖倉最長</text>
+
+        <!-- Launchpad/IEO -->
+        <rect x="245" y="175" width="150" height="55" fill="#0d1520" rx="6" stroke="#00c8ff" stroke-width="1" opacity="0.8"/>
+        <text x="320" y="198" text-anchor="middle" fill="#00c8ff" font-size="11" font-weight="bold">IEO / Launchpad</text>
+        <text x="320" y="215" text-anchor="middle" fill="#7a7a9a" font-size="9">交易所平台發行</text>
+        <text x="320" y="227" text-anchor="middle" fill="#00c8ff" font-size="9">需持有平台幣</text>
+
+        <!-- IDO/Public -->
+        <rect x="480" y="175" width="130" height="55" fill="#1a0d0d" rx="6" stroke="#ffaa44" stroke-width="1" opacity="0.8"/>
+        <text x="545" y="198" text-anchor="middle" fill="#ffaa44" font-size="11" font-weight="bold">IDO / 公售</text>
+        <text x="545" y="215" text-anchor="middle" fill="#7a7a9a" font-size="9">DEX / 公開平台</text>
+        <text x="545" y="227" text-anchor="middle" fill="#ffaa44" font-size="9">人人可參與</text>
+
+        <!-- Lines from project to each -->
+        <line x1="260" y1="120" x2="130" y2="175" stroke="#4ecca3" stroke-width="1.5" marker-end="url(#arrU)" opacity="0.6"/>
+        <line x1="320" y1="120" x2="320" y2="175" stroke="#00c8ff" stroke-width="1.5" marker-end="url(#arrD)" opacity="0.6"/>
+        <line x1="380" y1="120" x2="510" y2="175" stroke="#ffaa44" stroke-width="1.5" marker-end="url(#arrU2)" opacity="0.6"/>
+
+        <!-- Label on lines: tokens down, money up -->
+        <text x="178" y="152" text-anchor="middle" fill="#4ecca3" font-size="9">代幣 ↓</text>
+        <text x="334" y="152" fill="#00c8ff" font-size="9">代幣 ↓</text>
+        <text x="462" y="152" text-anchor="middle" fill="#ffaa44" font-size="9">代幣 ↓</text>
+
+        <text x="320" y="260" text-anchor="middle" fill="#555577" font-size="10">無論哪個管道，你的法幣/ETH 流向專案方，你拿到代幣</text>
+        <text x="320" y="274" text-anchor="middle" fill="#555577" font-size="10">折扣最多的人（VC）鎖倉最長；普通投資人折扣最少但鎖倉最短</text>
+        <text x="320" y="290" text-anchor="middle" fill="#7a7a9a" font-size="10">這就是為什麼 TGE 後往往有賣壓——有人解鎖了，開始出貨</text>
+      </svg>
+      <div class="diagram-caption">一級市場的三個主要管道，都是資金從投資者流向專案方、代幣從專案方流向投資者</div>
+    </div>
+
+    <h2>TGE：代幣正式誕生的那一刻</h2>
+    <p><strong>TGE（Token Generation Event，代幣生成事件）</strong>是代幣正式在區塊鏈上被創建並開始分發的時間點。很多人把它誤認為就是「上市」，但兩者不完全一樣。</p>
+    <p>TGE 之後，代幣才正式存在。但它不一定立刻在二級市場交易——有些代幣 TGE 後就立刻上所，有些則要等到解鎖期過了。</p>
+    <p>TGE 當天，通常會有一定比例的代幣釋放到市場上（叫做 <strong>TGE Unlock</strong>），其餘的則按照 Vesting 時程逐步解鎖。</p>
+
+    <h2>鎖倉（Vesting）和懸崖（Cliff）：時程的遊戲</h2>
+    <p>鎖倉期（Vesting Period）是一級市場最關鍵的機制，也是二級市場投資者最需要了解的風險來源。</p>
+    <p>典型的 Vesting 設計：「<strong>Cliff 6 個月，之後線性釋放 18 個月</strong>」</p>
+    <p>翻譯：</p>
+    <ul style="color:var(--text-secondary);line-height:2.2;padding-left:1.5rem;">
+      <li><strong>Cliff（懸崖期）6 個月</strong>：TGE 後的前 6 個月，一顆代幣都不能動</li>
+      <li><strong>線性釋放 18 個月</strong>：6 個月之後，代幣按月均勻解鎖，每個月釋放總量的 1/18</li>
+    </ul>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="240" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">Vesting 時程示意：Cliff 6M + 線性釋放 18M</text>
+
+        <!-- X axis (time) -->
+        <line x1="55" y1="180" x2="605" y2="180" stroke="#333355" stroke-width="1.5"/>
+        <text x="55" y="198" text-anchor="middle" fill="#555577" font-size="9">TGE</text>
+        <text x="183" y="198" text-anchor="middle" fill="#555577" font-size="9">6M</text>
+        <text x="311" y="198" text-anchor="middle" fill="#555577" font-size="9">12M</text>
+        <text x="440" y="198" text-anchor="middle" fill="#555577" font-size="9">18M</text>
+        <text x="568" y="198" text-anchor="middle" fill="#555577" font-size="9">24M</text>
+
+        <!-- Y axis (% unlocked) -->
+        <line x1="55" y1="55" x2="55" y2="180" stroke="#333355" stroke-width="1.5"/>
+        <text x="48" y="180" text-anchor="end" fill="#555577" font-size="9">0%</text>
+        <text x="48" y="115" text-anchor="end" fill="#555577" font-size="9">50%</text>
+        <text x="48" y="58" text-anchor="end" fill="#555577" font-size="9">100%</text>
+
+        <!-- Cliff zone: 0 for first 6 months -->
+        <rect x="55" y="55" width="128" height="125" fill="#ff4444" opacity="0.06" rx="0"/>
+        <line x1="55" y1="180" x2="183" y2="180" stroke="#ff5555" stroke-width="2.5"/>
+        <text x="119" y="168" text-anchor="middle" fill="#ff7777" font-size="9" font-weight="bold">Cliff 期（完全鎖倉）</text>
+
+        <!-- Cliff drop line -->
+        <line x1="183" y1="55" x2="183" y2="180" stroke="#555577" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+
+        <!-- Linear unlock: 6M to 24M -->
+        <line x1="183" y1="180" x2="568" y2="58" stroke="#4ecca3" stroke-width="2.5"/>
+
+        <!-- Area under linear unlock -->
+        <polygon points="183,180 568,58 568,180" fill="#4ecca3" opacity="0.06"/>
+
+        <!-- Annotations -->
+        <text x="390" y="105" text-anchor="middle" fill="#4ecca3" font-size="10" font-weight="bold">線性解鎖（每月釋放 1/18）</text>
+
+        <!-- Key markers -->
+        <circle cx="183" cy="180" r="4" fill="#ffa500"/>
+        <text x="183" y="215" text-anchor="middle" fill="#ffa500" font-size="9">懸崖結束</text>
+        <text x="183" y="226" text-anchor="middle" fill="#ffa500" font-size="9">開始解鎖</text>
+
+        <circle cx="568" cy="58" r="4" fill="#4ecca3"/>
+        <text x="568" y="45" text-anchor="middle" fill="#4ecca3" font-size="9">100% 解鎖</text>
+
+        <text x="320" y="218" text-anchor="middle" fill="#555577" font-size="9">第 7-24 個月，每個月解鎖約 5.5%（1/18）</text>
+      </svg>
+      <div class="diagram-caption">Cliff = 完全鎖倉期｜Cliff 結束後才開始線性解鎖｜每次解鎖都可能帶來賣壓</div>
+    </div>
+
+    <p>對二級市場投資者的意義：每次 Vesting 解鎖日都可能帶來賣壓。特別是 Cliff 結束的那一天——所有的 VC 和早期投資人可以開始動手。<strong>在買入前，務必查清楚這個代幣的 Vesting 時程。</strong></p>
+
+    <h2>代幣分配（Token Allocation）：誰拿了多少</h2>
+    <p>每個專案在 TGE 前都會公布代幣的分配比例，說明總供應量是怎麼分給不同角色的。</p>
+    <p>典型的代幣分配長這樣：</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans TC','Inter',sans-serif">
+        <rect width="640" height="260" fill="#09090f"/>
+        <text x="320" y="26" text-anchor="middle" fill="#d8d8e8" font-size="14" font-weight="bold">典型代幣分配比例</text>
+
+        <!-- Stacked bar (total width 500px, from x=70) -->
+        <!-- Team: 18% = 90px -->
+        <rect x="70" y="60" width="90" height="50" fill="#ff4444" opacity="0.75" rx="2"/>
+        <text x="115" y="90" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">團隊 18%</text>
+
+        <!-- VC/Investors: 22% = 110px -->
+        <rect x="160" y="60" width="110" height="50" fill="#ff8833" opacity="0.75" rx="2"/>
+        <text x="215" y="90" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">VC / 私募 22%</text>
+
+        <!-- Ecosystem/Treasury: 25% = 125px -->
+        <rect x="270" y="60" width="125" height="50" fill="#ffcc22" opacity="0.65" rx="2"/>
+        <text x="332" y="90" text-anchor="middle" fill="#222" font-size="10" font-weight="bold">生態 / 基金庫 25%</text>
+
+        <!-- Public/Community: 15% = 75px -->
+        <rect x="395" y="60" width="75" height="50" fill="#4ecca3" opacity="0.75" rx="2"/>
+        <text x="432" y="90" text-anchor="middle" fill="#222" font-size="10" font-weight="bold">公售 15%</text>
+
+        <!-- Staking/Reward: 20% = 100px -->
+        <rect x="470" y="60" width="100" height="50" fill="#00c8ff" opacity="0.65" rx="2"/>
+        <text x="520" y="90" text-anchor="middle" fill="#222" font-size="10" font-weight="bold">質押獎勵 20%</text>
+
+        <!-- Annotations below -->
+        <text x="115" y="130" text-anchor="middle" fill="#ff7777" font-size="9">鎖倉最長</text>
+        <text x="115" y="142" text-anchor="middle" fill="#ff7777" font-size="9">（團隊跑路風險）</text>
+
+        <text x="215" y="130" text-anchor="middle" fill="#ffaa44" font-size="9">鎖倉 1-2 年</text>
+        <text x="215" y="142" text-anchor="middle" fill="#ffaa44" font-size="9">解鎖 = 賣壓來源</text>
+
+        <text x="332" y="130" text-anchor="middle" fill="#ccaa22" font-size="9">專案方控制</text>
+        <text x="332" y="142" text-anchor="middle" fill="#ccaa22" font-size="9">可能慢慢釋放</text>
+
+        <text x="432" y="130" text-anchor="middle" fill="#4ecca3" font-size="9">TGE 即釋放</text>
+        <text x="432" y="142" text-anchor="middle" fill="#4ecca3" font-size="9">散戶可參與的部分</text>
+
+        <text x="520" y="130" text-anchor="middle" fill="#00c8ff" font-size="9">按質押時程</text>
+        <text x="520" y="142" text-anchor="middle" fill="#00c8ff" font-size="9">慢慢釋放</text>
+
+        <!-- Key insight -->
+        <rect x="70" y="160" width="500" height="50" fill="#1a1a2a" rx="6"/>
+        <text x="320" y="181" text-anchor="middle" fill="#d8d8e8" font-size="11" font-weight="bold">重點：公售（散戶可買）通常只有 10-20%</text>
+        <text x="320" y="198" text-anchor="middle" fill="#7a7a9a" font-size="10">其餘 80-90% 在 VC 和團隊手中，以折扣價取得，等待解鎖後賣出</text>
+
+        <text x="320" y="238" text-anchor="middle" fill="#555577" font-size="9">這也是為什麼很多幣在上市後下跌——「他們」的成本比你低太多了</text>
+      </svg>
+      <div class="diagram-caption">公售只占整體供應的一小部分，大多數代幣以折扣價在私募輪發出，未來會陸續解鎖賣出</div>
+    </div>
+
+    <h2>FDV vs 市值：被低估的陷阱</h2>
+    <p>這是加密貨幣一級市場最常見、也最容易踩到的陷阱。</p>
+    <p><strong>市值（Market Cap）= 目前流通量 × 目前價格</strong><br>
+    <strong>FDV（Fully Diluted Valuation，完全稀釋估值）= 全部總供應量 × 目前價格</strong></p>
+    <p>為什麼重要？假設一個代幣 TGE 時只釋放了 10% 的供應量，其餘 90% 都還鎖著。</p>
+
+    <div class="callout">
+      <strong>例子：</strong><br>
+      代幣價格：$1<br>
+      流通量：1 億顆（總供應量的 10%）<br>
+      市值 = 1 億 × $1 = <strong>$1 億</strong>（看起來還好）<br>
+      FDV = 10 億 × $1 = <strong>$10 億</strong>（實際估值是 10 倍）<br><br>
+      當剩下的 9 億顆代幣慢慢解鎖，如果價格不漲 10 倍，每個現在買入的人都在被稀釋。
+    </div>
+
+    <p>在評估一個新代幣時，永遠要同時看 Market Cap 和 FDV，以及 FDV / Market Cap 的比例。這個比值越高，代表未來的稀釋壓力越大。</p>
+    <table>
+      <tr><th>FDV / Market Cap 比值</th><th>代表意思</th><th>風險評估</th></tr>
+      <tr><td>接近 1（例如 1.1-1.5）</td><td>大部分代幣已經流通</td><td>稀釋壓力小，較健康</td></tr>
+      <tr><td>2-5</td><td>流通量只有 20-50%</td><td>中等稀釋壓力，需關注解鎖時程</td></tr>
+      <tr><td>10 以上</td><td>流通量不到 10%</td><td>高稀釋風險，VC 和團隊後面有大量籌碼等著賣</td></tr>
+    </table>
+
+    <h2>二級市場：你最熟悉的那個地方</h2>
+    <p>代幣在一級市場發行完之後，就進入<strong>二級市場</strong>——也就是你每天在 Binance、OKX、Bybit 上看到的交易。</p>
+    <p>二級市場的特點：</p>
+    <ul style="color:var(--text-secondary);line-height:2.2;padding-left:1.5rem;">
+      <li>你的錢流向上一個賣出的人，和專案方完全無關</li>
+      <li>價格由所有買賣雙方的供需決定（訂單流、鏈上指標等，前幾篇講的都是這個）</li>
+      <li>任何人隨時都可以進出，沒有鎖倉限制</li>
+      <li>流動性由做市商和市場參與者共同提供</li>
+    </ul>
+
+    <h2>一級 vs 二級：完整比較</h2>
+    <table>
+      <tr><th>面向</th><th>一級市場</th><th>二級市場</th></tr>
+      <tr><td><strong>你的錢流向誰</strong></td><td>專案方（用來開發產品）</td><td>上一個賣出的人</td></tr>
+      <tr><td><strong>代幣來源</strong></td><td>直接從專案方取得</td><td>從其他投資者買入</td></tr>
+      <tr><td><strong>價格如何定</strong></td><td>專案方設定（通常有折扣）</td><td>市場供需決定，即時波動</td></tr>
+      <tr><td><strong>流動性</strong></td><td>低，通常有鎖倉期</td><td>高，隨時可買賣</td></tr>
+      <tr><td><strong>進入門檻</strong></td><td>高（私募）或中（Launchpad/IDO）</td><td>低，任何人都能參與</td></tr>
+      <tr><td><strong>風險類型</strong></td><td>專案失敗風險、團隊跑路風險</td><td>價格波動風險、流動性風險</td></tr>
+      <tr><td><strong>潛在報酬</strong></td><td>高（折扣買入）</td><td>取決於進場時機</td></tr>
+      <tr><td><strong>資訊透明度</strong></td><td>低（早期專案資訊有限）</td><td>較高（鏈上數據、公開交易紀錄）</td></tr>
+    </table>
+
+    <h2>散戶在一級市場的現實</h2>
+    <p>說了這麼多，一個普通散戶能參與一級市場嗎？能，但要了解現實：</p>
+
+    <h3>能參與的管道</h3>
+    <table>
+      <tr><th>管道</th><th>門檻</th><th>說明</th></tr>
+      <tr><td><strong>Binance / Bybit Launchpad</strong></td><td>持有平台幣（BNB/BIT）</td><td>抽籤制，中籤率通常很低，但是 IEO 中最可靠的方式</td></tr>
+      <tr><td><strong>IDO Launchpad</strong></td><td>中低（需要白名單或持有 Launchpad 代幣）</td><td>Fjord Foundry、Polkastarter 等，但專案品質參差不齊</td></tr>
+      <tr><td><strong>公售（Public Sale）</strong></td><td>低，通常任何人都能參與</td><td>折扣最少的一輪，但至少能以低於二級市場的價格進場</td></tr>
+    </table>
+
+    <h3>無法直接參與的（現實）</h3>
+    <p>種子輪和策略輪幾乎完全是機構和 VC 的遊戲。散戶唯一「間接」參與的方式是：投資那些 VC 基金本身（比如 a16z crypto 等，但門檻極高），或是購買 VC 持有頭寸的加密貨幣（如 SOL 很多 VC 持有，買 SOL 某種程度間接享受了 VC 的生態建設）。</p>
+
+    <h2>參與一級市場前，必須做的功課</h2>
+    <div class="callout">
+      <strong>1. 查代幣分配</strong>：VC 和團隊拿了多少？鎖倉期多長？<br><br>
+      <strong>2. 計算 FDV</strong>：FDV/Market Cap 比例高不高？解鎖時程表在哪裡？<br><br>
+      <strong>3. 確認 TGE Unlock</strong>：TGE 當天會釋放多少代幣？是否會立刻有大量賣壓？<br><br>
+      <strong>4. 了解使用案例</strong>：這個代幣有實際需求嗎？還是只靠炒作？<br><br>
+      <strong>5. 追蹤解鎖日</strong>：每次 Cliff 結束或大額解鎖前，往往是二級市場賣壓最強的時刻
+    </div>
+
+    <h2>小結</h2>
+    <div class="callout">
+      <strong>一級市場</strong>：代幣從專案方首次發行，你的錢流向專案；ICO / IEO / IDO / 私募是常見形式<br><br>
+      <strong>二級市場</strong>：投資者之間的交易，你的錢流向賣出方；就是每天的 Binance/OKX 交易<br><br>
+      <strong>關鍵概念</strong>：<br>
+      · TGE = 代幣正式生成的時間點<br>
+      · Vesting = 鎖倉期，防止早期投資者立刻拋售<br>
+      · Cliff = 懸崖期，完全鎖住，結束後才開始解鎖<br>
+      · FDV = 完全稀釋估值，反映潛在稀釋壓力<br>
+      · 代幣分配 = 誰拿了多少，決定未來賣壓的來源
+    </div>
+    <p>理解了一二級市場的差異，你就能更清楚地評估：「這個代幣上市後，到底有多少籌碼會在什麼時候出現？」這是加密貨幣交易中，比 K 線更重要的基本功之一。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>
