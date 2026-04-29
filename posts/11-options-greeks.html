@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11 選擇權 Greeks｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">選擇權 · Greeks · IV · 第 11 篇</span>
+    <h1>選擇權 Greeks 全解析：Delta、Gamma、Vega、Theta 與隱含波動率</h1>
+    <p class="subtitle">這五個數字，決定了一個選擇權的真實風險與價值。理解 Greeks，你才算真的懂選擇權。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>為什麼你需要懂 Greeks？</h2>
+    <p>很多人學選擇權，停在「買 Call 漲就賺、買 Put 跌就賺」的層次。但這其實是錯的——或者說，過於簡化。</p>
+    <p>選擇權的價值不只受到<strong>標的資產價格</strong>影響，還同時受到<strong>時間</strong>、<strong>波動率</strong>、<strong>距離履約價的遠近</strong>等多個維度影響。你有可能：</p>
+    <ul>
+      <li>方向看對了（標的漲了），但因為波動率下降，Call 反而虧損</li>
+      <li>方向沒變，但因為時間流逝，選擇權每天慢慢縮水</li>
+      <li>還沒等到反轉，Theta 就把你的本金耗盡了</li>
+    </ul>
+    <p><strong>Greeks（希臘字母）</strong>就是量化這些風險的工具，讓你清楚知道：「在其他條件不變的情況下，某一個因素變動 1 個單位，我的選擇權價格會如何改變？」</p>
+
+    <div class="callout">
+      <strong>本篇五大主角</strong><br>
+      <strong>IV（Implied Volatility，隱含波動率）</strong>——市場對未來波動的定價<br>
+      <strong>Delta（Δ）</strong>——價格敏感度：標的漲 1 元，選擇權漲多少？<br>
+      <strong>Gamma（Γ）</strong>——Delta 的變化速度：Delta 本身有多不穩定？<br>
+      <strong>Vega（V）</strong>——波動率敏感度：IV 漲 1%，選擇權漲多少？<br>
+      <strong>Theta（Θ）</strong>——時間衰減：每過一天，選擇權貶值多少？
+    </div>
+
+    <h2>選擇權價值的組成：先懂這個基礎</h2>
+    <p>在進入 Greeks 之前，需要先了解選擇權的價格（權利金，Premium）是由兩部分組成的：</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>組成</th><th>說明</th><th>何時為零</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>內在價值（Intrinsic Value）</strong></td>
+            <td>選擇權現在立即執行能賺到的錢。對 Call 而言是「現價 − 履約價」；對 Put 而言是「履約價 − 現價」（若為負則為 0）</td>
+            <td>價外選擇權（OTM）的內在價值永遠為 0</td>
+          </tr>
+          <tr>
+            <td><strong>時間價值（Time Value / Extrinsic Value）</strong></td>
+            <td>市場對「未來還可能有更多變化」的定價。即使現在沒有內在價值，只要還有時間，就可能有機會</td>
+            <td>到期日當天，時間價值歸零（Theta Decay）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>公式：<strong>選擇權價格 = 內在價值 + 時間價值</strong></p>
+    <p>時間價值受到兩個因素主導：<strong>剩餘時間</strong>（Theta 衡量）和<strong>隱含波動率</strong>（Vega 衡量）。</p>
+
+    <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="28" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">選擇權價格組成</text>
+      <!-- Intrinsic bar -->
+      <rect x="60" y="50" width="220" height="50" rx="6" fill="#0d3a2a" stroke="#4ecca3" stroke-width="1.5"/>
+      <text x="170" y="80" text-anchor="middle" fill="#4ecca3" font-size="13" font-family="Inter,sans-serif" font-weight="700">內在價值</text>
+      <text x="170" y="95" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">現在執行能賺的錢</text>
+      <!-- Time value bar -->
+      <rect x="360" y="50" width="220" height="50" rx="6" fill="#0d1a3a" stroke="#00c8ff" stroke-width="1.5"/>
+      <text x="470" y="80" text-anchor="middle" fill="#00c8ff" font-size="13" font-family="Inter,sans-serif" font-weight="700">時間價值</text>
+      <text x="470" y="95" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">Theta × 時間 + Vega × IV</text>
+      <!-- Plus sign -->
+      <text x="320" y="82" text-anchor="middle" fill="#555577" font-size="22" font-family="Inter,sans-serif">+</text>
+      <!-- Equals line -->
+      <rect x="60" y="125" width="520" height="50" rx="6" fill="#1a0d2a" stroke="#a855f7" stroke-width="1.5"/>
+      <text x="320" y="155" text-anchor="middle" fill="#a855f7" font-size="13" font-family="Inter,sans-serif" font-weight="700">選擇權權利金（Premium）</text>
+      <text x="320" y="170" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">你買進選擇權時支付的總價格</text>
+    </svg>
+
+    <h2>IV（Implied Volatility）：市場對未來的恐懼定價</h2>
+    <p><strong>隱含波動率（IV，Implied Volatility）</strong>是選擇權定價中最核心、也最容易被忽視的概念。</p>
+    <p>要理解 IV，先搞清楚什麼是「歷史波動率（HV，Historical Volatility）」：</p>
+    <ul>
+      <li><strong>歷史波動率（HV）</strong>：過去價格實際波動的幅度，是事後計算的</li>
+      <li><strong>隱含波動率（IV）</strong>：從現在的選擇權市場價格「反推」出來，代表市場對<strong>未來</strong>波動的預期</li>
+    </ul>
+
+    <div class="callout">
+      <strong>生活化比喻：保險費率</strong><br><br>
+      想像你要買一年期的車險。如果你住在颱風頻繁的沿海城市，保險公司認為你的車未來一年出事的機率較高，所以保費（Premium）就高。<br><br>
+      IV 就是「保費的費率」——市場認為標的資產未來波動越大，選擇權的 IV 就越高，保費（權利金）也越貴。
+    </div>
+
+    <p>IV 以「年化百分比」來表示。例如 IV = 80%，代表市場預期這個標的在未來一年的波動幅度約為 ±80%（一個標準差）。</p>
+    <p>換算成每日：日波動率 ≈ IV ÷ √252，所以 IV = 80% 代表每天大約 ±5% 的波動（80% ÷ 15.87 ≈ 5%）。</p>
+
+    <h3>IV 怎麼影響選擇權價格？</h3>
+    <p>非常直接：<strong>IV 越高，選擇權越貴；IV 越低，選擇權越便宜。</strong>這與標的方向無關。</p>
+    <ul>
+      <li>在重大事件（財報、升息決議、重要數據）前，IV 通常飆高——因為市場不確定性大，願意付更多保費</li>
+      <li>事件結束後，即使標的價格沒太大變化，IV 也會驟降——稱為 <strong>IV Crush（波動率崩塌）</strong></li>
+    </ul>
+
+    <div class="callout">
+      <strong>IV Crush 陷阱</strong><br><br>
+      很多新手在財報前買 Call，方向看對了（股票真的漲了），但選擇權卻虧損。原因：財報前 IV = 120%，財報後 IV = 50%，雖然股票漲了 5%，但 IV 暴跌讓選擇權的時間價值縮水，整體虧損。<br><br>
+      這就是為什麼老手說「買方怕 IV Crush，賣方靠 IV Crush 獲利」。
+    </div>
+
+    <h3>IV Rank 與 IV Percentile</h3>
+    <p>單看 IV 數值本身沒有意義，因為不同標的的正常 IV 水平不同。BTC 的 IV 通常就比 Apple 股票高。更有用的是：</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指標</th><th>定義</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>IV Rank（IVR）</strong></td>
+            <td>當前 IV 在過去一年範圍內的相對位置。IVR = (當前IV − 一年最低IV) ÷ (一年最高IV − 一年最低IV) × 100</td>
+            <td>IVR > 50 代表 IV 偏高，適合賣方策略；IVR &lt; 20 代表 IV 偏低，適合買方策略</td>
+          </tr>
+          <tr>
+            <td><strong>IV Percentile（IVP）</strong></td>
+            <td>過去一年中，有幾%的日子 IV 低於當前水平</td>
+            <td>IVP = 80 代表 80% 的時間 IV 比現在低，表示 IV 處於高位</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="28" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">IV 隨時間的典型變化：事件前飆升，事件後崩塌</text>
+      <!-- Axes -->
+      <line x1="60" y1="170" x2="580" y2="170" stroke="#1e2e45" stroke-width="1.5"/>
+      <line x1="60" y1="60" x2="60" y2="170" stroke="#1e2e45" stroke-width="1.5"/>
+      <!-- IV curve: rises before event, crashes after -->
+      <polyline points="60,150 120,145 180,138 240,125 300,100 330,78 360,72 380,140 420,148 480,152 540,150 580,148"
+        fill="none" stroke="#ffa500" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- Event marker -->
+      <line x1="370" y1="60" x2="370" y2="170" stroke="#ff4d6d" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="370" y="52" text-anchor="middle" fill="#ff4d6d" font-size="11" font-family="Inter,sans-serif">事件發生</text>
+      <!-- Labels -->
+      <text x="250" y="115" fill="#ffa500" font-size="11" font-family="Inter,sans-serif">IV 上升（IV Expansion）</text>
+      <text x="440" y="143" fill="#4ecca3" font-size="11" font-family="Inter,sans-serif">IV Crush</text>
+      <!-- Y axis labels -->
+      <text x="55" y="75" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">高</text>
+      <text x="55" y="155" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">低</text>
+      <text x="55" y="170" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">IV</text>
+      <!-- X axis -->
+      <text x="580" y="185" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">時間 →</text>
+      <text x="280" y="195" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">事件前：IV 持續上升，選擇權變貴</text>
+      <text x="490" y="195" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">事件後：IV 崩塌，買方受損</text>
+    </svg>
+
+    <h2>Delta（Δ）：價格變動的敏感度</h2>
+    <p><strong>Delta</strong> 衡量：<strong>標的資產價格每變動 1 元（或 1%），選擇權價格會變動多少？</strong></p>
+
+    <div class="callout">
+      <strong>Call 選擇權</strong>：Delta 介於 0 到 +1 之間（標的漲，Call 漲）<br>
+      <strong>Put 選擇權</strong>：Delta 介於 −1 到 0 之間（標的漲，Put 跌）<br><br>
+      例如：Call Delta = 0.60，代表標的每漲 $1，這個 Call 的價值漲約 $0.60
+    </div>
+
+    <h3>價內 / 價平 / 價外與 Delta 的關係</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>選擇權狀態</th><th>說明</th><th>Call Delta 範圍</th><th>Put Delta 範圍</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>深度價內（Deep ITM）</strong></td>
+            <td>現價遠高於（Call）或遠低於（Put）履約價，幾乎確定能獲利執行</td>
+            <td>接近 +1.0</td>
+            <td>接近 −1.0</td>
+          </tr>
+          <tr>
+            <td><strong>價平（ATM）</strong></td>
+            <td>現價等於或接近履約價，獲利與否各半</td>
+            <td>約 +0.50</td>
+            <td>約 −0.50</td>
+          </tr>
+          <tr>
+            <td><strong>價外（OTM）</strong></td>
+            <td>現價低於（Call）或高於（Put）履約價，目前無內在價值</td>
+            <td>接近 0</td>
+            <td>接近 0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>生活化比喻</strong>：Delta 就像影子。當你站在正午的太陽下（深度價內），你的影子幾乎完美地跟著你每一步；當太陽快日落（深度價外），影子拉得很長但變化很不靈敏。</p>
+
+    <h3>Delta 的另一個解讀：近似機率</h3>
+    <p>Delta 值可以被粗略地解讀為「到期時在價內的機率」：</p>
+    <ul>
+      <li>Delta = 0.70 → 約 70% 機率到期時為價內（Call 有利可圖）</li>
+      <li>Delta = 0.20 → 約 20% 機率到期時為價內</li>
+      <li>ATM 的 Delta ≈ 0.50 → 各半機率</li>
+    </ul>
+    <p>這個解讀在選擇策略時非常有用：賣 Delta = 0.16 的選擇權，意味著你有約 84% 機率在到期時保住全部權利金。</p>
+
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="28" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">Call Delta 曲線：從價外到價內</text>
+      <!-- Axes -->
+      <line x1="60" y1="190" x2="580" y2="190" stroke="#1e2e45" stroke-width="1.5"/>
+      <line x1="60" y1="40" x2="60" y2="190" stroke="#1e2e45" stroke-width="1.5"/>
+      <!-- Delta curve (S-curve for Call) -->
+      <path d="M 60,185 C 150,183 220,175 280,160 S 350,120 380,100 S 430,68 480,56 S 550,50 580,49"
+        fill="none" stroke="#00c8ff" stroke-width="2.5"/>
+      <!-- ATM marker -->
+      <line x1="320" y1="40" x2="320" y2="190" stroke="#ffa500" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="320" y="35" text-anchor="middle" fill="#ffa500" font-size="11" font-family="Inter,sans-serif">ATM（履約價）</text>
+      <!-- Delta 0.5 line -->
+      <line x1="60" y1="118" x2="580" y2="118" stroke="#555577" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="55" y="122" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">0.50</text>
+      <!-- Y axis labels -->
+      <text x="55" y="55" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">1.0</text>
+      <text x="55" y="190" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">0.0</text>
+      <text x="55" y="120" text-anchor="end" fill="#aab4c8" font-size="9" font-family="Inter,sans-serif">Delta</text>
+      <!-- X axis labels -->
+      <text x="120" y="205" text-anchor="middle" fill="#ff4d6d" font-size="10" font-family="Inter,sans-serif">深度OTM</text>
+      <text x="320" y="205" text-anchor="middle" fill="#ffa500" font-size="10" font-family="Inter,sans-serif">ATM</text>
+      <text x="520" y="205" text-anchor="middle" fill="#4ecca3" font-size="10" font-family="Inter,sans-serif">深度ITM</text>
+      <text x="580" y="205" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">標的價格 →</text>
+      <!-- Dot at ATM/0.5 intersection -->
+      <circle cx="320" cy="118" r="4" fill="#ffa500"/>
+    </svg>
+
+    <h2>Gamma（Γ）：Delta 的加速度</h2>
+    <p><strong>Gamma</strong> 衡量：<strong>標的資產價格每變動 1 元，Delta 本身的變化量</strong>。換句話說，Gamma 是 Delta 的「導數」，描述的是 Delta 有多不穩定、變化有多快。</p>
+
+    <div class="callout">
+      <strong>生活化比喻：油門加速</strong><br><br>
+      Delta 就像車子的速度，Gamma 就像踩油門的力道。Delta = 60 代表你現在時速 60 公里；Gamma = 5 代表如果條件改變，你的速度可能很快跳到 65 或 55。<br><br>
+      高 Gamma 就像開一輛超級跑車——速度（Delta）的改變非常劇烈，一個急彎就甩開了。
+    </div>
+
+    <h3>Gamma 在什麼時候最高？</h3>
+    <p>Gamma 在以下情況最高：</p>
+    <ul>
+      <li><strong>ATM（價平）選擇權</strong>：Delta 在此最不確定，Gamma 也最大</li>
+      <li><strong>接近到期日</strong>：剩餘時間越少，ATM 附近的 Delta 變化越劇烈，Gamma 急速膨脹</li>
+    </ul>
+    <p>這就是為什麼到期週期非常短的選擇權（如 0DTE，零天到期），價格可以在幾分鐘內翻倍或歸零——Gamma 極高，Delta 的微小改變就帶來巨大的損益變化。</p>
+
+    <h3>Gamma 風險（Gamma Risk）</h3>
+    <p>對於<strong>選擇權賣方</strong>來說，Gamma 是最危險的敵人：</p>
+    <ul>
+      <li>你賣出一個 ATM Call，初始 Delta ≈ −0.50（做市商視角，你是空 Call）</li>
+      <li>標的突然大漲，你的 Delta 迅速從 −0.50 變成 −0.80（因為 Gamma 的加速效應）</li>
+      <li>Delta 的急速改變讓你的損失以非線性速度放大，遠超線性預測</li>
+    </ul>
+    <p>這就是為什麼專業的選擇權做市商不只管理 Delta，還必須時刻管理 <strong>Gamma Exposure</strong>——尤其在大新聞前後。</p>
+
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="28" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">Gamma 分佈：ATM 最高，越遠越低</text>
+      <!-- Axes -->
+      <line x1="60" y1="190" x2="580" y2="190" stroke="#1e2e45" stroke-width="1.5"/>
+      <line x1="60" y1="40" x2="60" y2="190" stroke="#1e2e45" stroke-width="1.5"/>
+      <!-- Bell curve for Gamma -->
+      <path d="M 60,188 C 100,186 160,178 210,160 S 265,110 320,60 S 375,110 430,160 S 490,182 540,186 S 570,188 580,188"
+        fill="none" stroke="#a855f7" stroke-width="2.5"/>
+      <path d="M 60,188 C 100,186 160,178 210,160 S 265,110 320,60 S 375,110 430,160 S 490,182 540,186 S 570,188 580,188 L 580,190 L 60,190 Z"
+        fill="#a855f7" fill-opacity="0.1"/>
+      <!-- ATM marker -->
+      <line x1="320" y1="40" x2="320" y2="190" stroke="#ffa500" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="320" y="35" text-anchor="middle" fill="#ffa500" font-size="11" font-family="Inter,sans-serif">ATM — Gamma 最高峰</text>
+      <!-- Labels -->
+      <text x="120" y="175" text-anchor="middle" fill="#555577" font-size="10" font-family="Inter,sans-serif">OTM</text>
+      <text x="520" y="175" text-anchor="middle" fill="#555577" font-size="10" font-family="Inter,sans-serif">ITM</text>
+      <text x="580" y="205" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">標的價格 →</text>
+      <text x="55" y="65" text-anchor="end" fill="#a855f7" font-size="9" font-family="Inter,sans-serif">Gamma</text>
+      <!-- Note -->
+      <text x="320" y="215" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">到期日越近，這個鐘形曲線越高且越窄——Gamma 風險集中爆發</text>
+    </svg>
+
+    <h2>Vega（V）：波動率敏感度</h2>
+    <p><strong>Vega</strong> 衡量：<strong>IV（隱含波動率）每上升 1 個百分點，選擇權價格會上漲多少？</strong></p>
+
+    <div class="callout">
+      Vega = 0.30，代表 IV 每上升 1%，選擇權價格上漲 $0.30<br>
+      反之，IV 每下降 1%，選擇權價格下跌 $0.30
+    </div>
+
+    <p><strong>生活化比喻：吹氣球</strong></p>
+    <p>選擇權就像一個氣球。IV 是往裡面吹的氣。氣吹得越多（IV 越高），氣球越大（選擇權越貴）；一旦洩氣（IV Crush），氣球迅速縮水。</p>
+
+    <h3>Long Vega vs Short Vega</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>部位</th><th>Vega 方向</th><th>希望看到</th><th>怕什麼</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>買入選擇權（Long Call/Put）</td>
+            <td>Long Vega（+）</td>
+            <td>IV 上升，讓選擇權更值錢</td>
+            <td>IV Crush，讓選擇權貶值</td>
+          </tr>
+          <tr>
+            <td>賣出選擇權（Short Call/Put）</td>
+            <td>Short Vega（−）</td>
+            <td>IV 下降，讓賣出的選擇權便宜，可以買回獲利</td>
+            <td>IV 急升（如市場崩盤），讓賣出的選擇權大幅增值，虧損擴大</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Vega 在什麼情況最高？</h3>
+    <ul>
+      <li><strong>ATM 選擇權的 Vega 最高</strong>：時間價值在 ATM 最大，IV 變化對其影響最顯著</li>
+      <li><strong>到期日越遠，Vega 越高</strong>：剩餘時間越長，IV 有更多時間影響到期結果</li>
+    </ul>
+    <p>這意味著長期選擇權（LEAPS）對 IV 的敏感度極高。如果你買了一個到期日在 6 個月後的 ATM Call，即使方向看對，一旦 IV 從 60% 跌到 40%，Vega 損失也可能蓋過 Delta 的獲利。</p>
+
+    <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="28" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">Vega：IV 每 +1%，選擇權價值的變化（買方視角）</text>
+      <!-- Before IV rise -->
+      <rect x="80" y="60" width="180" height="90" rx="6" fill="#0d1a2a" stroke="#1e2e45"/>
+      <text x="170" y="90" text-anchor="middle" fill="#aab4c8" font-size="12" font-family="Inter,sans-serif">IV = 50%</text>
+      <text x="170" y="110" text-anchor="middle" fill="#00c8ff" font-size="18" font-family="Fira Code,monospace" font-weight="700">$5.00</text>
+      <text x="170" y="130" text-anchor="middle" fill="#555577" font-size="10" font-family="Inter,sans-serif">Vega = 0.25</text>
+      <!-- Arrow -->
+      <text x="320" y="112" text-anchor="middle" fill="#ffa500" font-size="22" font-family="Inter,sans-serif">→</text>
+      <text x="320" y="130" text-anchor="middle" fill="#ffa500" font-size="10" font-family="Inter,sans-serif">IV +4%</text>
+      <!-- After IV rise -->
+      <rect x="380" y="60" width="180" height="90" rx="6" fill="#0d1a2a" stroke="#4ecca3" stroke-width="1.5"/>
+      <text x="470" y="90" text-anchor="middle" fill="#aab4c8" font-size="12" font-family="Inter,sans-serif">IV = 54%</text>
+      <text x="470" y="110" text-anchor="middle" fill="#4ecca3" font-size="18" font-family="Fira Code,monospace" font-weight="700">$6.00</text>
+      <text x="470" y="130" text-anchor="middle" fill="#555577" font-size="10" font-family="Inter,sans-serif">+$1.00（0.25 × 4）</text>
+      <text x="320" y="175" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">標的價格沒變，僅因 IV 上升 4%，選擇權增值 $1.00</text>
+    </svg>
+
+    <h2>Theta（Θ）：時間是選擇權買方最大的敵人</h2>
+    <p><strong>Theta</strong> 衡量：<strong>每過一天，在其他條件不變的情況下，選擇權的價格會減少多少？</strong></p>
+    <p>Theta 通常是負值（對買方而言），代表時間的流逝是在侵蝕選擇權的價值。</p>
+
+    <div class="callout">
+      Theta = −0.05，代表每過一天，你手上的選擇權價格下跌 $0.05（假設其他條件不變）<br><br>
+      一週後 = −$0.35；一個月後 = −$1.50 左右（隨時間加速）
+    </div>
+
+    <p><strong>生活化比喻：融化的冰塊</strong></p>
+    <p>選擇權就像一塊冰。即使氣溫沒變，冰塊每天都在融化。到期日就是「冰塊完全融化的那天」。越靠近到期日，融化速度越快。這就是 Theta 加速效應。</p>
+
+    <h3>Theta 加速效應（Theta Decay Accelerates）</h3>
+    <p>Theta 的衰減並非線性，而是<strong>指數加速</strong>：</p>
+    <ul>
+      <li>距離到期 90 天：每天 Theta 損失 $0.02</li>
+      <li>距離到期 30 天：每天 Theta 損失 $0.05</li>
+      <li>距離到期 7 天：每天 Theta 損失 $0.15</li>
+      <li>最後一天（0DTE）：如果仍是 ATM，Theta 可能高達幾美元</li>
+    </ul>
+
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="28" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">Theta Decay：選擇權時間價值隨到期日加速衰減</text>
+      <!-- Axes -->
+      <line x1="60" y1="190" x2="580" y2="190" stroke="#1e2e45" stroke-width="1.5"/>
+      <line x1="60" y1="40" x2="60" y2="190" stroke="#1e2e45" stroke-width="1.5"/>
+      <!-- Exponential decay curve (starting high at left = far from expiry) -->
+      <path d="M 60,60 C 120,65 200,80 280,110 S 400,155 460,175 S 530,186 580,189"
+        fill="none" stroke="#ff4d6d" stroke-width="2.5"/>
+      <path d="M 60,60 C 120,65 200,80 280,110 S 400,155 460,175 S 530,186 580,189 L 580,190 L 60,190 Z"
+        fill="#ff4d6d" fill-opacity="0.07"/>
+      <!-- Annotations -->
+      <text x="90" y="72" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">90天前</text>
+      <text x="90" y="85" fill="#4ecca3" font-size="11" font-family="Fira Code,monospace">$8.00</text>
+      <circle cx="80" cy="68" r="3" fill="#ff4d6d"/>
+      <text x="290" y="100" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">30天前</text>
+      <text x="290" y="113" fill="#ffa500" font-size="11" font-family="Fira Code,monospace">$4.50</text>
+      <circle cx="280" cy="108" r="3" fill="#ff4d6d"/>
+      <text x="460" y="163" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">7天前</text>
+      <text x="460" y="176" fill="#ff4d6d" font-size="11" font-family="Fira Code,monospace">$1.20</text>
+      <circle cx="460" cy="173" r="3" fill="#ff4d6d"/>
+      <!-- X axis labels -->
+      <text x="580" y="205" text-anchor="end" fill="#555577" font-size="10" font-family="Inter,sans-serif">到期日 →</text>
+      <text x="60" y="205" text-anchor="start" fill="#555577" font-size="10" font-family="Inter,sans-serif">← 距到期遠</text>
+      <text x="320" y="220" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">時間越近，衰減速度越快（非線性）——這就是買方最痛的地方</text>
+    </svg>
+
+    <h3>買方 vs 賣方的 Theta 觀點</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>角色</th><th>Theta 方向</th><th>時間是朋友還是敵人？</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>選擇權買方（Long Call/Put）</td>
+            <td>負 Theta（−）</td>
+            <td>敵人——每天都在消耗持有成本，必須有足夠大的方向移動才能覆蓋 Theta 損失</td>
+          </tr>
+          <tr>
+            <td>選擇權賣方（Sell Call/Put）</td>
+            <td>正 Theta（+）</td>
+            <td>朋友——每天收取 Theta，只要標的不大幅移動就能獲利</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>這就是為什麼很多專業選擇權交易員傾向做賣方策略（Covered Call、Cash Secured Put、Iron Condor 等）——讓時間站在自己這邊，用 Theta 收益當作「保費收入」。</p>
+
+    <h2>Greeks 的相互關係：整合思考</h2>
+    <p>現實中，這五個因素<strong>同時</strong>在影響你的選擇權。以下是一個整合理解的框架：</p>
+
+    <div class="callout">
+      <strong>場景：你買了一個 BTC Call，履約價 $100,000，到期 30 天，IV = 70%</strong><br><br>
+      · <strong>Delta = 0.45</strong>：BTC 每漲 $1,000，你的 Call 漲約 $450<br>
+      · <strong>Gamma = 0.003</strong>：BTC 每漲 $1,000，你的 Delta 增加 0.003（從 0.45 → 0.453，方向越走越快）<br>
+      · <strong>Vega = 0.80</strong>：IV 每漲 1%，你的 Call 漲 $0.80（如果 IV 從 70% 漲到 80%，Call 漲 $8）<br>
+      · <strong>Theta = −0.15</strong>：每天你的 Call 減少 $0.15 的時間價值<br><br>
+      30 天後到期，即使 BTC 沒動，你的 Call 光從 Theta 就損失了 30 × $0.15 = $4.50
+    </div>
+
+    <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="28" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">Greeks 全貌總覽</text>
+      <!-- Center node -->
+      <circle cx="320" cy="140" r="38" fill="#0d1a2a" stroke="#00c8ff" stroke-width="2"/>
+      <text x="320" y="136" text-anchor="middle" fill="#00c8ff" font-size="12" font-family="Inter,sans-serif" font-weight="700">選擇權</text>
+      <text x="320" y="152" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">Premium</text>
+      <!-- Delta node -->
+      <circle cx="140" cy="80" r="32" fill="#0d1a2a" stroke="#4ecca3" stroke-width="1.5"/>
+      <text x="140" y="76" text-anchor="middle" fill="#4ecca3" font-size="12" font-family="Inter,sans-serif" font-weight="700">Delta</text>
+      <text x="140" y="91" text-anchor="middle" fill="#aab4c8" font-size="9" font-family="Inter,sans-serif">價格敏感度</text>
+      <line x1="170" y1="95" x2="285" y2="120" stroke="#4ecca3" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Gamma node -->
+      <circle cx="140" cy="200" r="32" fill="#0d1a2a" stroke="#a855f7" stroke-width="1.5"/>
+      <text x="140" y="196" text-anchor="middle" fill="#a855f7" font-size="12" font-family="Inter,sans-serif" font-weight="700">Gamma</text>
+      <text x="140" y="211" text-anchor="middle" fill="#aab4c8" font-size="9" font-family="Inter,sans-serif">Delta 加速度</text>
+      <line x1="170" y1="185" x2="285" y2="155" stroke="#a855f7" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Vega node -->
+      <circle cx="500" cy="80" r="32" fill="#0d1a2a" stroke="#ffa500" stroke-width="1.5"/>
+      <text x="500" y="76" text-anchor="middle" fill="#ffa500" font-size="12" font-family="Inter,sans-serif" font-weight="700">Vega</text>
+      <text x="500" y="91" text-anchor="middle" fill="#aab4c8" font-size="9" font-family="Inter,sans-serif">IV 敏感度</text>
+      <line x1="470" y1="95" x2="355" y2="120" stroke="#ffa500" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Theta node -->
+      <circle cx="500" cy="200" r="32" fill="#0d1a2a" stroke="#ff4d6d" stroke-width="1.5"/>
+      <text x="500" y="196" text-anchor="middle" fill="#ff4d6d" font-size="12" font-family="Inter,sans-serif" font-weight="700">Theta</text>
+      <text x="500" y="211" text-anchor="middle" fill="#aab4c8" font-size="9" font-family="Inter,sans-serif">時間衰減</text>
+      <line x1="470" y1="185" x2="355" y2="155" stroke="#ff4d6d" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- IV node -->
+      <circle cx="320" cy="248" r="28" fill="#0d1a2a" stroke="#00c8ff" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="320" y="244" text-anchor="middle" fill="#00c8ff" font-size="11" font-family="Inter,sans-serif" font-weight="700">IV</text>
+      <text x="320" y="258" text-anchor="middle" fill="#aab4c8" font-size="9" font-family="Inter,sans-serif">隱含波動率</text>
+      <line x1="320" y1="220" x2="320" y2="178" stroke="#00c8ff" stroke-width="1" stroke-opacity="0.5" stroke-dasharray="3,2"/>
+    </svg>
+
+    <h2>Greeks 速查表：一次看懂所有關係</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Greek</th>
+            <th>衡量什麼</th>
+            <th>買方（Long）</th>
+            <th>賣方（Short）</th>
+            <th>ATM 時</th>
+            <th>接近到期日時</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#ffa500">IV</strong></td>
+            <td>市場對未來波動的預期</td>
+            <td>希望 IV 上升（Vega 正）</td>
+            <td>希望 IV 下降（Vega 負）</td>
+            <td>對 ATM 影響最大</td>
+            <td>短期選擇權 IV 敏感度低</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#4ecca3">Delta</strong></td>
+            <td>標的價格 1 單位變動的影響</td>
+            <td>Call: 0~+1 / Put: -1~0</td>
+            <td>Call: 0~-1 / Put: 0~+1</td>
+            <td>≈ ±0.50</td>
+            <td>ATM 仍接近 ±0.50，深OTM/ITM 趨向 0 或 ±1</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#a855f7">Gamma</strong></td>
+            <td>Delta 的變化速度</td>
+            <td>正 Gamma（方向感加速）</td>
+            <td>負 Gamma（Delta 加速反向）</td>
+            <td>最高</td>
+            <td>急速放大（0DTE 極高）</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#ffa500">Vega</strong></td>
+            <td>IV 1% 變動的影響</td>
+            <td>正 Vega（希望 IV 升）</td>
+            <td>負 Vega（希望 IV 降）</td>
+            <td>最高</td>
+            <td>迅速歸零（短期對 IV 不敏感）</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#ff4d6d">Theta</strong></td>
+            <td>每天時間流逝的損失（買方）</td>
+            <td>負 Theta（時間是敵人）</td>
+            <td>正 Theta（時間是朋友）</td>
+            <td>最高</td>
+            <td>加速衰減</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>實戰思考：在交易前問自己這五個問題</h2>
+    <ol>
+      <li><strong>IV 現在高還是低？</strong>（IVR / IVP）高 IV → 賣方有優勢；低 IV → 買方有優勢</li>
+      <li><strong>我的 Delta 方向對嗎？</strong>我對標的是多頭還是空頭看法？選擇的履約價是否反映了這個預期？</li>
+      <li><strong>我可以承受多少 Gamma 風險？</strong>越靠近到期日、越是 ATM，Gamma 越高，損益越不線性</li>
+      <li><strong>Theta 每天在吃掉多少成本？</strong>如果標的不動，我還能撐多少天？</li>
+      <li><strong>如果 IV 崩塌，我的 Vega 損失有多大？</strong>尤其在重大事件前入場，IV Crush 是致命陷阱</li>
+    </ol>
+
+    <div class="callout">
+      <strong>進階整合：Greeks 交易哲學</strong><br><br>
+      · 做多方向 + 希望 IV 上升 → <strong>買 ATM/OTM Call 或 Put</strong>（Long Delta + Long Vega + Negative Theta）<br>
+      · 賺時間 + 不需要大方向移動 → <strong>賣出 OTM 選擇權</strong>（Short Vega + Positive Theta + Short Gamma）<br>
+      · 對沖 Gamma 風險 → <strong>Delta Hedging + Gamma Scalping</strong>（做市商核心技術）<br>
+      · 中性策略賺波動率 → <strong>Iron Condor / Butterfly</strong>（同時賣出 Call 和 Put，收 Theta，但限制最大損失）
+    </div>
+
+    <h2>總結</h2>
+    <p>選擇權的美妙與危險都在於它的多維度性。一個部位同時暴露在價格、時間、波動率三個維度的風險中。Greeks 是你管理這些風險的語言——不是讓你複雜化思考，而是讓你<strong>精確地知道自己在賭什麼</strong>。</p>
+    <ul>
+      <li><strong>IV</strong>：市場的「恐懼計量器」，決定選擇權的整體定價水平</li>
+      <li><strong>Delta</strong>：你的方向性暴露，告訴你現在離標的有多近</li>
+      <li><strong>Gamma</strong>：你的加速度，越靠近到期越危險，也越有爆發力</li>
+      <li><strong>Vega</strong>：你對波動率的押注，事件前後的 IV 變化可以是賺錢的來源也可以是殺手</li>
+      <li><strong>Theta</strong>：時間是最誠實的敵人，每天都在從買方手中拿走一點什麼</li>
+    </ul>
+    <p>理解 Greeks 之後，你會對做市商的行為（上一篇的 Delta Neutral）有更深的理解——他們用 Delta Hedging 把方向風險歸零，但 Gamma 和 Vega 的風險是他們的利潤來源，也是最需要精密管理的地方。</p>
+
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon &nbsp;·&nbsp; 以交易為志業，以邏輯為基礎</p></footer>
+</body>
+</html>

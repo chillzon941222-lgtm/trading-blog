@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>07 足跡圖交易｜OrderFlowLab</title>
+  <title>08 足跡圖交易｜OrderFlowLab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
@@ -16,7 +16,7 @@
 <div class="article-container">
   <a class="article-back" href="../index.html">← 回首頁</a>
   <div class="article-header">
-    <span class="tag">足跡圖 · 第 07 篇</span>
+    <span class="tag">足跡圖 · 第 08 篇</span>
     <h1>足跡圖交易：辨識被套部位，站在對的那一側</h1>
     <p class="subtitle">被套的人遲早要逃跑。足跡圖讓你看見他們被困在哪裡，然後等著他們推動市場。</p>
     <div class="article-meta"><span>chillzon</span><span>2025</span></div>
@@ -208,6 +208,78 @@
       </svg>
       <div class="diagram-caption">吸收 = 有大量對手盤，主力建倉｜衰竭 = 推力耗盡，即將反轉｜不平衡 = 方向明確，趨勢確認</div>
     </div>
+
+    <h2>Order Flow Delta：足跡圖的靈魂數字</h2>
+    <p>在深入 CVD 之前，你必須先搞清楚一個核心概念——<strong>Delta（Δ）差值</strong>。</p>
+
+    <p>足跡圖（Footprint Chart）在每個價格節點上，都會顯示兩個數字：</p>
+    <div class="callout">
+      <strong>左側數字</strong>：Bid 成交量（賣方主動，使用市價賣單擊穿 Bid 掛單）<br>
+      <strong>右側數字</strong>：Ask 成交量（買方主動，使用市價買單擊穿 Ask 掛單）<br><br>
+      <strong>Delta = Ask 成交量 − Bid 成交量</strong>
+    </div>
+
+    <p>舉個生活化的例子：假設某個價格節點上，Ask 成交了 350 口、Bid 成交了 200 口，那麼：</p>
+    <div class="callout">
+      Delta = 350 − 200 = <strong style="color:#4ecca3">+150</strong>（正 Delta，買方更積極）
+    </div>
+
+    <p>反過來，如果 Bid 成交了 400 口、Ask 成交了 150 口：</p>
+    <div class="callout">
+      Delta = 150 − 400 = <strong style="color:#ff4d6d">−250</strong>（負 Delta，賣方更積極）
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Delta 值</th><th>意義</th><th>市場含意</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:#4ecca3">正 Delta（+）</strong></td><td>Ask 成交 > Bid 成交</td><td>主動買方較多，積極追買</td></tr>
+          <tr><td><strong style="color:#ff4d6d">負 Delta（−）</strong></td><td>Bid 成交 > Ask 成交</td><td>主動賣方較多，積極砸盤</td></tr>
+          <tr><td>Delta 接近 0</td><td>買賣勢均力敵</td><td>平衡狀態，方向不明</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>為什麼 Delta 差值很重要？</strong>因為傳統的 K 棒只告訴你「開高低收」，完全看不出誰更積極。Delta 讓你看到的是<strong>方向性的主動力道</strong>——是買方在積極追市，還是賣方在主動砸盤。</p>
+
+    <div class="callout">
+      <strong>關鍵認知</strong>：一根上漲的 K 棒，不代表買方更積極。如果這根 K 棒的 Delta 是負值，代表雖然價格上漲了，但其實是<strong>賣方在砸盤，卻有更大的掛單在接住賣壓</strong>——這反而是強勢吸收，是更看漲的訊號（吸收型態）。
+    </div>
+
+    <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:1.5rem auto;background:#09090f;border-radius:12px;border:1px solid #1e2e45">
+      <text x="320" y="30" text-anchor="middle" fill="#aab4c8" font-size="13" font-family="Inter,sans-serif">足跡圖 Delta 示意</text>
+      <!-- Price levels -->
+      <rect x="40" y="55" width="560" height="40" rx="4" fill="#0d1a2a" stroke="#1e2e45"/>
+      <text x="180" y="79" text-anchor="end" fill="#ff4d6d" font-size="14" font-family="Fira Code,monospace" font-weight="700">480</text>
+      <text x="200" y="79" fill="#555" font-size="12" font-family="Fira Code,monospace">|</text>
+      <text x="460" y="79" text-anchor="start" fill="#4ecca3" font-size="14" font-family="Fira Code,monospace" font-weight="700">350</text>
+      <text x="540" y="79" text-anchor="middle" fill="#00c8ff" font-size="13" font-family="Inter,sans-serif">Δ <tspan fill="#ff4d6d">−130</tspan></text>
+      <text x="320" y="79" text-anchor="middle" fill="#aab4c8" font-size="11" font-family="Inter,sans-serif">$42,500</text>
+
+      <rect x="40" y="105" width="560" height="40" rx="4" fill="#0d1a2a" stroke="#1e2e45"/>
+      <text x="180" y="129" text-anchor="end" fill="#ff4d6d" font-size="14" font-family="Fira Code,monospace" font-weight="700">210</text>
+      <text x="200" y="129" fill="#555" font-size="12" font-family="Fira Code,monospace">|</text>
+      <text x="460" y="129" text-anchor="start" fill="#4ecca3" font-size="14" font-family="Fira Code,monospace" font-weight="700">580</text>
+      <text x="540" y="129" text-anchor="middle" fill="#00c8ff" font-size="13" font-family="Inter,sans-serif">Δ <tspan fill="#4ecca3">+370</tspan></text>
+      <text x="320" y="129" text-anchor="middle" fill="#aab4c8" font-size="11" font-family="Inter,sans-serif">$42,450</text>
+
+      <rect x="40" y="155" width="560" height="40" rx="4" fill="#0d1a2a" stroke="#1e2e45"/>
+      <text x="180" y="179" text-anchor="end" fill="#ff4d6d" font-size="14" font-family="Fira Code,monospace" font-weight="700">160</text>
+      <text x="200" y="179" fill="#555" font-size="12" font-family="Fira Code,monospace">|</text>
+      <text x="460" y="179" text-anchor="start" fill="#4ecca3" font-size="14" font-family="Fira Code,monospace" font-weight="700">420</text>
+      <text x="540" y="179" text-anchor="middle" fill="#00c8ff" font-size="13" font-family="Inter,sans-serif">Δ <tspan fill="#4ecca3">+260</tspan></text>
+      <text x="320" y="179" text-anchor="middle" fill="#aab4c8" font-size="11" font-family="Inter,sans-serif">$42,400</text>
+
+      <!-- Labels -->
+      <text x="90" y="240" text-anchor="middle" fill="#ff4d6d" font-size="11" font-family="Inter,sans-serif">Bid 成交量</text>
+      <text x="90" y="254" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">（主動賣）</text>
+      <text x="500" y="240" text-anchor="middle" fill="#4ecca3" font-size="11" font-family="Inter,sans-serif">Ask 成交量</text>
+      <text x="500" y="254" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">（主動買）</text>
+      <text x="320" y="240" text-anchor="middle" fill="#00c8ff" font-size="11" font-family="Inter,sans-serif">Delta = Ask − Bid</text>
+      <text x="320" y="254" text-anchor="middle" fill="#aab4c8" font-size="10" font-family="Inter,sans-serif">正值 = 買方積極 / 負值 = 賣方積極</text>
+    </svg>
+
+    <p>有了 Delta 的概念之後，接下來就可以理解 CVD 了——它只是把 Delta 累計相加，形成一條可以觀察趨勢的線。</p>
 
     <h2>CVD：累計成交量差</h2>
     <p><strong>CVD（Cumulative Volume Delta，累計成交量差）</strong>是把每根 K 棒的 Delta（Ask 成交量 - Bid 成交量）累計加總，畫成一條線。</p>
