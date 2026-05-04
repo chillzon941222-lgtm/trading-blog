@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01b K線圖入門｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">加密貨幣 · 新手入門 · 第 01b 篇</span>
+    <h1>K線圖入門：交易者的共同語言</h1>
+    <p class="subtitle">從最基礎的 OHLC 開始，學會讀懂每一根 K 線的含義、常見型態與時間框架的應用，為進入訂單流分析打好基礎。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <h2>你為什麼需要讀這篇</h2>
+    <p>你打開任何一個交易平台，第一眼看到的幾乎都是 K 線圖。那一根根紅綠色的蠟燭，對剛入場的人來說像是外星符文——上下兩條細線、一個方塊，到底代表什麼？</p>
+    <p>K 線圖是全球交易者共用的語言。不管是股票、期貨還是加密貨幣，日本米商 18 世紀發明的這套視覺化工具，至今仍是讀懂市場的起點。更重要的是，OrderFlowLab 後續介紹的成交量剖析（Volume Profile）、市場成交量分析（AMT）和印痕圖（Footprint Chart），全都建立在你能讀懂 K 線的基礎之上。</p>
+    <p>這篇文章的目標是讓你從零開始，真正理解每根 K 線在說什麼。</p>
+
+    <h2>一根 K 線代表什麼：OHLC 的四個數字</h2>
+    <p>每一根 K 線，都濃縮了某段時間內市場的完整故事，由四個關鍵價格構成，合稱 <strong>OHLC</strong>：</p>
+    <table>
+      <tr><th>英文縮寫</th><th>中文名稱</th><th>意義</th></tr>
+      <tr><td>O（Open）</td><td>開盤價</td><td>這段時間第一筆成交的價格</td></tr>
+      <tr><td>H（High）</td><td>最高價</td><td>這段時間內價格到達的最高點</td></tr>
+      <tr><td>L（Low）</td><td>最低價</td><td>這段時間內價格到達的最低點</td></tr>
+      <tr><td>C（Close）</td><td>收盤價</td><td>這段時間最後一筆成交的價格</td></tr>
+    </table>
+    <p>想像你去菜市場買魚。早上九點開攤時，老闆報價 100 元（開盤價）。一整天下來，最高有人出到 120 元、最低有人殺到 85 元，最後收攤前成交在 110 元（收盤價）。這一天的魚價 K 線，就是 O:100、H:120、L:85、C:110。</p>
+
+    <h3>K 線的身體與影線</h3>
+    <p>K 線的視覺結構分兩部分：</p>
+    <p><strong>實體（Body）</strong>：開盤價到收盤價之間的方塊。這是這段時間內買賣雙方「主要交戰」的區間。</p>
+    <p><strong>影線（Wick / Shadow）</strong>：實體上方和下方延伸出去的細線。上影線代表價格曾經衝高但被壓回；下影線代表價格曾經殺低但被撐回。</p>
+    <div class="callout">
+      <strong>重點：</strong>影線的長短洩漏了市場的掙扎痕跡。長長的下影線，代表有人在低點積極承接；長長的上影線，代表有人在高點積極拋售。這不是裝飾，是真實的攻防紀錄。
+    </div>
+
+    <h2>多頭 K 線 vs 空頭 K 線</h2>
+    <p><strong>多頭 K 線（上漲 K 線）</strong>：收盤價 &gt; 開盤價。通常顯示為綠色（有些平台用白色）。代表這段時間買方佔優勢，價格從開盤漲到收盤。</p>
+    <p><strong>空頭 K 線（下跌 K 線）</strong>：收盤價 &lt; 開盤價。通常顯示為紅色（有些平台用黑色）。代表這段時間賣方佔優勢，價格從開盤跌到收盤。</p>
+    <p>但顏色只是第一層資訊。一根陽線不代表行情會繼續上漲，一根陰線也不代表行情會繼續下跌。真正重要的是：這根 K 線的<strong>形狀</strong>說了什麼？</p>
+
+    <h2>讀懂單根 K 線的形狀</h2>
+    <p>K 線的形狀是開盤、收盤、最高、最低這四者之間「相對關係」的呈現。以下是你最需要認識的幾種型態：</p>
+
+    <h3>十字線（Doji）</h3>
+    <p>開盤價與收盤價幾乎相同，實體極小甚至消失，只剩上下影線。</p>
+    <p><strong>代表意義</strong>：買賣雙方勢均力敵，市場陷入猶豫。通常出現在趨勢的轉折點附近，尤其在一段明顯漲跌之後出現十字線，要特別注意。</p>
+    <p>十字線有幾個變形：</p>
+    <ul>
+      <li><strong>長腳十字線</strong>：上下影線都很長，代表市場劇烈震盪但最終回到起點，不確定性極高</li>
+      <li><strong>蜻蜓十字線（Dragonfly Doji）</strong>：只有下影線，代表開低走高，收盤回到開盤位置，有撐底訊號</li>
+      <li><strong>墓碑十字線（Gravestone Doji）</strong>：只有上影線，代表開高走低，收盤回到開盤位置，有頂部訊號</li>
+    </ul>
+
+    <h3>鎚子線（Hammer）與倒鎚子線（Shooting Star）</h3>
+    <p><strong>鎚子線</strong>：出現在跌勢之後，實體在上方，下影線很長（通常是實體的兩倍以上），幾乎沒有上影線。下影線的意義是：雖然盤中殺低，但最終買方強力反彈，把價格推回來。這是潛在的底部訊號。</p>
+    <p><strong>倒鎚子線（射擊之星）</strong>：出現在漲勢之後，實體在下方，上影線很長，幾乎沒有下影線。上影線的意義是：雖然盤中衝高，但最終賣方強力壓制，把價格打回來。這是潛在的頂部訊號。</p>
+    <div class="callout">
+      <strong>警告：</strong>單根 K 線型態從來不是交易訊號，只是「可能的線索」。鎚子線出現在跌勢末端，需要下一根 K 線確認（出現多頭 K 線），才能作為參考依據。單靠一根 K 線進場是初學者最常犯的錯誤之一。
+    </div>
+
+    <h3>吞噬型態（Engulfing Pattern）</h3>
+    <p>這是雙 K 線組合型態，由兩根相鄰的 K 線構成：</p>
+    <p><strong>多頭吞噬（Bullish Engulfing）</strong>：第一根是空頭 K 線，第二根是多頭 K 線，且第二根的實體完全「吞噬」第一根的實體（開盤低於第一根收盤，收盤高於第一根開盤）。在跌勢中出現，代表買方強力反攻。</p>
+    <p><strong>空頭吞噬（Bearish Engulfing）</strong>：第一根是多頭 K 線，第二根是空頭 K 線完全吞噬第一根。在漲勢中出現，代表賣方強力接管。</p>
+    <p>吞噬的實體越大，訊號越有力。如果吞噬發生在關鍵支撐或壓力附近，更值得關注。</p>
+
+    <h2>時間框架：你在看哪個尺度的戰場</h2>
+    <p>K 線圖可以設定不同的<strong>時間框架（Time Frame）</strong>，每根 K 線代表的時間長度不同：</p>
+    <table>
+      <tr><th>時間框架</th><th>每根 K 線代表</th><th>適合用途</th></tr>
+      <tr><td>1 分鐘（1m）</td><td>1 分鐘</td><td>極短線操作、觀察細節進出場</td></tr>
+      <tr><td>5 分鐘（5m）</td><td>5 分鐘</td><td>當日短線交易</td></tr>
+      <tr><td>15 分鐘（15m）</td><td>15 分鐘</td><td>當日交易的主要分析框架</td></tr>
+      <tr><td>1 小時（1h）</td><td>1 小時</td><td>波段交易的進場時機確認</td></tr>
+      <tr><td>4 小時（4h）</td><td>4 小時</td><td>波段交易的主要趨勢判斷</td></tr>
+      <tr><td>日線（1D）</td><td>1 天</td><td>中長線趨勢判斷</td></tr>
+    </table>
+
+    <h3>多時間框架分析的邏輯</h3>
+    <p>正確的使用方法是<strong>由大到小</strong>：先看大時間框架確認趨勢方向，再切換到小時間框架找進場時機。</p>
+    <p>舉例來說：日線顯示比特幣正在上升趨勢，4 小時線出現回調到支撐區，1 小時線出現鎚子線確認撐住——這三個時間框架一致，才是相對有依據的多頭進場機會。</p>
+    <div class="callout">
+      <strong>重點：</strong>時間框架越小，雜訊越多，假訊號越多。新手常犯的錯誤是盯著 1 分鐘圖做決策——那就像試圖透過看一片樹葉的抖動來判斷整座森林有沒有在動。
+    </div>
+
+    <h2>在 TradingView 上的實際操作建議</h2>
+    <p>TradingView 是目前最主流的 K 線圖分析工具，加密貨幣交易者幾乎人手一個帳號。以下是給初學者的幾個實用設定建議：</p>
+    <p><strong>1. 換成蠟燭圖（Candlestick）</strong><br>
+    預設有時會是折線圖或長條圖。到圖表左上角的圖表類型選擇「蠟燭圖」，才能看到完整的 OHLC 資訊。</p>
+    <p><strong>2. 把顏色改成你看得舒服的設定</strong><br>
+    傳統設定紅跌綠漲，但你也可以改成其他配色。最重要的是：確定哪個顏色代表多頭 K 線，哪個代表空頭 K 線。</p>
+    <p><strong>3. 先練習「念 K 線」</strong><br>
+    每天找 5 根 K 線，對自己說出這根 K 線的故事：「這根是空頭 K 線，實體偏小，有長下影線，代表雖然收跌但盤中低點被強力買回。」把抽象的圖形轉化為語言，是理解的最快路徑。</p>
+    <p><strong>4. 不要在真實帳戶上練習 K 線辨識</strong><br>
+    TradingView 有「紙本交易（Paper Trading）」功能，用假錢練習到熟悉再說。</p>
+
+    <h2>K 線的局限性：你需要知道的</h2>
+    <p><strong>1. 它是落後指標</strong><br>
+    K 線記錄的是已經發生的事情。它告訴你「過去這段時間買賣雙方的攻防結果」，而不是預測未來。</p>
+    <p><strong>2. 同樣的型態在不同情境下意義不同</strong><br>
+    一根鎚子線出現在主升段回調的支撐位，和出現在崩跌趨勢的中段，意義天差地遠。脈絡（Context）永遠比型態本身更重要。</p>
+    <p><strong>3. 沒有成交量的 K 線是空殼</strong><br>
+    K 線只顯示「價格去了哪裡」，但沒有告訴你「這個移動是多少人推動的」。一根大漲的陽線，如果成交量極低，其可信度遠不如高量的漲勢。這就是為什麼我們需要成交量分析。</p>
+
+    <h2>小結</h2>
+    <div class="callout">
+      K 線圖是市場語言的字母表。你不需要背下幾十種 K 線型態，但你需要能流暢地「閱讀」每一根 K 線背後的攻防含義：<br><br>
+      · <strong>OHLC</strong> 四個價格構成一根 K 線的完整故事<br>
+      · <strong>實體</strong>代表主要交戰區間，<strong>影線</strong>代表盤中的試探與反制<br>
+      · <strong>時間框架</strong>從大到小使用，先找趨勢再找進場點<br>
+      · 單根 K 線型態是線索，不是訊號；脈絡永遠優先於型態
+    </div>
+    <p>但 K 線有它的天花板——它只告訴你「價格的軌跡」，無法告訴你「市場參與者的真實意圖」。要真正讀懂市場，下一步是認識<strong>訂單簿（Order Book）</strong>——那是每一筆買單和賣單公開掛出的地方，也是理解市場如何被推動、如何被操控的關鍵入口。</p>
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>
