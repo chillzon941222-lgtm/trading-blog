@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>選擇權完整教學｜OrderFlowLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .toc {
+      background: #0d1a2a;
+      border: 1px solid #1e2e45;
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      margin: 2rem 0 3rem;
+    }
+    .toc h3 {
+      color: #00c8ff;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .toc ol {
+      margin: 0;
+      padding-left: 1.4rem;
+    }
+    .toc li {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .toc a {
+      color: #a0b4cc;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .toc a:hover { color: #00c8ff; }
+    .chapter-divider {
+      border: none;
+      border-top: 1px solid #1e2e45;
+      margin: 3.5rem 0 2.5rem;
+    }
+    .chapter-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #00c8ff;
+      margin-bottom: 0.4rem;
+    }
+    .payoff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .payoff-box {
+      background: #0d1a2a;
+      border: 1px solid #1e2e45;
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+    }
+    .payoff-box h4 {
+      color: #00c8ff;
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+    }
+    .payoff-box p { margin: 0; font-size: 0.9rem; color: #a0b4cc; }
+    .greek-card {
+      background: #0d1a2a;
+      border-left: 3px solid #00c8ff;
+      border-radius: 0 10px 10px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .greek-card h4 { color: #e0eeff; margin-bottom: 0.4rem; }
+    .greek-card p { margin: 0; font-size: 0.92rem; color: #a0b4cc; }
+    @media (max-width: 640px) {
+      .payoff-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Order<span>Flow</span>Lab</div>
+  <div class="nav-links"><a href="../index.html">首頁</a><a href="../about.html">關於</a></div>
+</nav>
+<div class="article-container">
+  <a class="article-back" href="../index.html">← 回首頁</a>
+  <div class="article-header">
+    <span class="tag">選擇權 · 完整教學 · 從零到曲面</span>
+    <h1>選擇權完整教學：從基礎概念到造市商行為</h1>
+    <p class="subtitle">八個章節，用最貼近生活的例子，把選擇權從「聽不懂」變成「真的懂」。不只是背公式，而是理解它為什麼這樣運作。</p>
+    <div class="article-meta"><span>chillzon</span><span>2025</span></div>
+  </div>
+  <div class="article-body">
+
+    <div class="toc">
+      <h3>目錄</h3>
+      <ol>
+        <li><a href="#ch1">第一章：基礎概念</a>　— 選擇權是什麼、Call/Put、Strike、Premium、損益圖</li>
+        <li><a href="#ch2">第二章：定價與時間</a>　— 內在價值、時間衰減、隱含波動率 IV</li>
+        <li><a href="#ch3">第三章：Greeks</a>　— Delta、Gamma、Theta、Vega、Rho</li>
+        <li><a href="#ch4">第四章：常見策略</a>　— 單腿、雙腿、中性策略、賣方策略</li>
+        <li><a href="#ch5">第五章：波動率深入</a>　— HV vs IV、微笑曲線、Skew、VIX</li>
+        <li><a href="#ch6">第六章：隱含波動率曲面</a>　— 三個軸、期限結構、造市商視角</li>
+        <li><a href="#ch7">第七章：造市商與市場結構</a>　— Delta 對沖、GEX、到期日效應</li>
+        <li><a href="#ch8">第八章：高階 Greeks</a>　— Vanna、Charm、Zomma</li>
+      </ol>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch1">
+    <div class="chapter-label">第一章</div>
+    <h2>基礎概念</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <h3>選擇權是什麼（跟買股票差在哪）</h3>
+    <p>你買一張股票，你就擁有那家公司的一小塊。股票漲你賺，跌你賠，就這麼直接。</p>
+    <p>選擇權不一樣。選擇權買的不是股票本身，而是一種<strong>「未來用特定價格買入或賣出的權利」</strong>。</p>
+
+    <div class="callout">
+      <strong>生活例子：斡旋金</strong><br><br>
+      你看上一棟 1,000 萬的房子，但不確定要不要買。仲介說：「你先付 10 萬的斡旋金，我給你 30 天的優先購買權，這 30 天內屋主不能賣給別人。到時候你可以決定要不要用 1,000 萬買。」<br><br>
+      如果 30 天內房價漲到 1,200 萬，你行使權利用 1,000 萬買，直接賺 200 萬。<br>
+      如果房價跌到 800 萬，你不想買，放棄權利，損失 10 萬斡旋金。<br><br>
+      這 10 萬斡旋金，就是<strong>選擇權的權利金（Premium）</strong>。那個「用 1,000 萬買的約定」，就是<strong>行權價（Strike Price）</strong>。那 30 天，就是<strong>到期日（Expiration Date）</strong>。
+    </div>
+
+    <p>選擇權和股票最大的差別：</p>
+    <table>
+      <tr><th></th><th>買股票</th><th>買選擇權（買方）</th></tr>
+      <tr><td>花多少錢</td><td>股票全額</td><td>只花權利金（通常遠低於股票）</td></tr>
+      <tr><td>最大損失</td><td>股票歸零</td><td>只有你付的權利金</td></tr>
+      <tr><td>槓桿</td><td>無（除非借錢）</td><td>有，波動放大</td></tr>
+      <tr><td>時間壓力</td><td>沒有</td><td>有，到期就歸零</td></tr>
+    </table>
+
+    <h3>Call / Put 的定義</h3>
+    <p>選擇權只有兩種基本類型：</p>
+    <p><strong>Call（買權）</strong>：給你「用約定價格買入」的權利。你預期標的會漲，買 Call。</p>
+    <p><strong>Put（賣權）</strong>：給你「用約定價格賣出」的權利。你預期標的會跌，買 Put。</p>
+
+    <div class="callout">
+      <strong>Call 的比喻：</strong>你朋友說比特幣一定漲，你不確定，但你說「這樣，我先付你 5 萬，你保證一個月後讓我用現在 300 萬的價格買你的幣，如果真的漲到 400 萬，我就行使這個權利」。這就是 Call。<br><br>
+      <strong>Put 的比喻：</strong>你持有 BTC，怕跌，買一個保險：「如果 BTC 一個月後跌到 200 萬，我有權利用 280 萬的價格賣給你（保險公司）」。你付保費，換取跌損的保護。這就是 Put。
+    </div>
+
+    <h3>買方 vs 賣方的角色與風險</h3>
+    <p>每一張選擇權背後，有買方也有賣方，他們的角色完全相反：</p>
+    <table>
+      <tr><th></th><th>買方（Long Option）</th><th>賣方（Short Option / Writer）</th></tr>
+      <tr><td>付出什麼</td><td>付權利金</td><td>收取權利金</td></tr>
+      <tr><td>最大損失</td><td>只有權利金</td><td>理論上無限（賣 Call）</td></tr>
+      <tr><td>最大獲利</td><td>理論上無限（買 Call）</td><td>只有收到的權利金</td></tr>
+      <tr><td>時間是敵是友</td><td>敵人（時間消磨價值）</td><td>朋友（時間幫你賺）</td></tr>
+      <tr><td>期望方向</td><td>大幅波動</td><td>盤整不動</td></tr>
+    </table>
+
+    <div class="callout">
+      <strong>賣方的心態比喻：</strong>賣方就像保險公司。保險公司賣你保險，每個月收你保費（權利金）。大部分時間沒出事，他就把你的保費全收了。但一旦出大事（颱風、地震），他就要賠很多。賣選擇權的人，每月穩穩收費，但偶爾一次大波動可以讓他虧掉數倍。
+    </div>
+
+    <h3>行權價 Strike Price</h3>
+    <p>Strike Price 是你在合約裡約定的「未來交易價格」。一個標的物可以有很多個不同的 Strike Price 同時存在，就像保險公司有不同理賠額度的方案。</p>
+    <p>BTC 現在 60,000 美元，你可以選的 Strike Price 可能有：55,000 / 57,000 / 59,000 / 60,000 / 61,000 / 63,000 / 65,000……</p>
+    <p>Strike 越遠離現價，對應的選擇權越「便宜」（權利金低），但需要更大的行情才能獲利。Strike 越靠近現價，越「貴」，但勝率也相對較高。</p>
+
+    <h3>到期日 Expiration Date</h3>
+    <p>選擇權有明確的到期日。到期日一到，沒有行使的選擇權就歸零，毫無剩餘價值。</p>
+    <p>常見到期日類型：週選（每週五到期）、月選（每月第三個週五）、季選、LEAPS（長達一兩年的長期選擇權）。</p>
+
+    <div class="callout">
+      <strong>時間的比喻：</strong>選擇權就像一張「期限內有效」的優惠券。今天拿到一張買披薩享 8 折的優惠券，有效期 30 天。如果我在第 5 天就去用，優惠券還值錢（還有 25 天可以改變心意）。如果我到第 29 天才想起來，今天一定要去，否則明天就廢了。時間越少，選擇越少，選擇權的「時間價值」也越低。
+    </div>
+
+    <h3>權利金 Premium 是怎麼決定的</h3>
+    <p>選擇權的價格（Premium）不是隨便定的，它受到幾個關鍵因素影響：</p>
+    <table>
+      <tr><th>因素</th><th>方向</th><th>原因</th></tr>
+      <tr><td>標的現價 vs Strike 的距離</td><td>越近越貴</td><td>越容易進入獲利區間</td></tr>
+      <tr><td>到期日遠近</td><td>越遠越貴</td><td>時間越長，「發生意外」的機會越多</td></tr>
+      <tr><td>隱含波動率 IV</td><td>IV 越高越貴</td><td>市場預期波動大，保費自然高</td></tr>
+      <tr><td>利率</td><td>利率升 → Call 小漲、Put 小跌</td><td>資金成本影響定價（Rho）</td></tr>
+    </table>
+
+    <h3>價內 / 價平 / 價外（ITM / ATM / OTM）</h3>
+    <p>根據行權價和現價的相對位置，選擇權分三種狀態：</p>
+
+    <div class="callout">
+      BTC 現在 60,000 美元，以 <strong>Call</strong> 為例：<br><br>
+      <strong>ITM（In the Money，價內）</strong>：Strike 55,000。你有權以 55,000 買，現在市價 60,000，行使就能立刻賺 5,000。這個 Call「已經有錢賺」了。<br><br>
+      <strong>ATM（At the Money，價平）</strong>：Strike 60,000。行權價等於現價，剛好在平衡點上。<br><br>
+      <strong>OTM（Out of the Money，價外）</strong>：Strike 65,000。你有權以 65,000 買，但現在只要 60,000，誰需要這個？要行使這張 Call，BTC 必須先漲過 65,000。目前沒有「立即行使的意義」。
+    </div>
+
+    <p>Put 方向反過來：Strike 高於現價是 ITM，低於現價是 OTM。</p>
+
+    <h3>損益圖怎麼看（4 種基本圖）</h3>
+    <p>損益圖（Payoff Diagram）的 X 軸是標的到期時的價格，Y 軸是你的盈虧。到期時，選擇權的時間價值歸零，只剩內在價值。</p>
+
+    <div class="payoff-grid">
+      <div class="payoff-box">
+        <h4>買 Call（Long Call）</h4>
+        <p>最大損失：付出的權利金。<br>盈虧平衡點：Strike + Premium。<br>上漲方向無限獲利。<br>看大漲用這個。</p>
+      </div>
+      <div class="payoff-box">
+        <h4>買 Put（Long Put）</h4>
+        <p>最大損失：付出的權利金。<br>盈虧平衡點：Strike − Premium。<br>下跌方向可大幅獲利（最多跌到 0）。<br>看大跌或對沖用這個。</p>
+      </div>
+      <div class="payoff-box">
+        <h4>賣 Call（Short Call）</h4>
+        <p>最大獲利：收到的權利金。<br>若標的大漲，虧損無上限。<br>盤整或微跌時收費最安全。</p>
+      </div>
+      <div class="payoff-box">
+        <h4>賣 Put（Short Put）</h4>
+        <p>最大獲利：收到的權利金。<br>若標的大跌，虧損可能極大（跌到 0 全賠）。<br>盤整或微漲時收費最安全。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>記憶口訣：</strong><br>
+      買方 = 付錢買「可能」，損失有限、獲利可無限<br>
+      賣方 = 收錢賭「不會發生」，獲利有限、損失可無限
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch2">
+    <div class="chapter-label">第二章</div>
+    <h2>定價與時間</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <h3>內在價值 vs 時間價值</h3>
+    <p>選擇權的 Premium（總價格）= <strong>內在價值 + 時間價值</strong>。</p>
+    <p><strong>內在價值（Intrinsic Value）</strong>：「如果現在立刻行使，能賺多少」。只有 ITM 的選擇權才有內在價值；ATM 和 OTM 的內在價值為零。</p>
+    <p><strong>時間價值（Time Value / Extrinsic Value）</strong>：「時間帶來的不確定性值多少錢」。即使 OTM 的選擇權什麼都沒有，只要還有時間，就有可能翻身，這個「翻身機會」就是時間價值。</p>
+
+    <div class="callout">
+      <strong>例子：</strong>BTC 60,000，你有一張 Strike 58,000 的 Call，市場成交價 3,000 美元。<br><br>
+      內在價值 = 60,000 − 58,000 = 2,000 美元（立刻行使能賺這麼多）<br>
+      時間價值 = 3,000 − 2,000 = 1,000 美元（市場給的「翻身費」）<br><br>
+      如果這張 Call 是 OTM（Strike 65,000），內在價值 = 0，但假設還有 30 天到期，市場可能給 800 美元的時間價值——市場覺得 BTC 還有可能漲過 65,000。
+    </div>
+
+    <h3>時間衰減是什麼感覺</h3>
+    <p>時間價值每天都在流失，這個過程叫做<strong>時間衰減（Time Decay）</strong>，希臘字母 Theta 衡量它。</p>
+    <p>重要的是：時間衰減不是線性的。越靠近到期日，每天的衰減越快。</p>
+
+    <div class="callout">
+      <strong>生活比喻：漸漸融化的冰淇淋</strong><br><br>
+      你買了一個冰淇淋，室溫下放著。<br>
+      剛買的第一個小時，融化得慢，你還有大把時間。<br>
+      但最後 10 分鐘，它開始快速崩塌——再不吃就全融了。<br><br>
+      選擇權也一樣。距離到期還有 60 天，每天的時間衰減很慢。到只剩 5 天，每一天的損失都在加速。<br><br>
+      這就是為什麼<strong>買方最怕一個方向不動的市場</strong>：你買了 Call，行情不漲不跌，你的選擇權每天都在融化。
+    </div>
+
+    <h3>為什麼越靠近到期日越危險（對買方）</h3>
+    <p>對買方來說，越靠近到期日，時間就是在幫你的對手（賣方）賺錢：</p>
+    <ul>
+      <li>時間衰減加速，你的倉位每天自動貶值</li>
+      <li>OTM 的選擇權在最後幾天可以從幾百美元跌到幾乎零，即使行情最後朝你方向動了一點點，也可能來不及</li>
+      <li>最後一天，所有時間價值完全歸零，只剩純粹的 ITM / OTM 判斷</li>
+    </ul>
+    <p>對賣方來說，越靠近到期日越舒服（只要行情不爆發）：收到的 Premium 每天都在「落袋」。</p>
+
+    <h3>隱含波動率 IV（市場對未來的恐懼程度）</h3>
+    <p><strong>隱含波動率（Implied Volatility，IV）</strong>是市場對這個標的「未來波動幅度」的預期，用年化百分比表示。</p>
+    <p>IV 不是你算出來的，而是從市場成交的選擇權價格<strong>反推</strong>回去的——「大家願意付這麼多錢，代表他們預期市場會波動多大？」</p>
+
+    <div class="callout">
+      <strong>生活比喻：天氣預報與雨傘的價格</strong><br><br>
+      颱風即將來臨（高 IV）：便利商店的雨傘賣 300 元，賣光了還加價。<br>
+      晴空萬里（低 IV）：路邊賣 80 元的雨傘沒人買。<br><br>
+      選擇權的 Premium 就是「雨傘」的價格。當市場覺得要出大事（財報、大選、貨幣危機），IV 飆升，選擇權變貴；當市場一片平靜，IV 低落，選擇權便宜。
+    </div>
+
+    <h3>IV 高 vs IV 低 對買賣方的影響</h3>
+    <table>
+      <tr><th></th><th>IV 高時</th><th>IV 低時</th></tr>
+      <tr><td>選擇權價格</td><td>貴</td><td>便宜</td></tr>
+      <tr><td>對買方</td><td>貴，需要更大行情才能回本</td><td>便宜，適合買方進場</td></tr>
+      <tr><td>對賣方</td><td>收的 Premium 多，適合賣方賣出</td><td>收的少，風險報酬不划算</td></tr>
+      <tr><td>策略偏好</td><td>賣方策略（賣 Premium）</td><td>買方策略（買 Premium）</td></tr>
+    </table>
+
+    <p>口訣：<strong>IV 高賣，IV 低買</strong>。</p>
+
+    <h3>IV Crush 是什麼（財報前後）</h3>
+    <p>這是選擇權新手最常踩的坑之一。</p>
+    <p>財報前，市場不確定公司業績，IV 飆高，選擇權 Premium 很貴。財報一公布，不確定性立刻消失，IV 崩跌——這就叫 <strong>IV Crush（波動率崩塌）</strong>。</p>
+
+    <div class="callout">
+      <strong>典型踩坑場景：</strong><br><br>
+      某公司財報前，你覺得業績一定很好，買了 Call。<br>
+      財報公布，業績真的好，股價漲了 5%。<br>
+      結果你的 Call 反而賠錢？<br><br>
+      原因：財報前 IV 是 80%，你買的時候 Premium 超貴。財報後 IV 直接跌到 30%，雖然股價漲了，但 IV 崩塌吃掉的時間價值遠大於漲幅帶來的內在價值增加。<br><br>
+      財報前後買賣選擇權，必須把 IV Crush 算進去，否則方向對了還是賠錢。
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch3">
+    <div class="chapter-label">第三章</div>
+    <h2>Greeks</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <p>Greeks 是衡量選擇權價格對各種因素敏感度的指標。每個 Greek 告訴你「當某件事改變一點點，你的選擇權 Premium 會怎樣」。</p>
+
+    <div class="callout">
+      <strong>整體比喻：開車儀表板</strong><br><br>
+      你在高速公路開車：<br>
+      Delta = 你現在的車速（跟標的同向移動多快）<br>
+      Gamma = 你踩油門的效果（加速度）<br>
+      Theta = 油箱每分鐘消耗多少油（時間在燒你的錢）<br>
+      Vega = 側風有多強（波動率的干擾）<br>
+      Rho = 路況坡度（利率，通常影響小）
+    </div>
+
+    <h3>Delta — 漲跌敏感度</h3>
+    <div class="greek-card">
+      <h4>定義：標的價格每上漲 $1，選擇權 Premium 變化多少</h4>
+      <p>Call 的 Delta 介於 0 到 1 之間。Put 的 Delta 介於 −1 到 0 之間。</p>
+    </div>
+    <p>例子：BTC 漲 1,000 美元，你的 Call 的 Delta = 0.5，你的 Call 漲 500 美元。</p>
+    <p>Delta 也近似等於「選擇權到期時進入價內的機率」。Delta 0.3 的 Call，大約有 30% 的機率到期時是 ITM。</p>
+    <table>
+      <tr><th>位置</th><th>Call Delta</th><th>Put Delta</th><th>意義</th></tr>
+      <tr><td>深度 ITM</td><td>接近 1.0</td><td>接近 -1.0</td><td>幾乎和持有股票一樣反應</td></tr>
+      <tr><td>ATM</td><td>約 0.5</td><td>約 -0.5</td><td>50/50 機率到期 ITM</td></tr>
+      <tr><td>深度 OTM</td><td>接近 0</td><td>接近 0</td><td>幾乎不反應標的的小波動</td></tr>
+    </table>
+
+    <h3>Gamma — Delta 的加速度</h3>
+    <div class="greek-card">
+      <h4>定義：標的價格每上漲 $1，Delta 本身的變化量</h4>
+      <p>Gamma 越高，Delta 的變化越快，選擇權的行為越不穩定（對買方可能是好事，對賣方是風險）。</p>
+    </div>
+
+    <div class="callout">
+      <strong>Gamma 的比喻：剎車離錯誤只差一步</strong><br><br>
+      你的 Call Delta 現在是 0.3（標的漲 $1，你賺 $0.3）。<br>
+      標的再漲 $1，Gamma = 0.05，你的 Delta 變成 0.35。<br>
+      再漲 $1，Delta 變 0.40……<br><br>
+      Gamma 讓 Delta 「滾雪球」：標的越往你的方向走，你的倉位反應越快、越大。這對買方來說是槓桿的加速，對賣方來說則是風險的加速。
+    </div>
+
+    <p>ATM 選擇權的 Gamma 最高（在到期日尤其極端）。深度 ITM 和深度 OTM 的 Gamma 都很低。</p>
+
+    <h3>Theta — 時間吃掉你的錢</h3>
+    <div class="greek-card">
+      <h4>定義：每過一天，選擇權 Premium 減少多少（以美元計）</h4>
+      <p>買方的 Theta 是負數（每天虧時間價值）。賣方的 Theta 是正數（每天賺時間價值）。</p>
+    </div>
+    <p>Theta = −5 代表每過一天，你的選擇權 Premium 減少 5 美元。如果行情完全不動，持有 10 天就虧了 50 美元（因時間衰減而非方向錯誤）。</p>
+    <p>Theta 在最後幾天會急速增大，這是為什麼很多賣方策略喜歡賣 0-7 天到期的選擇權（0DTE）——在最後幾天的時間衰減最快，賣方最能「快速收費」。</p>
+
+    <h3>Vega — 波動率變化的影響</h3>
+    <div class="greek-card">
+      <h4>定義：IV 每上升 1%，選擇權 Premium 的變化量</h4>
+      <p>買方持有選擇權，Vega 是正數（IV 升，你的倉位升值）。賣方 Vega 是負數。</p>
+    </div>
+
+    <div class="callout">
+      <strong>Vega 的比喻：持有雨傘的價值</strong><br><br>
+      你手上有一把雨傘（買 Call）。晴天（低 IV），你的雨傘沒人要，它「貶值了」。突然說要颱風來了（IV 飆升），你的雨傘立刻變搶手，它升值了。<br><br>
+      你甚至不需要等到「真的下雨」（行情大動），只要「預期會下雨」（IV 升），你的選擇權就已經賺錢了。這就是 Vega 的威力。
+    </div>
+
+    <h3>Rho — 利率影響</h3>
+    <div class="greek-card">
+      <h4>定義：利率每上升 1%，選擇權 Premium 的變化量</h4>
+      <p>Call 的 Rho 為正（利率升，Call 小漲）；Put 的 Rho 為負（利率升，Put 小跌）。加密貨幣選擇權中，Rho 影響相對較小，但長期選擇權（LEAPS）要注意。</p>
+    </div>
+
+    <h3>Greeks 之間怎麼互動</h3>
+    <p>Greeks 不是獨立存在的，它們會互相影響：</p>
+    <ul>
+      <li><strong>Delta 和 Gamma</strong>：Gamma 決定 Delta 如何隨行情移動。你做 Delta 中性的組合，行情一動，Gamma 會讓你的 Delta 偏掉，需要重新調整對沖。</li>
+      <li><strong>Theta 和 Gamma</strong>：ATM 的選擇權 Gamma 最高、Theta 也最高。這不是巧合——你承擔的風險（Gamma）和你消耗的時間費（Theta）是配套的。賣方收了 Theta 就要承擔 Gamma 的風險。</li>
+      <li><strong>Vega 和 Theta</strong>：遠期選擇權 Vega 高但 Theta 低（時間衰減慢）；近期選擇權 Theta 高但 Vega 低。這就是期限結構策略的基礎。</li>
+    </ul>
+
+    <div class="callout">
+      <strong>核心矛盾：Theta vs Gamma</strong><br><br>
+      做賣方收 Theta（每天收費），但要承擔 Gamma（行情爆發的風險）。<br>
+      做買方，Gamma 讓你在大行情中加速獲利，但 Theta 每天都在燒你的錢。<br><br>
+      沒有免費的午餐：每一種選擇權倉位，都是在 Theta、Gamma、Vega 之間找平衡。
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch4">
+    <div class="chapter-label">第四章</div>
+    <h2>常見策略</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <h3>單腿策略</h3>
+    <p>只做一個方向、一個選擇權合約的基本操作：</p>
+
+    <div class="payoff-grid">
+      <div class="payoff-box">
+        <h4>買 Call（Long Call）</h4>
+        <p>看漲。最多虧 Premium。適合行情快速上漲，或事件前的低 IV 環境。</p>
+      </div>
+      <div class="payoff-box">
+        <h4>買 Put（Long Put）</h4>
+        <p>看跌，或對沖現有倉位。最多虧 Premium。適合大跌預期或持有現貨需要保護。</p>
+      </div>
+      <div class="payoff-box">
+        <h4>賣 Call（Short Call / Naked Call）</h4>
+        <p>看不漲或微跌。收 Premium 但上行虧損無限。高風險，一般建議搭配持有標的（Covered Call）。</p>
+      </div>
+      <div class="payoff-box">
+        <h4>賣 Put（Short Put / Naked Put）</h4>
+        <p>看不跌或微漲。收 Premium，標的跌到零才最慘。適合在你願意用 Strike 價格買入標的時使用（Cash-Secured Put）。</p>
+      </div>
+    </div>
+
+    <h3>雙腿：Bull Call Spread / Bear Put Spread</h3>
+    <p>Spread（價差策略）是同時買一張和賣一張選擇權，降低成本但也封頂獲利。</p>
+
+    <div class="callout">
+      <strong>Bull Call Spread 例子：</strong><br>
+      BTC 現在 60,000，你看小漲到 65,000。<br>
+      買 Strike 60,000 的 Call，付 3,000 美元。<br>
+      賣 Strike 65,000 的 Call，收 1,200 美元。<br>
+      淨成本：3,000 − 1,200 = <strong>1,800 美元</strong>（這是你的最大損失）<br>
+      最大獲利：65,000 − 60,000 − 1,800 = <strong>3,200 美元</strong><br><br>
+      你用更低的成本換取有限的獲利。適合「有方向感，但不期待爆發性行情」的場景。
+    </div>
+
+    <p><strong>Bear Put Spread</strong>：反過來，買高 Strike 的 Put，賣低 Strike 的 Put。看小跌，降低成本，同樣封頂。</p>
+
+    <h3>中性策略：Straddle / Strangle</h3>
+    <p>當你預期市場會大幅波動，但不確定方向，可以用這兩種策略：</p>
+
+    <div class="callout">
+      <strong>Straddle（跨式）：</strong>同時買相同 Strike 的 Call 和 Put（通常是 ATM）。<br>
+      只要行情朝任何方向大幅移動，就能獲利。兩邊都不動才虧損。<br>
+      適合財報前（但要注意 IV Crush！）<br><br>
+      <strong>Strangle（勒式）：</strong>同時買 OTM 的 Call 和 OTM 的 Put。<br>
+      比 Straddle 便宜，但需要更大的行情才能回本。<br>
+      同樣是賭波動，但成本更低、門檻更高。
+    </div>
+
+    <p>對應的<strong>賣方版本</strong>：Short Straddle 和 Short Strangle——賣出兩腿，期待行情盤整不動，收取兩份 Premium，但風險是行情爆發時兩頭都虧。</p>
+
+    <h3>賣方策略：Covered Call / Cash-Secured Put</h3>
+    <p>這兩個策略是最常見的「穩健收息」選擇權策略：</p>
+
+    <div class="callout">
+      <strong>Covered Call（保護性賣 Call）：</strong><br>
+      你持有 1 BTC（現價 60,000），同時賣一張 Strike 65,000 的 Call，收 1,500 美元。<br>
+      若到期 BTC 不超過 65,000：你繼續持幣，口袋多了 1,500。<br>
+      若到期 BTC 超過 65,000：你的 BTC 被以 65,000 買走，你賺了差價加 Premium，但錯過 65,000 以上的漲幅。<br><br>
+      適合：你持有標的，願意在特定高點賣出，同時每月「收租」。
+    </div>
+
+    <div class="callout">
+      <strong>Cash-Secured Put（現金擔保賣 Put）：</strong><br>
+      你手上有 58,000 美元現金，你願意用 58,000 買 BTC（現在 60,000）。<br>
+      你賣一張 Strike 58,000 的 Put，收 1,000 美元。<br>
+      若 BTC 到期高於 58,000：Put 不被行使，你口袋多了 1,000，繼續等待。<br>
+      若 BTC 到期低於 58,000：你被迫用 58,000 買入，但你本來就想買，所以實際成本是 58,000 − 1,000 = 57,000。<br><br>
+      適合：你打算在低點布局，在等待中先賺 Premium。
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch5">
+    <div class="chapter-label">第五章</div>
+    <h2>波動率深入</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <h3>歷史波動率 HV vs 隱含波動率 IV</h3>
+    <p><strong>歷史波動率（Historical Volatility，HV）</strong>：過去一段時間，標的實際波動的幅度，用統計計算。它是事後的數字，告訴你「過去動了多大」。</p>
+    <p><strong>隱含波動率（Implied Volatility，IV）</strong>：從目前選擇權市場價格反推出來的，代表市場對「未來波動」的預期。是前瞻的數字，告訴你「市場預期接下來會動多大」。</p>
+    <table>
+      <tr><th></th><th>HV</th><th>IV</th></tr>
+      <tr><td>來源</td><td>歷史價格計算</td><td>從選擇權 Premium 反推</td></tr>
+      <tr><td>方向</td><td>回顧（過去）</td><td>前瞻（未來預期）</td></tr>
+      <tr><td>用途</td><td>衡量標的本身的波動性</td><td>衡量選擇權的「貴或便宜」</td></tr>
+    </table>
+    <p><strong>關鍵比較</strong>：如果 IV 明顯高於 HV，代表市場對未來波動的預期比過去實際波動大——選擇權相對「貴」，賣方有優勢。如果 IV 低於 HV，選擇權相對「便宜」，買方有優勢。</p>
+
+    <h3>波動率微笑（Volatility Smile）</h3>
+    <p>理論上（Black-Scholes 模型假設），所有 Strike 的 IV 應該相同。但實際市場不是這樣——把不同 Strike 的 IV 畫出來，呈現一個「微笑」形狀：ATM 的 IV 最低，越往兩端（深度 OTM 的 Call 和 Put），IV 越高。</p>
+
+    <div class="callout">
+      <strong>為什麼會有微笑？</strong><br><br>
+      市場害怕極端事件。深度 OTM 的 Put（大跌保護）需求旺盛，推高了 Put 的 IV。深度 OTM 的 Call（樂透式買入）也有人追，推高了 Call 的 IV。市場不相信「未來是常態分佈」，實際上極端事件發生的頻率比模型預測的高——這個現象叫<strong>肥尾（Fat Tail）</strong>。
+    </div>
+
+    <h3>波動率偏斜（Skew）</h3>
+    <p>很多市場的「微笑」其實是不對稱的，左邊（OTM Put）明顯高於右邊（OTM Call），形成向左傾斜的形狀——這叫<strong>負偏斜（Negative Skew）</strong>，股票市場最常見。</p>
+    <p>原因：機構持有大量股票，需要買 Put 對沖，推高了 OTM Put 的 IV；而 OTM Call 主要是散戶投機，需求沒那麼強烈。</p>
+    <p>加密貨幣市場的偏斜有時不同：牛市時 OTM Call 需求旺盛，可能出現正偏斜（右邊高）；熊市崩盤時偏向負偏斜。</p>
+
+    <h3>VIX 是什麼</h3>
+    <p>VIX（CBOE Volatility Index）是衡量標普 500 指數選擇權隱含波動率的指標，被稱為「<strong>恐慌指數</strong>」。</p>
+    <ul>
+      <li>VIX 低（＜ 15）：市場平靜，選擇權便宜</li>
+      <li>VIX 中（15–25）：正常波動區間</li>
+      <li>VIX 高（＞ 30）：市場恐慌，選擇權貴</li>
+      <li>VIX 極高（＞ 40）：歷史性恐慌（COVID 崩盤達到 80）</li>
+    </ul>
+    <p>VIX 和標普 500 通常呈現負相關——市場大跌時 VIX 飆升，市場上漲時 VIX 下降。加密貨幣市場有類似指標如 DVOL（Deribit Volatility Index）。</p>
+
+    <h3>IV Rank / IV Percentile</h3>
+    <p>單純看 IV 數字（例如 60%）無法判斷貴不貴，因為不同標的的「正常 IV」差很多。BTC 的 IV 60% 可能是歷史低點，而某個穩定幣的 IV 60% 是極端高點。</p>
+    <p><strong>IV Rank（IVR）</strong>：過去一年中，目前 IV 排在什麼百分位。IVR = 80 代表目前 IV 高於過去一年 80% 的時間，屬於偏貴，適合賣方。</p>
+    <p><strong>IV Percentile（IVP）</strong>：過去一年中，有多少比例的交易日 IV 低於目前水平，概念類似但計算略不同。</p>
+
+    <div class="callout">
+      <strong>使用原則：</strong><br>
+      IVR &gt; 50：考慮賣方策略（IV 偏高，賣 Premium 划算）<br>
+      IVR &lt; 30：考慮買方策略（IV 偏低，買 Premium 便宜）
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch6">
+    <div class="chapter-label">第六章</div>
+    <h2>隱含波動率曲面</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <h3>三個軸的意義</h3>
+    <p>把所有不同到期日、不同 Strike 的 IV 畫在三維空間裡，就形成<strong>隱含波動率曲面（IV Surface / Vol Surface）</strong>。</p>
+    <ul>
+      <li><strong>X 軸：Strike（或 Moneyness）</strong>——從深度 OTM Put 到深度 OTM Call</li>
+      <li><strong>Y 軸：DTE（距到期日天數）</strong>——從近期到遠期</li>
+      <li><strong>Z 軸：IV 高度</strong>——某個 Strike + 到期日組合的隱含波動率</li>
+    </ul>
+
+    <div class="callout">
+      <strong>地形圖的比喻：</strong>把 IV 曲面想像成一座山的地形圖。<br><br>
+      ATM 附近通常是「谷地」（IV 相對低）。<br>
+      兩側 OTM 的邊緣「爬升」（Smile 效應）。<br>
+      近期到期的曲面可能形狀陡峭（事件驅動下 IV 尖峰）；遠期曲面較平滑。<br><br>
+      造市商每天盯著這張曲面，尋找哪裡的「地形」相對於理論值異常，有沒有可以套利的機會。
+    </div>
+
+    <h3>峽谷地形與 ATM</h3>
+    <p>ATM 附近的曲面通常形成一條「峽谷」，隨著時間推進，這條峽谷沿著現貨價格移動。</p>
+    <p>當現貨大幅上漲或下跌，曲面「平移」，所有相對位置重新定義。這就是為什麼造市商需要持續調整對沖——不只是 Delta，連整個曲面的形狀都在動。</p>
+
+    <h3>期限結構（Term Structure）</h3>
+    <p>期限結構是指：不同到期日的 ATM IV 水準所形成的曲線。</p>
+    <p><strong>正向期限結構（Contango）</strong>：遠期 IV 高於近期 IV。這是「正常」狀態，代表市場對遠期的不確定性更高。</p>
+    <p><strong>逆向期限結構（Backwardation）</strong>：近期 IV 高於遠期。通常出現在即將到來的重大事件前（財報、大選、FED 會議），市場對短期的恐慌高於對長期的預期。</p>
+
+    <div class="callout">
+      <strong>生活比喻：</strong>正向期限結構就像長途旅行的保險比短途貴（風險時間長）。逆向期限結構就像明天要上颱風前的最後一夜，明天的雨傘比下週的雨傘還搶手。
+    </div>
+
+    <h3>曲面空缺與插值問題</h3>
+    <p>不是每個 Strike + 到期日的組合都有實際成交。在流動性差的地方，造市商需要用數學方法「插值」——根據周邊有成交的節點，推估沒有成交的 IV 應該是多少。</p>
+    <p>插值不完善會造成套利機會，也是期權定量研究的重要課題。有些交易者專門找曲面上的「裂縫」（不連續、不合理的 IV 水平）來做套利。</p>
+
+    <h3>造市商怎麼看這片曲面</h3>
+    <p>對造市商來說，曲面不只是一張圖——它是他們整個 book（持倉組合）的風險地圖：</p>
+    <ul>
+      <li>某個 Strike 附近突然有大量買盤，IV 被推高——造市商調整那個節點的 IV，整個曲面跟著變形</li>
+      <li>曲面的形狀決定了做 Delta 對沖的成本——曲面越陡峭（Skew 越大），對沖越貴</li>
+      <li>造市商在管理的不是個別選擇權的風險，而是<strong>整張曲面的 Greeks 暴露</strong></li>
+    </ul>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch7">
+    <div class="chapter-label">第七章</div>
+    <h2>造市商與市場結構</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <h3>造市商的角色（流動性提供者）</h3>
+    <p>選擇權市場裡，大多數的 Bid/Ask 都是造市商（Market Maker，MM）放的。造市商的工作不是猜行情方向，而是提供流動性——讓你隨時都能成交，他們從 Bid/Ask 價差中賺取微小利潤。</p>
+    <p>關鍵：造市商不想方向性暴露。你向他買一張 Call，他立刻去做 Delta 對沖，讓自己的組合盡量維持方向中性。他賺的是你付的那個 Bid/Ask 差距，而不是靠賭行情方向。</p>
+
+    <h3>Delta 對沖機制</h3>
+    <p>假設你向造市商買了 1 張 BTC 的 ATM Call，Delta 0.5。造市商賣給你之後，他的組合多了 Delta = −0.5（他賣了一個買方為正 Delta 的合約）。</p>
+    <p>為了中性，他立刻去現貨市場買 0.5 個 BTC（每個 BTC Delta 為 1，買 0.5 個就補回了 −0.5 的 Delta 缺口）。</p>
+    <p>這就叫 <strong>Delta Hedging（Delta 對沖）</strong>。但行情一動，Delta 就變了（因為 Gamma），造市商需要持續調整他的現貨持倉——這個過程叫 <strong>Re-hedging</strong>。</p>
+
+    <div class="callout">
+      <strong>重點衍伸：</strong>造市商的 Re-hedging 行為本身會影響現貨市場。<br><br>
+      當造市商 Delta 暴露是負的（他賣出了很多 Call），行情上漲時他需要<strong>買現貨</strong>來對沖，這會加速上漲。行情下跌時他需要<strong>賣現貨</strong>，加速下跌。這個行為叫做 <strong>Negative Gamma</strong>——造市商放大了市場的波動。<br><br>
+      反過來，如果造市商 Delta 是正的，行情上漲時他賣現貨、下跌時他買現貨，這會<strong>抑制波動</strong>，叫做 <strong>Positive Gamma</strong>。
+    </div>
+
+    <h3>Gamma Exposure（GEX）</h3>
+    <p><strong>GEX（Gamma Exposure）</strong>是所有造市商選擇權倉位的 Gamma 總暴露，加上對應的現貨對沖需求。</p>
+    <p>GEX 可以告訴你：</p>
+    <ul>
+      <li><strong>GEX 為正（Positive GEX）</strong>：造市商整體是 Positive Gamma，行情波動時他們的對沖行為會壓制波動——磁鐵效應，行情傾向在某個價位附近盤整。</li>
+      <li><strong>GEX 為負（Negative GEX）</strong>：造市商整體是 Negative Gamma，對沖行為放大波動——行情一旦啟動，容易快速加速。</li>
+    </ul>
+    <p>GEX 最大的那個 Strike，就是所謂的「<strong>Gamma Flip Point</strong>」，是市場行為從壓制到放大的分界線。</p>
+
+    <h3>選擇權到期日對現貨市場的影響</h3>
+    <p>每個月的選擇權到期日（Opex），大量合約同時到期，造市商需要平倉他們的 Delta 對沖倉位。這個行為會在現貨市場留下明顯的流動性影響。</p>
+    <p>常見的 Opex 前後效應：</p>
+    <ul>
+      <li>大量 OTM Call 臨近到期時，如果現貨往那個方向移動，造市商的對沖買盤可能形成「<strong>Gamma 驅動的追漲</strong>」</li>
+      <li>Opex 當天，Pin Risk——現貨行情傾向在大額 OI 的 Strike 附近徘徊，因為雙方都不願意讓行情剛好穿越某個關鍵 Strike</li>
+      <li>Opex 之後，市場的 GEX 暴露清空，下個月的新合約開始定價，波動率可能重新活躍</li>
+    </ul>
+
+    <h3>異常買賣如何在曲面上顯現</h3>
+    <p>當一個大玩家突然在某個 Strike 大量買入 Call 或 Put，造市商必須在短時間內消化這個訂單流，推高那個節點的 IV——曲面在那個點出現一個「凸起」。</p>
+    <p>有經驗的交易者會觀察 IV 曲面的異常隆起，判斷是否有知情交易（Informed Trading）在發生。例如財報前某個 OTM Call 的 IV 突然遠高於附近其他 Strike，可能代表有人在押注業績超預期。</p>
+
+    <h3>Bid/Ask Spread 背後的邏輯</h3>
+    <p>選擇權的 Bid/Ask 比股票寬很多，原因：</p>
+    <ul>
+      <li>流動性較低，造市商承擔更多庫存風險需要補償</li>
+      <li>深度 OTM 選擇權幾乎沒有成交量，造市商要報價只能報很寬的差距</li>
+      <li>高 IV 環境下，市場不確定性大，造市商用更寬的 Spread 保護自己</li>
+    </ul>
+    <p>實戰建議：盡量用限價單、靠近 Bid/Ask 中間成交，不要用市價單。深度 OTM 的選擇權 Spread 有時達 10-20%，用市價單相當於送錢給造市商。</p>
+
+    <!-- ═══════════════════════════════════════ -->
+    <hr class="chapter-divider" id="ch8">
+    <div class="chapter-label">第八章</div>
+    <h2>高階 Greeks</h2>
+    <!-- ═══════════════════════════════════════ -->
+
+    <p>高階 Greeks（有時也叫「二階 Greeks」或「Greeks 的 Greeks」）衡量各個一階 Greeks 對其他變量的敏感度。這些在造市商管理大量組合時至關重要。</p>
+
+    <h3>Vanna（Delta 對 IV 的敏感度）</h3>
+    <div class="greek-card">
+      <h4>Vanna = Delta 隨 IV 變化的速率，也等於 Vega 隨標的價格變化的速率</h4>
+      <p>用白話說：IV 上升時，你的 Delta 會怎麼變？</p>
+    </div>
+    <p>以 OTM Call 為例：IV 上升時，市場認為這個 Call 進入 ITM 的機率提高，Delta 隨之上升。Vanna 衡量這個效應的幅度。</p>
+
+    <div class="callout">
+      <strong>Vanna 的市場效應：</strong><br><br>
+      當市場大跌（現貨跌 + IV 飆升），持有大量 OTM Call 的造市商，因為 Vanna 效應，他的倉位 Delta 突然大幅下滑。他需要在慌亂的市場裡賣出大量現貨來重新對沖——這反而進一步壓低現貨，形成惡性循環。<br><br>
+      這就是為什麼市場大跌時，選擇權市場的 Vanna 流動（Vanna Flow）會加速拋售、推升波動率、形成「選擇權驅動的崩跌」。
+    </div>
+
+    <h3>Charm（Delta 對時間的敏感度）</h3>
+    <div class="greek-card">
+      <h4>Charm = Delta 隨時間流逝的變化速率（也叫 Delta Bleed）</h4>
+      <p>用白話說：隨著時間推移，你的 Delta 自然地改變了多少？</p>
+    </div>
+    <p>OTM 選擇權隨著時間流逝，進入 ITM 的機率下降，Delta 慢慢趨向零。ITM 選擇權的 Delta 則慢慢趨向 1（或 -1）。Charm 衡量這個「Delta 隨時間的漂移」。</p>
+
+    <div class="callout">
+      <strong>Charm 對造市商的意義：</strong><br><br>
+      即使市場行情完全不動、IV 也沒變，造市商每天早上醒來，他的 Delta 暴露也會因為 Charm 而有輕微偏移。他需要每天做少量的 Re-hedging，只是因為時間過了一天。<br><br>
+      在選擇權到期日接近時，Charm 效應加劇。這就是為什麼臨近到期的大量 OI 會讓現貨產生「磁鐵效應」——造市商的 Charm 對沖把現貨拉向高 OI 的 Strike。
+    </div>
+
+    <h3>Zomma（Gamma 對 IV 的敏感度）</h3>
+    <div class="greek-card">
+      <h4>Zomma = Gamma 隨 IV 變化的速率</h4>
+      <p>用白話說：IV 上升時，你的 Gamma 暴露如何改變？</p>
+    </div>
+    <p>高 Zomma 的倉位，在 IV 飆升時 Gamma 也大幅增加，Re-hedging 的頻率和成本也會急速上升。</p>
+
+    <div class="callout">
+      <strong>Zomma 的實際場景：</strong><br><br>
+      想像市場突然出現黑天鵝事件——現貨大跌、IV 飆升。<br><br>
+      造市商的 Gamma 因為 Zomma 效應突然放大，原本每天只需小量 Re-hedge，現在每小時都需要大量調整。<br>
+      Vanna 效應讓 Delta 方向也跑掉。<br>
+      Charm 效應再加上時間壓縮讓事情更複雜。<br><br>
+      三個效應同時發作，造市商需要在流動性最差、市場最混亂的時刻做最大量的對沖操作。這就是「選擇權驅動的流動性危機」的底層機制。
+    </div>
+
+    <h3>這些怎麼影響造市商行為</h3>
+    <p>高階 Greeks 合在一起，解釋了很多市場的「非理性行為」：</p>
+    <ul>
+      <li><strong>V 形反彈</strong>：崩跌之後往往迅速反彈，因為造市商的 Vanna 對沖在 IV 回落時需要買回大量現貨</li>
+      <li><strong>期末波動加速</strong>：到期日前最後幾天的極端波動，是 Charm + Gamma 在最後時刻的共同作用</li>
+      <li><strong>行情「吸附」大 Strike</strong>：高 OI 的 Strike 形成 Charm 對沖的聚集點，現貨傾向在那個位置附近盤整</li>
+      <li><strong>波動的波動（Vol of Vol）</strong>：IV 曲面的快速變形，正是 Vanna 和 Zomma 效應驅動曲面整體移動的結果</li>
+    </ul>
+
+    <h2>結語：把這些連起來</h2>
+
+    <div class="callout">
+      <strong>選擇權的本質是定價「不確定性」。</strong><br><br>
+      買方買的是「可能性」——某件事發生的可能性，以及行情大幅波動的可能性。<br>
+      賣方賣的是「保險」——承擔別人不想承受的風險，換取穩定的 Premium。<br>
+      造市商管理的是「風險的風險」——他們不賭方向，他們管理的是 Greeks 之間的交互作用。<br><br>
+      從最基礎的 Call/Put，到 IV 曲面，到造市商的 Vanna/Charm/Zomma 對沖——它們都是同一件事的不同層次：<strong>市場在每一個時刻，對不確定性的集體定價。</strong>
+    </div>
+
+    <p>理解了這些，你就不只是在看 K 線猜漲跌，而是在真正讀懂市場參與者的行為邏輯，以及那些行為如何反過來影響你看到的每一根 K 線。</p>
+
+  </div>
+</div>
+<footer><p>OrderFlowLab &copy; 2025 &nbsp;·&nbsp; by chillzon</p></footer>
+</body>
+</html>
